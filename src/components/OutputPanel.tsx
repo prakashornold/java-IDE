@@ -1,4 +1,4 @@
-import { Terminal, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+import { Terminal, Loader2, CheckCircle2, XCircle, Sparkles, Code2, Heart } from 'lucide-react';
 
 interface OutputPanelProps {
   output: string;
@@ -9,7 +9,7 @@ interface OutputPanelProps {
 export function OutputPanel({ output, isRunning, hasError }: OutputPanelProps) {
   return (
     <div className="bg-[#0d1117] border-t border-gray-800 flex flex-col max-h-[40vh] min-h-[200px]">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-gray-800">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-gray-800 bg-gradient-to-r from-[#0d1117] to-[#161b22]">
         <div className="flex items-center gap-2">
           <Terminal className="w-4 h-4 text-[#00D4AA]" />
           <span className="text-sm font-semibold text-gray-300">Output</span>
@@ -48,7 +48,7 @@ export function OutputPanel({ output, isRunning, hasError }: OutputPanelProps) {
         ) : output ? (
           <pre
             className={`font-mono text-sm whitespace-pre-wrap ${
-              hasError ? 'text-red-400 bg-red-950/20 p-3 rounded' : 'text-gray-100'
+              hasError ? 'text-red-400 bg-red-950/20 p-3 rounded border border-red-900/30' : 'text-gray-100'
             }`}
           >
             {output}
@@ -60,6 +60,18 @@ export function OutputPanel({ output, isRunning, hasError }: OutputPanelProps) {
             </p>
           </div>
         )}
+      </div>
+
+      <div className="border-t border-gray-800 bg-gradient-to-r from-[#161b22] via-[#0d1117] to-[#161b22] px-4 py-2.5">
+        <div className="flex items-center justify-center gap-2 text-xs">
+          <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+          <span className="text-gray-400">Developed By</span>
+          <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#00D4AA] to-[#00A8E8]">
+            Om Prakash Peddamadthala
+          </span>
+          <Code2 className="w-3.5 h-3.5 text-[#00D4AA]" />
+          <Heart className="w-3 h-3 text-red-500 fill-red-500 animate-pulse" />
+        </div>
       </div>
     </div>
   );
