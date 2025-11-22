@@ -73,30 +73,30 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8 flex-1">
+        <div className="mb-4 sm:mb-8">
           <button
             onClick={onNavigateHome}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-all duration-200 mb-6"
+            className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition-all duration-200 mb-4 sm:mb-6 text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Editor
+            <span>Back to Editor</span>
           </button>
 
-          <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
-            <Code2 className="w-8 h-8 text-cyan-400" />
-            Java Practice Problems
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 flex items-center gap-2 sm:gap-3">
+            <Code2 className="w-6 sm:w-8 h-6 sm:h-8 text-cyan-400" />
+            <span className="break-words">Java Practice Problems</span>
           </h1>
-          <p className="text-gray-400">
+          <p className="text-gray-400 text-sm sm:text-base">
             Choose a problem to practice. Total: {problems.length} problems
           </p>
         </div>
 
-        <div className="mb-6 flex flex-wrap gap-3">
+        <div className="mb-4 sm:mb-6 flex flex-wrap gap-2 sm:gap-3">
           <button
             onClick={() => setFilterDifficulty('all')}
-            className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-all duration-200 text-sm ${
               filterDifficulty === 'all'
                 ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-500/50'
                 : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -106,7 +106,7 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
           </button>
           <button
             onClick={() => setFilterDifficulty('basic')}
-            className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-all duration-200 text-sm ${
               filterDifficulty === 'basic'
                 ? 'bg-green-600 text-white shadow-lg shadow-green-500/50'
                 : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -116,7 +116,7 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
           </button>
           <button
             onClick={() => setFilterDifficulty('intermediate')}
-            className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-all duration-200 text-sm ${
               filterDifficulty === 'intermediate'
                 ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/50'
                 : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -126,7 +126,7 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
           </button>
           <button
             onClick={() => setFilterDifficulty('advanced')}
-            className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-all duration-200 text-sm ${
               filterDifficulty === 'advanced'
                 ? 'bg-orange-600 text-white shadow-lg shadow-orange-500/50'
                 : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -136,7 +136,7 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
           </button>
           <button
             onClick={() => setFilterDifficulty('expert')}
-            className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-all duration-200 text-sm ${
               filterDifficulty === 'expert'
                 ? 'bg-red-600 text-white shadow-lg shadow-red-500/50'
                 : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -158,29 +158,29 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {currentProblems.map((problem) => (
               <div
                 key={problem.id}
-                className="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-all duration-200 border border-gray-700 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20"
+                className="bg-gray-800 rounded-lg p-4 sm:p-6 hover:bg-gray-750 transition-all duration-200 border border-gray-700 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20"
               >
-                <div className="flex items-start justify-between mb-3">
+                <div className="flex items-start justify-between mb-2 sm:mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-500 font-mono text-sm">#{problem.number}</span>
+                    <span className="text-gray-500 font-mono text-xs sm:text-sm">#{problem.number}</span>
                   </div>
-                  <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${getDifficultyColor(problem.difficulty)}`}>
-                    {getDifficultyIcon(problem.difficulty)}
+                  <div className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border ${getDifficultyColor(problem.difficulty)}`}>
+                    <span className="hidden sm:block">{getDifficultyIcon(problem.difficulty)}</span>
                     <span className="capitalize">{problem.difficulty}</span>
                   </div>
                 </div>
 
-                <h3 className="text-white font-semibold text-lg mb-3 line-clamp-2">
+                <h3 className="text-white font-semibold text-base sm:text-lg mb-2 sm:mb-3 line-clamp-2">
                   {problem.title}
                 </h3>
 
                 <button
                   onClick={() => handlePractice(problem)}
-                  className="w-full px-4 py-2 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white rounded-lg transition-all duration-200 font-medium shadow-lg hover:shadow-cyan-500/50 hover:scale-105"
+                  className="w-full px-4 py-2 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white rounded-lg transition-all duration-200 font-medium shadow-lg hover:shadow-cyan-500/50 active:scale-95 sm:hover:scale-105 text-sm sm:text-base"
                 >
                   Practice
                 </button>
@@ -189,7 +189,7 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
             </div>
 
             {totalPages > 1 && (
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8 pb-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mt-6 sm:mt-8 pb-4">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
