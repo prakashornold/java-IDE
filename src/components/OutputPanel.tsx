@@ -1,40 +1,56 @@
-import { Terminal, Loader2, CheckCircle2, XCircle, Sparkles, Code2, Heart } from 'lucide-react';
+import { Terminal, Loader2, CheckCircle2, XCircle, Sparkles, Code2, Heart, PanelBottomOpen, PanelRightOpen } from 'lucide-react';
 
 interface OutputPanelProps {
   output: string;
   isRunning: boolean;
   hasError: boolean;
+  layoutMode: 'bottom' | 'side';
+  onToggleLayout: () => void;
 }
 
-export function OutputPanel({ output, isRunning, hasError }: OutputPanelProps) {
+export function OutputPanel({ output, isRunning, hasError, layoutMode, onToggleLayout }: OutputPanelProps) {
   return (
-    <div className="bg-[#0d1117] border-t border-gray-800 flex flex-col max-h-[40vh] min-h-[200px]">
+    <div className={`bg-[#0d1117] flex flex-col h-full ${layoutMode === 'side' ? 'border-l' : 'border-t'} border-gray-800`}>
       <div className="flex items-center justify-between px-4 py-2 border-b border-gray-800 bg-gradient-to-r from-[#0d1117] to-[#161b22]">
         <div className="flex items-center gap-2">
           <Terminal className="w-4 h-4 text-[#00D4AA]" />
           <span className="text-sm font-semibold text-gray-300">Output</span>
         </div>
 
-        {isRunning && (
-          <div className="flex items-center gap-2 text-xs text-gray-400">
-            <Loader2 className="w-3 h-3 animate-spin" />
-            <span>Executing...</span>
-          </div>
-        )}
+        <div className="flex items-center gap-3">
+          {isRunning && (
+            <div className="flex items-center gap-2 text-xs text-gray-400">
+              <Loader2 className="w-3 h-3 animate-spin" />
+              <span>Executing...</span>
+            </div>
+          )}
 
-        {!isRunning && output && !hasError && (
-          <div className="flex items-center gap-1 text-xs text-green-400">
-            <CheckCircle2 className="w-3 h-3" />
-            <span>Success</span>
-          </div>
-        )}
+          {!isRunning && output && !hasError && (
+            <div className="flex items-center gap-1 text-xs text-green-400">
+              <CheckCircle2 className="w-3 h-3" />
+              <span>Success</span>
+            </div>
+          )}
 
-        {!isRunning && hasError && (
-          <div className="flex items-center gap-1 text-xs text-red-400">
-            <XCircle className="w-3 h-3" />
-            <span>Error</span>
-          </div>
-        )}
+          {!isRunning && hasError && (
+            <div className="flex items-center gap-1 text-xs text-red-400">
+              <XCircle className="w-3 h-3" />
+              <span>Error</span>
+            </div>
+          )}
+
+          <button
+            onClick={onToggleLayout}
+            className="p-1.5 rounded hover:bg-gray-700/50 transition-colors group"
+            title={layoutMode === 'bottom' ? 'Switch to side-by-side' : 'Switch to bottom'}
+          >
+            {layoutMode === 'bottom' ? (
+              <PanelRightOpen className="w-4 h-4 text-gray-400 group-hover:text-[#00D4AA]" />
+            ) : (
+              <PanelBottomOpen className="w-4 h-4 text-gray-400 group-hover:text-[#00D4AA]" />
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 overflow-auto p-4">
