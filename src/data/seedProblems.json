@@ -1,0 +1,28 @@
+{
+  "problems": [
+    {
+      "number": 1,
+      "title": "Find unique/distinct numbers from an array",
+      "difficulty": "basic",
+      "input": "List<Integer> numbers = List.of(1,2,3,2,4,5,4);\n// Output: [1, 2, 3, 4, 5]",
+      "solution": "import java.util.*;\nimport java.util.stream.*;\npublic class UniqueNumbers {\n    public static void main(String[] args) {\n        List<Integer> numbers = List.of(1, 2, 3, 2, 4, 5, 4);\n       \n        List<Integer> unique = numbers.stream()\n            .distinct()\n            .collect(Collectors.toList());\n       \n        System.out.println(\"Original: \" + numbers);\n        System.out.println(\"Unique: \" + unique);\n    }\n}",
+      "output": "Original: [1, 2, 3, 2, 4, 5, 4]\nUnique: [1, 2, 3, 4, 5]"
+    },
+    {
+      "number": 2,
+      "title": "Filter even numbers from a list",
+      "difficulty": "basic",
+      "input": "List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);\n// Output: [2, 4, 6, 8, 10]",
+      "solution": "import java.util.*;\nimport java.util.stream.*;\npublic class FilterEvenNumbers {\n    public static void main(String[] args) {\n        List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);\n       \n        List<Integer> evenNumbers = numbers.stream()\n            .filter(n -> n % 2 == 0)\n            .collect(Collectors.toList());\n       \n        System.out.println(\"Original: \" + numbers);\n        System.out.println(\"Even Numbers: \" + evenNumbers);\n    }\n}",
+      "output": "Original: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\nEven Numbers: [2, 4, 6, 8, 10]"
+    },
+    {
+      "number": 3,
+      "title": "Calculate sum of all numbers",
+      "difficulty": "basic",
+      "input": "List<Integer> numbers = List.of(1, 2, 3, 4, 5);\n// Output: 15",
+      "solution": "import java.util.*;\nimport java.util.stream.*;\npublic class SumOfNumbers {\n    public static void main(String[] args) {\n        List<Integer> numbers = List.of(1, 2, 3, 4, 5);\n       \n        int sum = numbers.stream()\n            .mapToInt(Integer::intValue)\n            .sum();\n       \n        System.out.println(\"Numbers: \" + numbers);\n        System.out.println(\"Sum: \" + sum);\n    }\n}",
+      "output": "Numbers: [1, 2, 3, 4, 5]\nSum: 15"
+    }
+  ]
+}

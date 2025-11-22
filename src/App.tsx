@@ -4,6 +4,7 @@ import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
 import { runJavaCode } from './services/compilerService';
+import { getRandomProblem, type JavaProblem } from './services/problemService';
 import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
 
 type LayoutMode = 'bottom' | 'side';
@@ -17,6 +18,8 @@ function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [outputSize, setOutputSize] = useState(40);
   const [isResizing, setIsResizing] = useState(false);
+  const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
+  const [isLoadingProblem, setIsLoadingProblem] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -88,29 +91,81 @@ function App() {
     }
   };
 
+  const handleRandomProblem = async () => {
+    setIsLoadingProblem(true);
+    try {
+      const problem = await getRandomProblem();
+      if (problem) {
+        setCurrentProblem(problem);
+        setCode(problem.solution);
+        setOutput('');
+        setHasError(false);
+      } else {
+        setOutput('No problems found in database. Please seed the database first.');
+        setHasError(true);
+      }
+    } catch (error) {
+      setOutput('Error loading random problem');
+      setHasError(true);
+    } finally {
+      setIsLoadingProblem(false);
+    }
+  };
+
   return (
     <div
       className="h-screen flex flex-col bg-[#1e1e1e] overflow-hidden"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
-      <Header onRun={handleRunCode} isRunning={isRunning} />
+      <Header
+        onRun={handleRunCode}
+        isRunning={isRunning}
+        onRandomProblem={handleRandomProblem}
+        isLoadingProblem={isLoadingProblem}
+      />
 
       <div
         ref={containerRef}
         className={`flex-1 flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
       >
         <div
-          className="relative overflow-hidden"
+          className="relative overflow-hidden flex flex-col"
           style={{
             [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${100 - outputSize}%`
           }}
         >
-          <CodeEditor
-            value={code}
-            onChange={setCode}
-            onRun={handleRunCode}
-          />
+          {currentProblem && (
+            <div className="bg-gradient-to-r from-[#161b22] via-[#0d1117] to-[#161b22] border-b border-gray-800 px-3 sm:px-4 py-2 sm:py-3">
+              <div className="flex items-start gap-2">
+                <div className="flex-shrink-0">
+                  <span className={`inline-block px-2 py-0.5 text-[10px] sm:text-xs font-semibold rounded ${
+                    currentProblem.difficulty === 'basic' ? 'bg-green-500/20 text-green-400' :
+                    currentProblem.difficulty === 'intermediate' ? 'bg-blue-500/20 text-blue-400' :
+                    currentProblem.difficulty === 'advanced' ? 'bg-orange-500/20 text-orange-400' :
+                    'bg-red-500/20 text-red-400'
+                  }`}>
+                    {currentProblem.difficulty.toUpperCase()}
+                  </span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-xs sm:text-sm font-semibold text-white truncate">
+                    #{currentProblem.number}: {currentProblem.title}
+                  </h2>
+                  {currentProblem.input && (
+                    <pre className="text-[10px] sm:text-xs text-gray-400 mt-1 whitespace-pre-wrap">{currentProblem.input}</pre>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="flex-1 overflow-hidden">
+            <CodeEditor
+              value={code}
+              onChange={setCode}
+              onRun={handleRunCode}
+            />
+          </div>
         </div>
 
         {!isMobile && (
