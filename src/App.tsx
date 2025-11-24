@@ -190,24 +190,49 @@ function App() {
               background: 'linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end))',
               borderColor: 'var(--border-color)'
             }}>
-              <div className="flex items-start gap-2">
-                <div className="flex-shrink-0">
-                  <span className={`inline-block px-2 py-0.5 text-[10px] sm:text-xs font-semibold rounded ${
-                    currentProblem.difficulty === 'basic' ? 'bg-green-500/20 text-green-400' :
-                    currentProblem.difficulty === 'intermediate' ? 'bg-blue-500/20 text-blue-400' :
-                    currentProblem.difficulty === 'advanced' ? 'bg-orange-500/20 text-orange-400' :
-                    'bg-red-500/20 text-red-400'
-                  }`}>
-                    {currentProblem.difficulty.toUpperCase()}
-                  </span>
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-start gap-2 flex-1 min-w-0">
+                  <div className="flex-shrink-0">
+                    <span className={`inline-block px-2 py-0.5 text-[10px] sm:text-xs font-semibold rounded ${
+                      currentProblem.difficulty === 'basic' ? 'bg-green-500/20 text-green-400' :
+                      currentProblem.difficulty === 'intermediate' ? 'bg-blue-500/20 text-blue-400' :
+                      currentProblem.difficulty === 'advanced' ? 'bg-orange-500/20 text-orange-400' :
+                      'bg-red-500/20 text-red-400'
+                    }`}>
+                      {currentProblem.difficulty.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-xs sm:text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
+                      #{currentProblem.number}: {currentProblem.title}
+                    </h2>
+                    {currentProblem.input && (
+                      <pre className="text-[10px] sm:text-xs mt-1 whitespace-pre-wrap" style={{ color: 'var(--text-secondary)' }}>{currentProblem.input}</pre>
+                    )}
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-xs sm:text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
-                    #{currentProblem.number}: {currentProblem.title}
-                  </h2>
-                  {currentProblem.input && (
-                    <pre className="text-[10px] sm:text-xs mt-1 whitespace-pre-wrap" style={{ color: 'var(--text-secondary)' }}>{currentProblem.input}</pre>
-                  )}
+                <div className="flex-shrink-0 flex gap-2">
+                  <button
+                    onClick={handleShowSolution}
+                    disabled={showFullSolution}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-200 shadow-lg ${
+                      showFullSolution
+                        ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white hover:shadow-cyan-500/50 hover:scale-105'
+                    }`}
+                    title="Show complete solution"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Solution</span>
+                  </button>
+                  <button
+                    onClick={handleRunCode}
+                    disabled={isRunning}
+                    className="flex items-center gap-1.5 bg-[#00D4AA] hover:bg-[#00ba95] disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 shadow-lg hover:scale-105 active:scale-95"
+                  >
+                    <Play className="w-3.5 h-3.5" fill="currentColor" />
+                    <span>{isRunning ? 'Running...' : 'Run'}</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -217,46 +242,29 @@ function App() {
               background: 'linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end))',
               borderColor: 'var(--border-color)'
             }}>
-              <div className="flex items-start gap-2">
+              <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <h2 className="text-xs sm:text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
                     Write a welcome program which prints to console
                   </h2>
                 </div>
+                <button
+                  onClick={handleRunCode}
+                  disabled={isRunning}
+                  className="flex-shrink-0 flex items-center gap-1.5 bg-[#00D4AA] hover:bg-[#00ba95] disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 shadow-lg hover:scale-105 active:scale-95"
+                >
+                  <Play className="w-3.5 h-3.5" fill="currentColor" />
+                  <span>{isRunning ? 'Running...' : 'Run'}</span>
+                </button>
               </div>
             </div>
           )}
-          <div className="flex-1 overflow-hidden relative">
+          <div className="flex-1 overflow-hidden">
             <CodeEditor
               value={code}
               onChange={setCode}
               onRun={handleRunCode}
             />
-            <div className="absolute top-2 right-2 z-10 flex gap-2">
-              {currentProblem && (
-                <button
-                  onClick={handleShowSolution}
-                  disabled={showFullSolution}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-200 shadow-lg ${
-                    showFullSolution
-                      ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white hover:shadow-cyan-500/50 hover:scale-105'
-                  }`}
-                  title="Show complete solution"
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Solution</span>
-                </button>
-              )}
-              <button
-                onClick={handleRunCode}
-                disabled={isRunning}
-                className="flex items-center gap-1.5 bg-[#00D4AA] hover:bg-[#00ba95] disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-semibold transition-all duration-200 shadow-lg hover:scale-105 active:scale-95"
-              >
-                <Play className="w-3.5 h-3.5" fill="currentColor" />
-                <span>{isRunning ? 'Running...' : 'Run'}</span>
-              </button>
-            </div>
           </div>
         </div>
 
