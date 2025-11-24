@@ -4,10 +4,10 @@ import { supabase } from '../config/supabase';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  executionCount: number;
+  executionCount?: number;
 }
 
-export function AuthModal({ isOpen, onClose, executionCount }: AuthModalProps) {
+export function AuthModal({ isOpen, onClose, executionCount = 0 }: AuthModalProps) {
   if (!isOpen) return null;
 
   const handleGoogleSignIn = async () => {
@@ -48,10 +48,13 @@ export function AuthModal({ isOpen, onClose, executionCount }: AuthModalProps) {
               </svg>
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">
-              Free Trial Limit Reached
+              {executionCount > 0 ? 'Free Trial Limit Reached' : 'Sign In to Continue'}
             </h2>
             <p className="text-gray-400 text-sm">
-              You've used {executionCount} free code executions. Sign in to continue coding!
+              {executionCount > 0
+                ? `You've used ${executionCount} free code executions. Sign in to continue coding!`
+                : 'Sign in to access all features and unlimited code executions!'
+              }
             </p>
           </div>
 

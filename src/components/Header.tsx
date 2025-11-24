@@ -1,5 +1,8 @@
-import { Code2, Shuffle, BookOpen, LogOut, User } from 'lucide-react';
+import { useState } from 'react';
+import { Code2, Shuffle, BookOpen, LogIn, UserCircle2 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { AuthModal } from './AuthModal';
+import { MyAccountModal } from './MyAccountModal';
 import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
@@ -9,7 +12,9 @@ interface HeaderProps {
 }
 
 export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems }: HeaderProps) {
-  const { user, profile, signOut } = useAuth();
+  const { user } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showAccountModal, setShowAccountModal] = useState(false);
   return (
     <header
       className="border-b px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between"
@@ -44,24 +49,36 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           <span className="hidden sm:inline">Problems</span>
         </button>
 
-        {user && (
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
-              <User className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
-              <span className="hidden md:inline text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
-                {profile?.first_name || user.email?.split('@')[0]}
-              </span>
-            </div>
-            <button
-              onClick={signOut}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-red-500/10 text-red-500 transition-all duration-200"
-              title="Sign out"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
+        {user ? (
+          <button
+            onClick={() => setShowAccountModal(true)}
+            className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-semibold transition-all duration-200 transform hover:scale-105 active:scale-95"
+            title="My Account"
+          >
+            <UserCircle2 className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
+            <span className="hidden sm:inline">My Account</span>
+          </button>
+        ) : (
+          <button
+            onClick={() => setShowAuthModal(true)}
+            className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-semibold transition-all duration-200 transform hover:scale-105 active:scale-95"
+            title="Sign in to your account"
+          >
+            <LogIn className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
+            <span className="hidden sm:inline">Login</span>
+          </button>
         )}
       </div>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
+
+      <MyAccountModal
+        isOpen={showAccountModal}
+        onClose={() => setShowAccountModal(false)}
+      />
     </header>
   );
 }
