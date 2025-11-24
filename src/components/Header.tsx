@@ -1,15 +1,13 @@
-import { Play, Code2, Shuffle, BookOpen } from 'lucide-react';
+import { Code2, Shuffle, BookOpen } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 
 interface HeaderProps {
-  onRun: () => void;
-  isRunning: boolean;
   onRandomProblem: () => void;
   isLoadingProblem: boolean;
   onNavigateToProblems: () => void;
 }
 
-export function Header({ onRun, isRunning, onRandomProblem, isLoadingProblem, onNavigateToProblems }: HeaderProps) {
+export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems }: HeaderProps) {
   return (
     <header
       className="border-b px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between"
@@ -42,18 +40,6 @@ export function Header({ onRun, isRunning, onRandomProblem, isLoadingProblem, on
         >
           <BookOpen className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
           <span className="hidden sm:inline">Problems</span>
-        </button>
-
-        <button
-          onClick={onRun}
-          disabled={isRunning}
-          className="flex items-center gap-1.5 sm:gap-2 bg-[#00D4AA] hover:bg-[#00ba95] disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-3 sm:px-6 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-semibold transition-all duration-200 transform hover:scale-105 active:scale-95"
-        >
-          <Play className="w-3.5 sm:w-4 h-3.5 sm:h-4" fill="currentColor" />
-          <span>{isRunning ? 'Running...' : 'Run'}</span>
-          <span className="hidden md:inline text-xs opacity-75 ml-1">
-            (Ctrl+Enter)
-          </span>
         </button>
       </div>
     </header>

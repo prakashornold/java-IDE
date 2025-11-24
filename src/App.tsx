@@ -170,8 +170,6 @@ function App() {
       onMouseUp={handleMouseUp}
     >
       <Header
-        onRun={handleRunCode}
-        isRunning={isRunning}
         onRandomProblem={handleRandomProblem}
         isLoadingProblem={isLoadingProblem}
         onNavigateToProblems={handleNavigateToProblems}
