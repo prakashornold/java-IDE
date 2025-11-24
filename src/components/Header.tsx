@@ -1,4 +1,5 @@
 import { Play, Code2, Shuffle, BookOpen } from 'lucide-react';
+import { ThemeToggle } from './ThemeToggle';
 
 interface HeaderProps {
   onRun: () => void;
@@ -20,6 +21,7 @@ export function Header({ onRun, isRunning, onRandomProblem, isLoadingProblem, on
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">
+        <ThemeToggle />
         <button
           onClick={onRandomProblem}
           disabled={isLoadingProblem}

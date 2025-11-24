@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Code2, ArrowLeft, Zap, Target, Flame, Crown, ChevronLeft, ChevronRight } from 'lucide-react';
-import { type JavaProblem } from '../services/problemService';
+import { JavaProblem } from '../types/problem.types';
 import { Footer } from './Footer';
 
 interface ProblemsListPageProps {

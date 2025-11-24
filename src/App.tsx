@@ -1,16 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
-import { Sparkles, Code2, Heart, Eye, BookOpen } from 'lucide-react';
+import { Sparkles, Code2, Heart, Eye } from 'lucide-react';
 import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
 import { ProblemsListPage } from './components/ProblemsListPage';
-import { runJavaCode } from './services/compilerService';
-import { getRandomProblem, getAllProblems, type JavaProblem } from './services/problemService';
+import { useServices } from './context/ServiceContext';
+import { JavaProblem } from './types/problem.types';
 import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
 
 type LayoutMode = 'bottom' | 'side';
 
 function App() {
+  const { problemService, compilerService } = useServices();
   const [code, setCode] = useState(DEFAULT_JAVA_CODE);
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
@@ -42,11 +43,11 @@ function App() {
 
   useEffect(() => {
     const loadProblems = async () => {
-      const problems = await getAllProblems();
+      const problems = await problemService.getAllProblems();
       setCachedProblems(problems);
     };
     loadProblems();
-  }, []);
+  }, [problemService]);
 
   const handleRunCode = async () => {
     setIsRunning(true);
@@ -54,7 +55,7 @@ function App() {
     setHasError(false);
 
     try {
-      const result = await runJavaCode(code);
+      const result = await compilerService.execute(code);
 
       if (result.error) {
         setOutput(result.error);
@@ -106,16 +107,10 @@ function App() {
   const handleRandomProblem = async () => {
     setIsLoadingProblem(true);
     try {
-      const problem = await getRandomProblem();
+      const problem = await problemService.getRandomProblem();
       if (problem) {
         setCurrentProblem(problem);
-
-        const mainMethodRegex = /public\s+static\s+void\s+main\s*\([^)]*\)\s*\{([\s\S]*?)\n\s*\}/;
-        const practiceCode = problem.solution.replace(
-          mainMethodRegex,
-          'public static void main(String[] args) {\n        \n    }'
-        );
-
+        const practiceCode = problemService.extractPracticeCode(problem.solution);
         setCode(practiceCode);
         setShowFullSolution(false);
         setOutput('');
@@ -142,13 +137,7 @@ function App() {
 
   const handleSelectProblem = (problem: JavaProblem) => {
     setCurrentProblem(problem);
-
-    const mainMethodRegex = /public\s+static\s+void\s+main\s*\([^)]*\)\s*\{([\s\S]*?)\n\s*\}/;
-    const practiceCode = problem.solution.replace(
-      mainMethodRegex,
-      'public static void main(String[] args) {\n        \n    }'
-    );
-
+    const practiceCode = problemService.extractPracticeCode(problem.solution);
     setCode(practiceCode);
     setShowFullSolution(false);
     setOutput('');
