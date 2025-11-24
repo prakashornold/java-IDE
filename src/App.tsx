@@ -212,6 +212,20 @@ function App() {
               </div>
             </div>
           )}
+          {!currentProblem && (
+            <div className="border-b px-3 sm:px-4 py-2 sm:py-3" style={{
+              background: 'linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end))',
+              borderColor: 'var(--border-color)'
+            }}>
+              <div className="flex items-start gap-2">
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-xs sm:text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+                    Write a welcome program which prints to console
+                  </h2>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="flex-1 overflow-hidden relative">
             <CodeEditor
               value={code}
