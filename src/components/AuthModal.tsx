@@ -50,13 +50,10 @@ export function AuthModal({ isOpen, onClose, executionCount = 0 }: AuthModalProp
               </svg>
             </div>
             <h2 className="text-2xl font-bold text-white mb-2">
-              {executionCount > 0 ? 'Free Trial Limit Reached' : 'Sign In to Continue'}
+              Sign In to Continue
             </h2>
             <p className="text-gray-400 text-sm">
-              {executionCount > 0
-                ? `You've used ${executionCount} free code executions. Sign in to continue coding!`
-                : 'Sign in to access all features and unlimited code executions!'
-              }
+              Sign in to continue coding!
             </p>
           </div>
 
