@@ -4,14 +4,20 @@ import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
 import { ProblemsListPage } from './components/ProblemsListPage';
+import { AuthModal } from './components/AuthModal';
 import { useServices } from './context/ServiceContext';
+import { useAuth } from './context/AuthContext';
 import { JavaProblem } from './types/problem.types';
 import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
 
 type LayoutMode = 'bottom' | 'side';
 
+const EXECUTION_LIMIT_KEY = 'code_execution_count';
+const EXECUTION_LIMIT = 3;
+
 function App() {
   const { problemService, compilerService } = useServices();
+  const { user } = useAuth();
   const [code, setCode] = useState(DEFAULT_JAVA_CODE);
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
@@ -25,6 +31,8 @@ function App() {
   const [showFullSolution, setShowFullSolution] = useState(false);
   const [currentPage, setCurrentPage] = useState<'home' | 'problems'>('home');
   const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
+  const [executionCount, setExecutionCount] = useState(0);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -49,7 +57,22 @@ function App() {
     loadProblems();
   }, [problemService]);
 
+  useEffect(() => {
+    if (!user) {
+      const count = parseInt(localStorage.getItem(EXECUTION_LIMIT_KEY) || '0', 10);
+      setExecutionCount(count);
+    } else {
+      setExecutionCount(0);
+      localStorage.removeItem(EXECUTION_LIMIT_KEY);
+    }
+  }, [user]);
+
   const handleRunCode = async () => {
+    if (!user && executionCount >= EXECUTION_LIMIT) {
+      setShowAuthModal(true);
+      return;
+    }
+
     setIsRunning(true);
     setOutput('');
     setHasError(false);
@@ -66,6 +89,12 @@ function App() {
       } else {
         setOutput('Code executed successfully with no output');
         setHasError(false);
+      }
+
+      if (!user) {
+        const newCount = executionCount + 1;
+        setExecutionCount(newCount);
+        localStorage.setItem(EXECUTION_LIMIT_KEY, newCount.toString());
       }
     } catch (error) {
       setOutput('Unexpected error occurred while running code');
@@ -326,6 +355,12 @@ function App() {
           </div>
         </div>
       </footer>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        executionCount={executionCount}
+      />
     </div>
   );
 }

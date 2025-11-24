@@ -1,5 +1,6 @@
-import { Code2, Shuffle, BookOpen } from 'lucide-react';
+import { Code2, Shuffle, BookOpen, LogOut, User } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
   onRandomProblem: () => void;
@@ -8,6 +9,7 @@ interface HeaderProps {
 }
 
 export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems }: HeaderProps) {
+  const { user, profile, signOut } = useAuth();
   return (
     <header
       className="border-b px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between"
@@ -41,6 +43,24 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           <BookOpen className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
           <span className="hidden sm:inline">Problems</span>
         </button>
+
+        {user && (
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+              <User className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
+              <span className="hidden md:inline text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                {profile?.first_name || user.email?.split('@')[0]}
+              </span>
+            </div>
+            <button
+              onClick={signOut}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-red-500/10 text-red-500 transition-all duration-200"
+              title="Sign out"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );
