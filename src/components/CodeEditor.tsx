@@ -19,7 +19,7 @@ export function CodeEditor({ value, onChange, onRun }: CodeEditorProps) {
     const isTablet = width >= 640 && width < 1024;
 
     return {
-      fontSize: isMobile ? 11 : isTablet ? 13 : 14,
+      fontSize: isMobile ? 9 : isTablet ? 13 : 14,
       fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
       fontLigatures: true,
       minimap: { enabled: width >= 1024 },
@@ -33,15 +33,15 @@ export function CodeEditor({ value, onChange, onRun }: CodeEditorProps) {
       cursorBlinking: 'smooth' as const,
       cursorSmoothCaretAnimation: 'on' as const,
       padding: {
-        top: isMobile ? 6 : isTablet ? 10 : 16,
-        bottom: isMobile ? 6 : isTablet ? 10 : 16
+        top: isMobile ? 4 : isTablet ? 10 : 16,
+        bottom: isMobile ? 4 : isTablet ? 10 : 16
       },
-      lineHeight: isMobile ? 18 : isTablet ? 20 : 22,
+      lineHeight: isMobile ? 16 : isTablet ? 20 : 22,
       scrollbar: {
         vertical: 'auto' as const,
         horizontal: 'auto' as const,
-        verticalScrollbarSize: isMobile ? 8 : 12,
-        horizontalScrollbarSize: isMobile ? 8 : 12,
+        verticalScrollbarSize: isMobile ? 6 : 12,
+        horizontalScrollbarSize: isMobile ? 6 : 12,
       },
       overviewRulerLanes: width >= 768 ? 2 : 0,
       hideCursorInOverviewRuler: isMobile,
