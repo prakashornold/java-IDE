@@ -68,10 +68,16 @@ function App() {
   }, [user]);
 
   useEffect(() => {
-    const hash = window.location.hash;
-    if (hash && hash.includes('access_token')) {
-      window.history.replaceState(null, '', window.location.pathname);
-    }
+    const cleanupHash = () => {
+      const hash = window.location.hash;
+      if (hash && (hash.includes('access_token') || hash.includes('refresh_token'))) {
+        setTimeout(() => {
+          window.history.replaceState(null, '', window.location.pathname);
+        }, 100);
+      }
+    };
+
+    cleanupHash();
   }, []);
 
   const handleRunCode = async () => {
