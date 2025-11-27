@@ -30,7 +30,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
             JavaCodingPractice.com
           </h1>
           <span className="text-[10px] sm:text-xs leading-tight hidden sm:block font-bold tracking-wide" style={{ color: 'var(--text-secondary)' }}>
-            5 Minutes Daily. Master Java. Period.
+            5 Minutes Daily. Code Smarter. Faster.
           </span>
         </div>
       </div>
