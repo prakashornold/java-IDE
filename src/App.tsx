@@ -5,6 +5,7 @@ import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
 import { ProblemsListPage } from './components/ProblemsListPage';
 import { Dashboard } from './components/Dashboard';
+import { AdminPanel } from './components/AdminPanel';
 import { AuthModal } from './components/AuthModal';
 import { useServices } from './context/ServiceContext';
 import { useAuth } from './context/AuthContext';
@@ -30,7 +31,7 @@ function App() {
   const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
   const [isLoadingProblem, setIsLoadingProblem] = useState(false);
   const [showFullSolution, setShowFullSolution] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'home' | 'problems' | 'dashboard'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'problems' | 'dashboard' | 'admin'>('home');
   const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
   const [executionCount, setExecutionCount] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -199,6 +200,14 @@ function App() {
     setCurrentPage('home');
   };
 
+  const handleNavigateToAdmin = () => {
+    setCurrentPage('admin');
+  };
+
+  if (currentPage === 'admin') {
+    return <AdminPanel />;
+  }
+
   if (currentPage === 'problems') {
     return (
       <ProblemsListPage
@@ -230,6 +239,7 @@ function App() {
         isLoadingProblem={isLoadingProblem}
         onNavigateToProblems={handleNavigateToProblems}
         onNavigateToDashboard={handleNavigateToDashboard}
+        onNavigateToAdmin={handleNavigateToAdmin}
       />
 
       <div

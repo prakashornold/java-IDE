@@ -8,6 +8,8 @@ interface UserProfile {
   first_name: string | null;
   last_name: string | null;
   avatar_url: string | null;
+  is_admin: boolean;
+  is_blocked: boolean;
 }
 
 interface AuthContextType {
@@ -15,6 +17,7 @@ interface AuthContextType {
   profile: UserProfile | null;
   session: Session | null;
   loading: boolean;
+  isAdmin: boolean;
   signOut: () => Promise<void>;
 }
 
@@ -90,8 +93,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSession(null);
   };
 
+  const isAdmin = profile?.is_admin ?? false;
+
   return (
-    <AuthContext.Provider value={{ user, profile, session, loading, signOut }}>
+    <AuthContext.Provider value={{ user, profile, session, loading, isAdmin, signOut }}>
       {children}
     </AuthContext.Provider>
   );

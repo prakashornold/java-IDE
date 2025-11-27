@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Shuffle, BookOpen, LogIn, UserCircle2, BarChart3, Terminal } from 'lucide-react';
+import { Shuffle, BookOpen, LogIn, UserCircle2, BarChart3, Terminal, Shield } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { AuthModal } from './AuthModal';
 import { MyAccountModal } from './MyAccountModal';
@@ -10,10 +10,11 @@ interface HeaderProps {
   isLoadingProblem: boolean;
   onNavigateToProblems: () => void;
   onNavigateToDashboard?: () => void;
+  onNavigateToAdmin?: () => void;
 }
 
-export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems, onNavigateToDashboard }: HeaderProps) {
-  const { user } = useAuth();
+export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems, onNavigateToDashboard, onNavigateToAdmin }: HeaderProps) {
+  const { user, isAdmin } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
   return (
@@ -64,6 +65,17 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           >
             <BarChart3 className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
             <span className="hidden sm:inline">Dashboard</span>
+          </button>
+        )}
+
+        {onNavigateToAdmin && isAdmin && (
+          <button
+            onClick={onNavigateToAdmin}
+            className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-semibold transition-all duration-200 transform hover:scale-105 active:scale-95"
+            title="Admin Panel"
+          >
+            <Shield className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
+            <span className="hidden sm:inline">Admin</span>
           </button>
         )}
 
