@@ -9,7 +9,7 @@ interface ProblemsListPageProps {
   cachedProblems: JavaProblem[] | null;
 }
 
-const PROBLEMS_PER_PAGE = 9;
+const PROBLEMS_PER_PAGE = 20;
 
 export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProblems }: ProblemsListPageProps) {
   const [problems, setProblems] = useState<JavaProblem[]>([]);
@@ -159,29 +159,28 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            <div className="flex flex-col gap-2 sm:gap-3">
               {currentProblems.map((problem) => (
               <div
                 key={problem.id}
-                className="bg-gray-800 rounded-lg p-4 sm:p-6 hover:bg-gray-750 transition-all duration-200 border border-gray-700 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20"
+                className="bg-gray-800 rounded-lg p-3 sm:p-4 hover:bg-gray-750 transition-all duration-200 border border-gray-700 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20 flex items-center justify-between gap-3 sm:gap-4"
               >
-                <div className="flex items-start justify-between mb-2 sm:mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-gray-500 font-mono text-xs sm:text-sm">#{problem.number}</span>
-                  </div>
-                  <div className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border ${getDifficultyColor(problem.difficulty)}`}>
+                <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
+                  <span className="text-gray-500 font-mono text-xs sm:text-sm font-semibold flex-shrink-0">#{problem.number}</span>
+
+                  <div className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border flex-shrink-0 ${getDifficultyColor(problem.difficulty)}`}>
                     <span className="hidden sm:block">{getDifficultyIcon(problem.difficulty)}</span>
                     <span className="capitalize">{problem.difficulty}</span>
                   </div>
-                </div>
 
-                <h3 className="text-white font-semibold text-base sm:text-lg mb-2 sm:mb-3 line-clamp-2">
-                  {problem.title}
-                </h3>
+                  <h3 className="text-white font-medium text-sm sm:text-base flex-1 min-w-0 truncate">
+                    {problem.title}
+                  </h3>
+                </div>
 
                 <button
                   onClick={() => handlePractice(problem)}
-                  className="w-full px-4 py-2 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white rounded-lg transition-all duration-200 font-medium shadow-lg hover:shadow-cyan-500/50 active:scale-95 sm:hover:scale-105 text-sm sm:text-base"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white rounded-lg transition-all duration-200 font-medium shadow-lg hover:shadow-cyan-500/50 active:scale-95 text-xs sm:text-sm flex-shrink-0"
                 >
                   Practice
                 </button>
