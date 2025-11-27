@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Code2, Shuffle, BookOpen, LogIn, UserCircle2 } from 'lucide-react';
+import { Code2, Shuffle, BookOpen, LogIn, UserCircle2, BarChart3 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { AuthModal } from './AuthModal';
 import { MyAccountModal } from './MyAccountModal';
@@ -9,9 +9,10 @@ interface HeaderProps {
   onRandomProblem: () => void;
   isLoadingProblem: boolean;
   onNavigateToProblems: () => void;
+  onNavigateToDashboard?: () => void;
 }
 
-export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems }: HeaderProps) {
+export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems, onNavigateToDashboard }: HeaderProps) {
   const { user } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
@@ -48,6 +49,17 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           <BookOpen className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
           <span className="hidden sm:inline">Problems</span>
         </button>
+
+        {onNavigateToDashboard && (
+          <button
+            onClick={onNavigateToDashboard}
+            className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-semibold transition-all duration-200 transform hover:scale-105 active:scale-95"
+            title="View dashboard"
+          >
+            <BarChart3 className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
+            <span className="hidden sm:inline">Dashboard</span>
+          </button>
+        )}
 
         {user ? (
           <button

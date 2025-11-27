@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Code2, ArrowLeft, Zap, Target, Flame, Crown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Code2, ArrowLeft, Zap, Target, Flame, Crown, ChevronLeft, ChevronRight, CheckCircle2, Circle } from 'lucide-react';
 import { JavaProblem } from '../types/problem.types';
 import { Footer } from './Footer';
+import { supabase } from '../config/supabase';
+import { useAuth } from '../context/AuthContext';
 
 interface ProblemsListPageProps {
   onNavigateHome: () => void;
@@ -11,18 +13,78 @@ interface ProblemsListPageProps {
 
 const PROBLEMS_PER_PAGE = 10;
 
+interface ProblemProgress {
+  problem_id: string;
+  completed: boolean;
+}
+
 export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProblems }: ProblemsListPageProps) {
+  const { user } = useAuth();
   const [problems, setProblems] = useState<JavaProblem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filterDifficulty, setFilterDifficulty] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [progress, setProgress] = useState<Map<string, boolean>>(new Map());
 
   useEffect(() => {
     if (cachedProblems) {
       setProblems(cachedProblems);
       setIsLoading(false);
+      if (user) {
+        loadUserProgress();
+      }
     }
-  }, [cachedProblems]);
+  }, [cachedProblems, user]);
+
+  const loadUserProgress = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('user_problem_progress')
+        .select('problem_id, completed')
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      const progressMap = new Map<string, boolean>();
+      data?.forEach((p: ProblemProgress) => {
+        progressMap.set(p.problem_id, p.completed);
+      });
+      setProgress(progressMap);
+    } catch (error) {
+      console.error('Error loading progress:', error);
+    }
+  };
+
+  const toggleCompletion = async (problemId: string, currentStatus: boolean) => {
+    if (!user) return;
+
+    try {
+      const newStatus = !currentStatus;
+
+      const { error } = await supabase
+        .from('user_problem_progress')
+        .upsert({
+          user_id: user.id,
+          problem_id: problemId,
+          completed: newStatus,
+          completed_at: newStatus ? new Date().toISOString() : null
+        }, {
+          onConflict: 'user_id,problem_id'
+        });
+
+      if (error) throw error;
+
+      setProgress(prev => {
+        const updated = new Map(prev);
+        updated.set(problemId, newStatus);
+        return updated;
+      });
+    } catch (error) {
+      console.error('Error updating progress:', error);
+    }
+  };
 
   const getDifficultyIcon = (difficulty: string) => {
     switch (difficulty) {
@@ -166,6 +228,20 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
                 className="bg-gray-800 rounded-lg p-3 sm:p-4 hover:bg-gray-750 transition-all duration-200 border border-gray-700 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20 flex items-center justify-between gap-3 sm:gap-4"
               >
                 <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
+                  {user && (
+                    <button
+                      onClick={() => toggleCompletion(problem.id, progress.get(problem.id) || false)}
+                      className="flex-shrink-0 transition-all duration-200 hover:scale-110"
+                      title={progress.get(problem.id) ? 'Mark as incomplete' : 'Mark as complete'}
+                    >
+                      {progress.get(problem.id) ? (
+                        <CheckCircle2 className="w-5 h-5 text-green-500" />
+                      ) : (
+                        <Circle className="w-5 h-5 text-gray-600 hover:text-gray-400" />
+                      )}
+                    </button>
+                  )}
+
                   <span className="text-gray-500 font-mono text-xs sm:text-sm font-semibold flex-shrink-0">#{problem.number}</span>
 
                   <div className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium border flex-shrink-0 ${getDifficultyColor(problem.difficulty)}`}>
