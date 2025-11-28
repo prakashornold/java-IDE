@@ -1,8 +1,9 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "javacodingpractice",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "JavaCodingPractice.com - Online Java IDE for coding practice and interview preparation",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

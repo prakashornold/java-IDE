@@ -1,6 +1,6 @@
-# Java-IDE - Online Java Compiler & Runner
+# JavaCodingPractice.com - Online Java Compiler & Runner
 
-A beautiful, production-ready online Java IDE that allows developers to write, compile, and run Java code instantly in the browser.
+A beautiful, production-ready online Java IDE at JavaCodingPractice.com that allows developers to write, compile, and run Java code instantly in the browser.
 
 ## Features
 

@@ -15,7 +15,7 @@ export function Footer() {
         </div>
         <div className="flex items-center gap-1 sm:gap-2">
           <span className="text-gray-500 hidden sm:inline">|</span>
-          <span className="text-gray-500 text-[10px] sm:text-xs">© 2024 All Rights Reserved</span>
+          <span className="text-gray-500 text-[10px] sm:text-xs">© 2024 JavaCodingPractice.com - All Rights Reserved</span>
         </div>
       </div>
     </footer>
