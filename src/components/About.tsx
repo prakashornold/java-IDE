@@ -1,4 +1,4 @@
-import { Terminal, Code2, Play, BookOpen, Trophy, Users, Zap, Shield, Check, ArrowLeft } from 'lucide-react';
+import { Terminal, Code2, Play, BookOpen, Trophy, Users, Zap, Shield, Check, ArrowLeft, Heart } from 'lucide-react';
 import { Footer } from './Footer';
 
 interface AboutProps {
