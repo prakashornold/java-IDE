@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { BarChart3, Zap, Target, Flame, Crown, ArrowLeft, TrendingUp } from 'lucide-react';
 import { supabase } from '../config/supabase';
 import { useAuth } from '../context/AuthContext';
-import { Footer } from './Footer';
 import { JavaProblem } from '../types/problem.types';
 
 interface DifficultyStats {
@@ -235,7 +234,6 @@ export function Dashboard({ onNavigateHome, cachedProblems }: DashboardProps) {
           )}
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

@@ -8,7 +8,6 @@ import { AdminPanel } from './components/AdminPanel';
 import { AccountSettings } from './components/AccountSettings';
 import { AuthModal } from './components/AuthModal';
 import { About } from './components/About';
-import { Footer } from './components/Footer';
 import { useServices } from './context/ServiceContext';
 import { useAuth } from './context/AuthContext';
 import { JavaProblem } from './types/problem.types';
@@ -324,8 +323,6 @@ function App() {
         </div>
       </div>
       </div>
-
-      <Footer />
 
       <AuthModal
         isOpen={showAuthModal}

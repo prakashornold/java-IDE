@@ -1,5 +1,4 @@
 import { Terminal, Code2, Play, BookOpen, Trophy, Users, Zap, Shield, Check, ArrowLeft, Heart } from 'lucide-react';
-import { Footer } from './Footer';
 
 interface AboutProps {
   onNavigateHome: () => void;
@@ -257,8 +256,6 @@ export function About({ onNavigateHome }: AboutProps) {
           </section>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }
