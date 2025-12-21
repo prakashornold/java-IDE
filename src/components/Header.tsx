@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Shuffle, BookOpen, LogIn, CircleUser as UserCircle2, BarChart3, Terminal, Shield, PanelLeftClose, PanelLeft } from 'lucide-react';
+import { Shuffle, CircleUser as UserCircle2, Terminal, PanelLeftClose, PanelLeft } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { MyAccountModal } from './MyAccountModal';
 import { useAuth } from '../context/AuthContext';
@@ -7,14 +7,13 @@ import { useAuth } from '../context/AuthContext';
 interface HeaderProps {
   onRandomProblem: () => void;
   isLoadingProblem: boolean;
-  onNavigateToProblems: () => void;
   onNavigateToDashboard?: () => void;
   onNavigateToAdmin?: () => void;
   onToggleSidebar?: () => void;
   isSidebarOpen?: boolean;
 }
 
-export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems, onNavigateToDashboard, onNavigateToAdmin, onToggleSidebar, isSidebarOpen }: HeaderProps) {
+export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onToggleSidebar, isSidebarOpen }: HeaderProps) {
   const { user, isAdmin } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
@@ -56,14 +55,6 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           >
             <Shuffle className="w-4 h-4" />
             <span className="hidden sm:inline">{isLoadingProblem ? 'Loading...' : 'Random'}</span>
-          </button>
-
-          <button
-            onClick={onNavigateToProblems}
-            className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
-            title="All problems"
-          >
-            Problems
           </button>
 
           {onNavigateToDashboard && user && (

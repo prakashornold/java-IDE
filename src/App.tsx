@@ -4,7 +4,6 @@ import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
 import { ProblemSidebar } from './components/ProblemSidebar';
-import { ProblemsListPage } from './components/ProblemsListPage';
 import { Dashboard } from './components/Dashboard';
 import { AdminPanel } from './components/AdminPanel';
 import { AuthModal } from './components/AuthModal';
@@ -32,7 +31,7 @@ function App() {
   const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
   const [isLoadingProblem, setIsLoadingProblem] = useState(false);
   const [showFullSolution, setShowFullSolution] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'home' | 'problems' | 'dashboard' | 'admin'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'dashboard' | 'admin'>('home');
   const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
   const [executionCount, setExecutionCount] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -194,10 +193,6 @@ function App() {
     }
   };
 
-  const handleNavigateToProblems = () => {
-    setCurrentPage('problems');
-  };
-
   const handleNavigateToDashboard = () => {
     setCurrentPage('dashboard');
   };
@@ -212,16 +207,6 @@ function App() {
 
   if (currentPage === 'admin') {
     return <AdminPanel onNavigateHome={handleNavigateHome} />;
-  }
-
-  if (currentPage === 'problems') {
-    return (
-      <ProblemsListPage
-        onNavigateHome={handleNavigateHome}
-        onSelectProblem={handleSelectProblem}
-        cachedProblems={cachedProblems}
-      />
-    );
   }
 
   if (currentPage === 'dashboard') {
@@ -245,7 +230,6 @@ function App() {
       <Header
         onRandomProblem={handleRandomProblem}
         isLoadingProblem={isLoadingProblem}
-        onNavigateToProblems={handleNavigateToProblems}
         onNavigateToDashboard={handleNavigateToDashboard}
         onNavigateToAdmin={handleNavigateToAdmin}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
