@@ -55,8 +55,8 @@ export function About({ onNavigateHome }: AboutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#2B2B2B] text-[#A9B7C6]">
-      <header className="border-b border-[#323232] bg-[#1e1e1e] sticky top-0 z-10">
+    <div className="h-screen flex flex-col bg-[#2B2B2B] text-[#A9B7C6] overflow-hidden">
+      <header className="border-b border-[#323232] bg-[#1e1e1e] flex-shrink-0">
         <div className="px-4 sm:px-6 py-3 flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-center w-8 h-8 bg-[#365880] rounded">
@@ -77,8 +77,8 @@ export function About({ onNavigateHome }: AboutProps) {
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <div className="space-y-12">
+      <main className="flex-1 overflow-y-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-12">
           <section className="text-center space-y-4">
             <div className="flex items-center justify-center gap-3 mb-6">
               <div className="flex items-center justify-center w-16 h-16 bg-[#365880] rounded-lg">
@@ -257,7 +257,7 @@ export function About({ onNavigateHome }: AboutProps) {
         </div>
       </main>
 
-      <footer className="border-t border-[#323232] bg-[#1e1e1e] px-4 sm:px-6 py-6 mt-12">
+      <footer className="border-t border-[#323232] bg-[#1e1e1e] px-4 sm:px-6 py-6 flex-shrink-0">
         <div className="max-w-7xl mx-auto text-center space-y-3">
           <div className="flex items-center justify-center gap-3 text-sm">
             <Code2 className="w-4 h-4 text-[#6897BB]" />
