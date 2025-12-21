@@ -67,13 +67,13 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
       className="relative border-b border-[#323232] bg-[#1e1e1e]"
     >
       <div className="px-4 sm:px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-[#365880] rounded">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
+          <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-[#365880] rounded flex-shrink-0">
             <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" strokeWidth={2.5} />
           </div>
-          <h1 className="text-sm sm:text-base md:text-lg font-semibold text-[#A9B7C6]">
+          <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-semibold text-[#A9B7C6] truncate">
             <span className="hidden sm:inline">JavaCodingPractice.com</span>
-            <span className="sm:hidden">JavaCoding</span>
+            <span className="sm:hidden">JavaCodingPractice</span>
           </h1>
         </div>
 
