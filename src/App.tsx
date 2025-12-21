@@ -229,8 +229,10 @@ function App() {
 
   return (
     <div
-      className="h-screen flex flex-col overflow-hidden"
-      style={{ backgroundColor: 'var(--bg-primary)' }}
+      className="h-screen flex flex-col overflow-hidden relative"
+      style={{
+        background: 'radial-gradient(ellipse at top, rgba(6, 182, 212, 0.15) 0%, rgba(15, 23, 42, 0.9) 50%, rgba(15, 23, 42, 1) 100%), linear-gradient(to bottom, #0f172a, #1e293b)'
+      }}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
@@ -247,34 +249,33 @@ function App() {
         className={`flex-1 flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
       >
         <div
-          className="relative overflow-hidden flex flex-col"
+          className="relative overflow-hidden flex flex-col backdrop-blur-sm bg-slate-900/30 rounded-lg m-2 border border-cyan-500/20 shadow-xl"
           style={{
             [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${100 - outputSize}%`
           }}
         >
           {currentProblem && (
-            <div className="border-b px-3 sm:px-4 py-2 sm:py-3" style={{
-              background: 'linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end))',
-              borderColor: 'var(--border-color)'
+            <div className="border-b px-3 sm:px-4 py-3 backdrop-blur-md bg-gradient-to-r from-slate-800/50 via-gray-800/50 to-slate-800/50" style={{
+              borderColor: 'rgba(6, 182, 212, 0.2)'
             }}>
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-2 flex-1 min-w-0">
                   <div className="flex-shrink-0">
-                    <span className={`inline-block px-2 py-0.5 text-[10px] sm:text-xs font-semibold rounded ${
-                      currentProblem.difficulty === 'basic' ? 'bg-green-500/20 text-green-400' :
-                      currentProblem.difficulty === 'intermediate' ? 'bg-blue-500/20 text-blue-400' :
-                      currentProblem.difficulty === 'advanced' ? 'bg-orange-500/20 text-orange-400' :
-                      'bg-red-500/20 text-red-400'
+                    <span className={`inline-block px-3 py-1 text-[10px] sm:text-xs font-bold rounded-lg shadow-md ${
+                      currentProblem.difficulty === 'basic' ? 'bg-gradient-to-r from-green-500/30 to-emerald-500/30 text-green-300 border border-green-500/30' :
+                      currentProblem.difficulty === 'intermediate' ? 'bg-gradient-to-r from-blue-500/30 to-cyan-500/30 text-blue-300 border border-blue-500/30' :
+                      currentProblem.difficulty === 'advanced' ? 'bg-gradient-to-r from-orange-500/30 to-amber-500/30 text-orange-300 border border-orange-500/30' :
+                      'bg-gradient-to-r from-red-500/30 to-rose-500/30 text-red-300 border border-red-500/30'
                     }`}>
                       {currentProblem.difficulty.toUpperCase()}
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-xs sm:text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
+                    <h2 className="text-xs sm:text-sm font-bold truncate bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
                       #{currentProblem.number}: {currentProblem.title}
                     </h2>
                     {currentProblem.input && (
-                      <pre className="text-[10px] sm:text-xs mt-1 whitespace-pre-wrap" style={{ color: 'var(--text-secondary)' }}>{currentProblem.input}</pre>
+                      <pre className="text-[10px] sm:text-xs mt-1 whitespace-pre-wrap text-gray-300">{currentProblem.input}</pre>
                     )}
                   </div>
                 </div>
@@ -282,10 +283,10 @@ function App() {
                   <button
                     onClick={handleShowSolution}
                     disabled={showFullSolution}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-200 shadow-lg ${
+                    className={`flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-lg transition-all duration-300 shadow-lg ${
                       showFullSolution
-                        ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white hover:shadow-cyan-500/50 hover:scale-105'
+                        ? 'bg-gray-700/50 text-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-500 hover:to-cyan-600 text-white hover:shadow-cyan-500/50 hover:scale-105 border border-cyan-500/50'
                     }`}
                     title="Show complete solution"
                   >
@@ -295,7 +296,7 @@ function App() {
                   <button
                     onClick={handleRunCode}
                     disabled={isRunning}
-                    className="flex items-center gap-1.5 bg-[#00D4AA] hover:bg-[#00ba95] disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 shadow-lg hover:scale-105 active:scale-95"
+                    className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 shadow-lg hover:shadow-emerald-500/50 hover:scale-105 active:scale-95 border border-emerald-400/50"
                   >
                     <Play className="w-3.5 h-3.5" fill="currentColor" />
                     <span>{isRunning ? 'Running...' : 'Run'}</span>
@@ -305,20 +306,19 @@ function App() {
             </div>
           )}
           {!currentProblem && (
-            <div className="border-b px-3 sm:px-4 py-2 sm:py-3" style={{
-              background: 'linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end))',
-              borderColor: 'var(--border-color)'
+            <div className="border-b px-3 sm:px-4 py-3 backdrop-blur-md bg-gradient-to-r from-slate-800/50 via-gray-800/50 to-slate-800/50" style={{
+              borderColor: 'rgba(6, 182, 212, 0.2)'
             }}>
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xs sm:text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>
+                  <h2 className="text-xs sm:text-sm font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
                     Write a welcome program which prints to console
                   </h2>
                 </div>
                 <button
                   onClick={handleRunCode}
                   disabled={isRunning}
-                  className="flex-shrink-0 flex items-center gap-1.5 bg-[#00D4AA] hover:bg-[#00ba95] disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-3 py-1.5 rounded-md text-xs font-semibold transition-all duration-200 shadow-lg hover:scale-105 active:scale-95"
+                  className="flex-shrink-0 flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg text-xs font-bold transition-all duration-300 shadow-lg hover:shadow-emerald-500/50 hover:scale-105 active:scale-95 border border-emerald-400/50"
                 >
                   <Play className="w-3.5 h-3.5" fill="currentColor" />
                   <span>{isRunning ? 'Running...' : 'Run'}</span>
@@ -339,25 +339,25 @@ function App() {
           <div
             className={`relative ${
               layoutMode === 'bottom'
-                ? 'w-full cursor-ns-resize hover:bg-[#00D4AA]/20'
-                : 'h-full cursor-ew-resize hover:bg-[#00D4AA]/20'
-            } ${isResizing ? 'bg-[#00D4AA]/30' : ''}`}
+                ? 'w-full cursor-ns-resize hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-emerald-500/30'
+                : 'h-full cursor-ew-resize hover:bg-gradient-to-b hover:from-cyan-500/30 hover:to-emerald-500/30'
+            } ${isResizing ? 'bg-gradient-to-r from-cyan-500/40 to-emerald-500/40' : ''}`}
             style={{
-              [layoutMode === 'bottom' ? 'height' : 'width']: '4px',
-              backgroundColor: isResizing ? undefined : '#374151'
+              [layoutMode === 'bottom' ? 'height' : 'width']: '6px',
+              backgroundColor: isResizing ? undefined : 'rgba(6, 182, 212, 0.1)'
             }}
             onMouseDown={handleMouseDown}
           >
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className={`bg-[#00D4AA] rounded-full ${
-                layoutMode === 'bottom' ? 'w-8 h-1' : 'w-1 h-8'
+              <div className={`bg-gradient-to-r from-cyan-500 to-emerald-500 rounded-full shadow-lg shadow-cyan-500/50 ${
+                layoutMode === 'bottom' ? 'w-12 h-1.5' : 'w-1.5 h-12'
               }`} />
             </div>
           </div>
         )}
 
         <div
-          className={isMobile ? 'border-t border-gray-800' : ''}
+          className={`backdrop-blur-sm bg-slate-900/30 rounded-lg m-2 border border-cyan-500/20 shadow-xl ${isMobile ? 'border-t' : ''}`}
           style={{
             [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${outputSize}%`
           }}
@@ -373,23 +373,23 @@ function App() {
         </div>
       </div>
 
-      <footer className="border-t px-2 sm:px-4 py-2 sm:py-3" style={{
-        background: 'linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end))',
-        borderColor: 'var(--border-color)'
+      <footer className="relative border-t backdrop-blur-xl bg-gradient-to-r from-slate-900/80 via-gray-900/80 to-slate-900/80 px-2 sm:px-4 py-3 sm:py-4 shadow-lg" style={{
+        borderColor: 'rgba(6, 182, 212, 0.2)'
       }}>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs">
-          <div className="flex items-center gap-1 sm:gap-2">
-            <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-yellow-400" />
-            <span className="text-[10px] sm:text-xs" style={{ color: 'var(--text-secondary)' }}>Developed By</span>
-            <span className="font-semibold text-transparent bg-clip-text text-[10px] sm:text-xs" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-primary), var(--accent-secondary))' }}>
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-emerald-500/5 to-blue-500/5"></div>
+        <div className="relative flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-xs">
+          <div className="flex items-center gap-2 sm:gap-2.5 px-4 py-2 rounded-lg bg-gradient-to-r from-slate-800/50 to-gray-800/50 border border-cyan-500/20 shadow-lg backdrop-blur-sm">
+            <Sparkles className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-yellow-400 animate-pulse" />
+            <span className="text-[10px] sm:text-xs font-medium text-gray-300">Developed By</span>
+            <span className="font-bold text-transparent bg-clip-text text-[10px] sm:text-xs bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500">
               Om Prakash Peddamadthala
             </span>
-            <Code2 className="w-3 sm:w-3.5 h-3 sm:h-3.5" style={{ color: 'var(--accent-primary)' }} />
-            <Heart className="w-2.5 sm:w-3 h-2.5 sm:h-3 text-red-500 fill-red-500 animate-pulse" />
+            <Code2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-cyan-400" />
+            <Heart className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-red-500 fill-red-500 animate-pulse drop-shadow-lg" />
           </div>
-          <div className="flex items-center gap-1 sm:gap-2">
-            <span className="hidden sm:inline" style={{ color: 'var(--text-tertiary)' }}>|</span>
-            <span className="text-[10px] sm:text-xs" style={{ color: 'var(--text-tertiary)' }}>© 2024 All Rights Reserved</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-slate-800/30 to-gray-800/30 border border-cyan-500/10">
+            <span className="hidden sm:inline text-cyan-500/50">•</span>
+            <span className="text-[10px] sm:text-xs font-medium text-gray-400">© 2024 All Rights Reserved</span>
           </div>
         </div>
       </footer>
