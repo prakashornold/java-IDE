@@ -244,8 +244,6 @@ function App() {
         onNavigateToAccountSettings={handleNavigateToAccountSettings}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
-        onRunCode={handleRunCode}
-        isRunning={isRunning}
       />
 
       <div className="flex-1 flex overflow-hidden">
@@ -276,6 +274,9 @@ function App() {
               onChange={setCode}
               onRun={handleRunCode}
               currentProblem={currentProblem}
+              isRunning={isRunning}
+              onShowSolution={handleShowSolution}
+              showFullSolution={showFullSolution}
             />
           </div>
         </div>

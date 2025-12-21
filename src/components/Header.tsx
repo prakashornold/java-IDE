@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Shuffle, Terminal, PanelLeftClose, PanelLeft, User, LogOut, Play } from 'lucide-react';
+import { Shuffle, Terminal, PanelLeftClose, PanelLeft, User, LogOut } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { useAuth } from '../context/AuthContext';
 
@@ -11,11 +11,9 @@ interface HeaderProps {
   onNavigateToAccountSettings?: () => void;
   onToggleSidebar?: () => void;
   isSidebarOpen?: boolean;
-  onRunCode?: () => void;
-  isRunning?: boolean;
 }
 
-export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onNavigateToAccountSettings, onToggleSidebar, isSidebarOpen, onRunCode, isRunning }: HeaderProps) {
+export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onNavigateToAccountSettings, onToggleSidebar, isSidebarOpen }: HeaderProps) {
   const { user, profile, isAdmin, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -90,17 +88,6 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
             <Shuffle className="w-4 h-4" />
             <span className="hidden sm:inline">{isLoadingProblem ? 'Loading...' : 'Random'}</span>
           </button>
-
-          {onRunCode && (
-            <button
-              onClick={onRunCode}
-              disabled={isRunning}
-              className="flex items-center gap-1.5 bg-[#365880] hover:bg-[#4A6B8C] disabled:bg-[#45494A] disabled:cursor-not-allowed text-white px-4 py-1.5 rounded text-sm font-medium transition-all border border-[#466D94]"
-            >
-              <Play className="w-4 h-4" fill="currentColor" />
-              <span>{isRunning ? 'Running...' : 'Run'}</span>
-            </button>
-          )}
 
           {onNavigateToDashboard && user && (
             <button
