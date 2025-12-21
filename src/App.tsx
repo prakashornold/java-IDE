@@ -231,7 +231,9 @@ function App() {
     <div
       className="h-screen flex flex-col overflow-hidden relative"
       style={{
-        background: 'radial-gradient(ellipse at top, rgba(6, 182, 212, 0.15) 0%, rgba(15, 23, 42, 0.9) 50%, rgba(15, 23, 42, 1) 100%), linear-gradient(to bottom, #0f172a, #1e293b)'
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%)',
+        backgroundSize: '400% 400%',
+        animation: 'gradient 15s ease infinite'
       }}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -249,14 +251,15 @@ function App() {
         className={`flex-1 flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
       >
         <div
-          className="relative overflow-hidden flex flex-col backdrop-blur-sm bg-slate-900/30 rounded-lg m-2 border border-cyan-500/20 shadow-xl"
+          className="relative overflow-hidden flex flex-col backdrop-blur-2xl bg-white/10 rounded-2xl m-2 border border-white/20 shadow-2xl"
           style={{
-            [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${100 - outputSize}%`
+            [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${100 - outputSize}%`,
+            boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
           }}
         >
           {currentProblem && (
-            <div className="border-b px-3 sm:px-4 py-3 backdrop-blur-md bg-gradient-to-r from-slate-800/50 via-gray-800/50 to-slate-800/50" style={{
-              borderColor: 'rgba(6, 182, 212, 0.2)'
+            <div className="border-b px-3 sm:px-4 py-3 backdrop-blur-md bg-white/5" style={{
+              borderColor: 'rgba(255, 255, 255, 0.18)'
             }}>
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-2 flex-1 min-w-0">
@@ -271,11 +274,11 @@ function App() {
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-xs sm:text-sm font-bold truncate bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+                    <h2 className="text-xs sm:text-sm font-bold truncate text-white">
                       #{currentProblem.number}: {currentProblem.title}
                     </h2>
                     {currentProblem.input && (
-                      <pre className="text-[10px] sm:text-xs mt-1 whitespace-pre-wrap text-gray-300">{currentProblem.input}</pre>
+                      <pre className="text-[10px] sm:text-xs mt-1 whitespace-pre-wrap text-white/80">{currentProblem.input}</pre>
                     )}
                   </div>
                 </div>
@@ -306,12 +309,12 @@ function App() {
             </div>
           )}
           {!currentProblem && (
-            <div className="border-b px-3 sm:px-4 py-3 backdrop-blur-md bg-gradient-to-r from-slate-800/50 via-gray-800/50 to-slate-800/50" style={{
-              borderColor: 'rgba(6, 182, 212, 0.2)'
+            <div className="border-b px-3 sm:px-4 py-3 backdrop-blur-md bg-white/5" style={{
+              borderColor: 'rgba(255, 255, 255, 0.18)'
             }}>
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xs sm:text-sm font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+                  <h2 className="text-xs sm:text-sm font-bold text-white">
                     Write a welcome program which prints to console
                   </h2>
                 </div>
@@ -357,9 +360,10 @@ function App() {
         )}
 
         <div
-          className={`backdrop-blur-sm bg-slate-900/30 rounded-lg m-2 border border-cyan-500/20 shadow-xl ${isMobile ? 'border-t' : ''}`}
+          className={`backdrop-blur-2xl bg-white/10 rounded-2xl m-2 border border-white/20 shadow-2xl ${isMobile ? 'border-t' : ''}`}
           style={{
-            [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${outputSize}%`
+            [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${outputSize}%`,
+            boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
           }}
         >
           <OutputPanel
@@ -373,23 +377,23 @@ function App() {
         </div>
       </div>
 
-      <footer className="relative border-t backdrop-blur-xl bg-gradient-to-r from-slate-900/80 via-gray-900/80 to-slate-900/80 px-2 sm:px-4 py-3 sm:py-4 shadow-lg" style={{
-        borderColor: 'rgba(6, 182, 212, 0.2)'
+      <footer className="relative border-t backdrop-blur-2xl bg-white/10 px-2 sm:px-4 py-3 sm:py-4 shadow-2xl" style={{
+        borderColor: 'rgba(255, 255, 255, 0.18)',
+        boxShadow: '0 -8px 32px 0 rgba(31, 38, 135, 0.37)'
       }}>
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-emerald-500/5 to-blue-500/5"></div>
-        <div className="relative flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-xs">
-          <div className="flex items-center gap-2 sm:gap-2.5 px-4 py-2 rounded-lg bg-gradient-to-r from-slate-800/50 to-gray-800/50 border border-cyan-500/20 shadow-lg backdrop-blur-sm">
-            <Sparkles className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-yellow-400 animate-pulse" />
-            <span className="text-[10px] sm:text-xs font-medium text-gray-300">Developed By</span>
-            <span className="font-bold text-transparent bg-clip-text text-[10px] sm:text-xs bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-xs">
+          <div className="flex items-center gap-2 sm:gap-2.5 px-4 py-2 rounded-lg backdrop-blur-sm bg-white/5 border border-white/20 shadow-lg">
+            <Sparkles className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-yellow-300 animate-pulse" />
+            <span className="text-[10px] sm:text-xs font-medium text-white">Developed By</span>
+            <span className="font-bold text-[10px] sm:text-xs text-white">
               Om Prakash Peddamadthala
             </span>
-            <Code2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-cyan-400" />
-            <Heart className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-red-500 fill-red-500 animate-pulse drop-shadow-lg" />
+            <Code2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-cyan-300" />
+            <Heart className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-red-400 fill-red-400 animate-pulse drop-shadow-lg" />
           </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-slate-800/30 to-gray-800/30 border border-cyan-500/10">
-            <span className="hidden sm:inline text-cyan-500/50">•</span>
-            <span className="text-[10px] sm:text-xs font-medium text-gray-400">© 2024 All Rights Reserved</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg backdrop-blur-sm bg-white/5 border border-white/10">
+            <span className="hidden sm:inline text-white/50">•</span>
+            <span className="text-[10px] sm:text-xs font-medium text-white/90">© 2024 All Rights Reserved</span>
           </div>
         </div>
       </footer>

@@ -18,8 +18,11 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
   const [showAccountModal, setShowAccountModal] = useState(false);
   return (
     <header
-      className="border-b backdrop-blur-xl bg-gradient-to-r from-slate-900/80 via-gray-900/80 to-slate-900/80 shadow-lg shadow-cyan-500/10"
-      style={{ borderColor: 'rgba(6, 182, 212, 0.2)' }}
+      className="border-b backdrop-blur-2xl bg-white/10 shadow-2xl"
+      style={{
+        borderColor: 'rgba(255, 255, 255, 0.18)',
+        boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
+      }}
     >
       <div className="px-4 sm:px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center gap-3">
@@ -29,7 +32,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
               <Terminal className="w-5 h-5 text-slate-900" strokeWidth={2.5} />
             </div>
           </div>
-          <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent drop-shadow-lg">
+          <h1 className="text-lg sm:text-xl font-bold text-white drop-shadow-2xl">
             JavaCodingPractice.com
           </h1>
         </div>
@@ -38,8 +41,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           <button
             onClick={onRandomProblem}
             disabled={isLoadingProblem}
-            className="flex items-center gap-1.5 text-sm font-medium transition-all duration-300 hover:text-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg hover:bg-cyan-500/10"
-            style={{ color: 'var(--text-primary)' }}
+            className="flex items-center gap-1.5 text-sm font-medium text-white transition-all duration-300 hover:text-cyan-300 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg hover:bg-white/10"
             title="Random problem"
           >
             <Shuffle className="w-4 h-4" />
@@ -48,8 +50,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
 
           <button
             onClick={onNavigateToProblems}
-            className="text-sm font-medium transition-all duration-300 hover:text-cyan-400 px-3 py-1.5 rounded-lg hover:bg-cyan-500/10"
-            style={{ color: 'var(--text-primary)' }}
+            className="text-sm font-medium text-white transition-all duration-300 hover:text-cyan-300 px-3 py-1.5 rounded-lg hover:bg-white/10"
             title="All problems"
           >
             Problems
@@ -58,8 +59,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           {onNavigateToDashboard && user && (
             <button
               onClick={onNavigateToDashboard}
-              className="text-sm font-medium transition-all duration-300 hover:text-cyan-400 px-3 py-1.5 rounded-lg hover:bg-cyan-500/10"
-              style={{ color: 'var(--text-primary)' }}
+              className="text-sm font-medium text-white transition-all duration-300 hover:text-cyan-300 px-3 py-1.5 rounded-lg hover:bg-white/10"
               title="Dashboard"
             >
               Dashboard
@@ -69,8 +69,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           {onNavigateToAdmin && isAdmin && (
             <button
               onClick={onNavigateToAdmin}
-              className="text-sm font-medium transition-all duration-300 hover:text-yellow-400 px-3 py-1.5 rounded-lg hover:bg-yellow-500/10"
-              style={{ color: 'var(--text-primary)' }}
+              className="text-sm font-medium text-white transition-all duration-300 hover:text-yellow-300 px-3 py-1.5 rounded-lg hover:bg-white/10"
               title="Admin"
             >
               Admin
@@ -80,8 +79,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           {user ? (
             <button
               onClick={() => setShowAccountModal(true)}
-              className="flex items-center gap-1.5 text-sm font-medium transition-all duration-300 hover:text-cyan-400 px-3 py-1.5 rounded-lg hover:bg-cyan-500/10 border border-transparent hover:border-cyan-500/30"
-              style={{ color: 'var(--text-primary)' }}
+              className="flex items-center gap-1.5 text-sm font-medium text-white transition-all duration-300 hover:text-cyan-300 px-3 py-1.5 rounded-lg hover:bg-white/10 border border-white/20 hover:border-white/40"
               title="Account"
             >
               <UserCircle2 className="w-4 h-4" />
@@ -90,8 +88,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           ) : (
             <button
               onClick={() => setShowAuthModal(true)}
-              className="text-sm font-medium px-4 py-2 rounded-lg border transition-all duration-300 hover:border-cyan-400 hover:text-cyan-400 hover:shadow-lg hover:shadow-cyan-500/20 hover:bg-cyan-500/5"
-              style={{ color: 'var(--text-primary)', borderColor: 'rgba(6, 182, 212, 0.3)' }}
+              className="text-sm font-medium text-white px-4 py-2 rounded-lg border border-white/30 transition-all duration-300 hover:border-white/60 hover:bg-white/10 hover:shadow-lg"
               title="Login"
             >
               Login
