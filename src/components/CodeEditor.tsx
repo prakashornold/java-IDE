@@ -11,12 +11,12 @@ interface CodeEditorProps {
   currentProblem?: JavaProblem | null;
 }
 
-type TabType = 'question' | 'solution';
+type TabType = 'code' | 'question' | 'solution';
 
 export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEditorProps) {
   const { theme } = useTheme();
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
-  const [activeTab, setActiveTab] = useState<TabType>('question');
+  const [activeTab, setActiveTab] = useState<TabType>('code');
 
   function getEditorOptions() {
     const width = window.innerWidth;
@@ -84,99 +84,42 @@ export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEdito
 
   return (
     <div className="h-full w-full overflow-hidden flex flex-col">
-      {currentProblem ? (
-        <>
-          <div className="flex border-b border-[#323232] bg-[#1e1e1e]">
-            <button
-              onClick={() => setActiveTab('question')}
-              className={`px-4 py-2 text-xs font-medium transition-colors ${
-                activeTab === 'question'
-                  ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                  : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-              }`}
-            >
-              Question
-            </button>
-            <button
-              onClick={() => setActiveTab('solution')}
-              className={`px-4 py-2 text-xs font-medium transition-colors ${
-                activeTab === 'solution'
-                  ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                  : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-              }`}
-            >
-              Solution
-            </button>
-          </div>
+      {currentProblem && (
+        <div className="flex border-b border-[#323232] bg-[#1e1e1e]">
+          <button
+            onClick={() => setActiveTab('code')}
+            className={`px-4 py-2 text-xs font-medium transition-colors ${
+              activeTab === 'code'
+                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+            }`}
+          >
+            Code
+          </button>
+          <button
+            onClick={() => setActiveTab('question')}
+            className={`px-4 py-2 text-xs font-medium transition-colors ${
+              activeTab === 'question'
+                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+            }`}
+          >
+            Question
+          </button>
+          <button
+            onClick={() => setActiveTab('solution')}
+            className={`px-4 py-2 text-xs font-medium transition-colors ${
+              activeTab === 'solution'
+                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+            }`}
+          >
+            Solution
+          </button>
+        </div>
+      )}
 
-          {activeTab === 'question' && (
-            <div className="flex-1 overflow-auto p-6 bg-[#2B2B2B]">
-              <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl font-bold text-[#A9B7C6] mb-4">
-                  #{currentProblem.number}: {currentProblem.title}
-                </h2>
-                <div className="mb-4">
-                  <span className={`inline-block px-3 py-1 text-xs font-semibold rounded ${
-                    currentProblem.difficulty === 'basic' ? 'bg-[#2E5C2E] text-[#6AAB73]' :
-                    currentProblem.difficulty === 'intermediate' ? 'bg-[#2B3D4F] text-[#6897BB]' :
-                    currentProblem.difficulty === 'advanced' ? 'bg-[#4F3A2E] text-[#CC7832]' :
-                    'bg-[#4B2E2E] text-[#BC3F3C]'
-                  }`}>
-                    {currentProblem.difficulty.toUpperCase()}
-                  </span>
-                </div>
-                <div className="prose prose-invert max-w-none">
-                  <p className="text-[#BBBBBB] text-sm leading-relaxed whitespace-pre-wrap">
-                    {currentProblem.description}
-                  </p>
-                  {currentProblem.input && (
-                    <div className="mt-4">
-                      <h3 className="text-lg font-semibold text-[#A9B7C6] mb-2">Input:</h3>
-                      <pre className="text-sm text-[#BBBBBB] bg-[#1e1e1e] p-4 rounded border border-[#323232] overflow-x-auto">
-                        {currentProblem.input}
-                      </pre>
-                    </div>
-                  )}
-                  {currentProblem.expectedOutput && (
-                    <div className="mt-4">
-                      <h3 className="text-lg font-semibold text-[#A9B7C6] mb-2">Expected Output:</h3>
-                      <pre className="text-sm text-[#BBBBBB] bg-[#1e1e1e] p-4 rounded border border-[#323232] overflow-x-auto">
-                        {currentProblem.expectedOutput}
-                      </pre>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'solution' && (
-            <div className="flex-1 overflow-auto bg-[#2B2B2B]">
-              <div className="h-full">
-                <Editor
-                  height="100%"
-                  width="100%"
-                  defaultLanguage="java"
-                  value={currentProblem.solution}
-                  options={{
-                    ...editorOptions,
-                    readOnly: true,
-                  }}
-                  theme={theme === 'dark' ? 'vs-dark' : 'light'}
-                  loading={
-                    <div className="h-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
-                      <div className="flex flex-col items-center gap-3">
-                        <Loader2 className="w-8 h-8 animate-spin" style={{ color: 'var(--accent-primary)' }} />
-                        <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Loading Solution...</p>
-                      </div>
-                    </div>
-                  }
-                />
-              </div>
-            </div>
-          )}
-        </>
-      ) : (
+      {activeTab === 'code' && (
         <div className="flex-1 overflow-hidden">
           <Editor
             height="100%"
@@ -196,6 +139,73 @@ export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEdito
               </div>
             }
           />
+        </div>
+      )}
+
+      {activeTab === 'question' && currentProblem && (
+        <div className="flex-1 overflow-auto p-6 bg-[#2B2B2B]">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-[#A9B7C6] mb-4">
+              #{currentProblem.number}: {currentProblem.title}
+            </h2>
+            <div className="mb-4">
+              <span className={`inline-block px-3 py-1 text-xs font-semibold rounded ${
+                currentProblem.difficulty === 'basic' ? 'bg-[#2E5C2E] text-[#6AAB73]' :
+                currentProblem.difficulty === 'intermediate' ? 'bg-[#2B3D4F] text-[#6897BB]' :
+                currentProblem.difficulty === 'advanced' ? 'bg-[#4F3A2E] text-[#CC7832]' :
+                'bg-[#4B2E2E] text-[#BC3F3C]'
+              }`}>
+                {currentProblem.difficulty.toUpperCase()}
+              </span>
+            </div>
+            <div className="prose prose-invert max-w-none">
+              <p className="text-[#BBBBBB] text-sm leading-relaxed whitespace-pre-wrap">
+                {currentProblem.description}
+              </p>
+              {currentProblem.input && (
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold text-[#A9B7C6] mb-2">Input:</h3>
+                  <pre className="text-sm text-[#BBBBBB] bg-[#1e1e1e] p-4 rounded border border-[#323232] overflow-x-auto">
+                    {currentProblem.input}
+                  </pre>
+                </div>
+              )}
+              {currentProblem.expectedOutput && (
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold text-[#A9B7C6] mb-2">Expected Output:</h3>
+                  <pre className="text-sm text-[#BBBBBB] bg-[#1e1e1e] p-4 rounded border border-[#323232] overflow-x-auto">
+                    {currentProblem.expectedOutput}
+                  </pre>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'solution' && currentProblem && (
+        <div className="flex-1 overflow-auto bg-[#2B2B2B]">
+          <div className="h-full">
+            <Editor
+              height="100%"
+              width="100%"
+              defaultLanguage="java"
+              value={currentProblem.solution}
+              options={{
+                ...editorOptions,
+                readOnly: true,
+              }}
+              theme={theme === 'dark' ? 'vs-dark' : 'light'}
+              loading={
+                <div className="h-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
+                  <div className="flex flex-col items-center gap-3">
+                    <Loader2 className="w-8 h-8 animate-spin" style={{ color: 'var(--accent-primary)' }} />
+                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Loading Solution...</p>
+                  </div>
+                </div>
+              }
+            />
+          </div>
         </div>
       )}
     </div>
