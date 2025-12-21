@@ -18,30 +18,23 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
   const [showAccountModal, setShowAccountModal] = useState(false);
   return (
     <header
-      className="border-b backdrop-blur-2xl bg-white/10 shadow-2xl"
-      style={{
-        borderColor: 'rgba(255, 255, 255, 0.18)',
-        boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
-      }}
+      className="border-b border-[#323232] bg-[#3C3F41]"
     >
-      <div className="px-4 sm:px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
+      <div className="px-4 sm:px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="relative group">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 via-cyan-400 to-blue-500 rounded-xl blur-md opacity-60 group-hover:opacity-100 transition-opacity"></div>
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 via-cyan-400 to-blue-500 shadow-lg transform transition-transform group-hover:scale-105">
-              <Terminal className="w-5 h-5 text-slate-900" strokeWidth={2.5} />
-            </div>
+          <div className="flex items-center justify-center w-8 h-8 bg-[#365880] rounded">
+            <Terminal className="w-4 h-4 text-white" strokeWidth={2.5} />
           </div>
-          <h1 className="text-lg sm:text-xl font-bold text-white drop-shadow-2xl">
+          <h1 className="text-base sm:text-lg font-semibold text-[#A9B7C6]">
             JavaCodingPractice.com
           </h1>
         </div>
 
-        <nav className="flex items-center gap-3 sm:gap-6">
+        <nav className="flex items-center gap-2">
           <button
             onClick={onRandomProblem}
             disabled={isLoadingProblem}
-            className="flex items-center gap-1.5 text-sm font-medium text-white transition-all duration-300 hover:text-cyan-300 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 rounded-lg hover:bg-white/10"
+            className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#4C5052] disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 rounded transition-all"
             title="Random problem"
           >
             <Shuffle className="w-4 h-4" />
@@ -50,7 +43,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
 
           <button
             onClick={onNavigateToProblems}
-            className="text-sm font-medium text-white transition-all duration-300 hover:text-cyan-300 px-3 py-1.5 rounded-lg hover:bg-white/10"
+            className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#4C5052] px-3 py-1.5 rounded transition-all"
             title="All problems"
           >
             Problems
@@ -59,7 +52,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           {onNavigateToDashboard && user && (
             <button
               onClick={onNavigateToDashboard}
-              className="text-sm font-medium text-white transition-all duration-300 hover:text-cyan-300 px-3 py-1.5 rounded-lg hover:bg-white/10"
+              className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#4C5052] px-3 py-1.5 rounded transition-all"
               title="Dashboard"
             >
               Dashboard
@@ -69,7 +62,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           {onNavigateToAdmin && isAdmin && (
             <button
               onClick={onNavigateToAdmin}
-              className="text-sm font-medium text-white transition-all duration-300 hover:text-yellow-300 px-3 py-1.5 rounded-lg hover:bg-white/10"
+              className="text-sm font-medium text-[#CC7832] hover:text-[#FFA759] hover:bg-[#4C5052] px-3 py-1.5 rounded transition-all"
               title="Admin"
             >
               Admin
@@ -79,7 +72,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           {user ? (
             <button
               onClick={() => setShowAccountModal(true)}
-              className="flex items-center gap-1.5 text-sm font-medium text-white transition-all duration-300 hover:text-cyan-300 px-3 py-1.5 rounded-lg hover:bg-white/10 border border-white/20 hover:border-white/40"
+              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#4C5052] px-3 py-1.5 rounded transition-all border border-[#555555]"
               title="Account"
             >
               <UserCircle2 className="w-4 h-4" />
@@ -88,7 +81,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           ) : (
             <button
               onClick={() => setShowAuthModal(true)}
-              className="text-sm font-medium text-white px-4 py-2 rounded-lg border border-white/30 transition-all duration-300 hover:border-white/60 hover:bg-white/10 hover:shadow-lg"
+              className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] px-4 py-1.5 rounded border border-[#555555] hover:bg-[#4C5052] transition-all"
               title="Login"
             >
               Login
