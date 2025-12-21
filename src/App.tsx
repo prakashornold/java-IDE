@@ -3,6 +3,7 @@ import { Sparkles, Code2, Heart, Eye, Play } from 'lucide-react';
 import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
+import { ProblemSidebar } from './components/ProblemSidebar';
 import { ProblemsListPage } from './components/ProblemsListPage';
 import { Dashboard } from './components/Dashboard';
 import { AdminPanel } from './components/AdminPanel';
@@ -35,6 +36,7 @@ function App() {
   const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
   const [executionCount, setExecutionCount] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,6 +45,7 @@ function App() {
       setIsMobile(mobile);
       if (mobile) {
         setLayoutMode('bottom');
+        setIsSidebarOpen(false);
       }
     };
 
@@ -186,6 +189,9 @@ function App() {
     setShowFullSolution(false);
     setOutput('');
     setHasError(false);
+    if (currentPage !== 'home') {
+      setCurrentPage('home');
+    }
   };
 
   const handleNavigateToProblems = () => {
@@ -242,12 +248,26 @@ function App() {
         onNavigateToProblems={handleNavigateToProblems}
         onNavigateToDashboard={handleNavigateToDashboard}
         onNavigateToAdmin={handleNavigateToAdmin}
+        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        isSidebarOpen={isSidebarOpen}
       />
 
-      <div
-        ref={containerRef}
-        className={`flex-1 flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
-      >
+      <div className="flex-1 flex overflow-hidden">
+        {isSidebarOpen && cachedProblems && (
+          <ProblemSidebar
+            problems={cachedProblems}
+            onSelectProblem={handleSelectProblem}
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+            currentProblemId={currentProblem?.id}
+            isMobile={isMobile}
+          />
+        )}
+
+        <div
+          ref={containerRef}
+          className={`flex-1 flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
+        >
         <div
           className="relative overflow-hidden flex flex-col bg-[#313335] border border-[#323232]"
           style={{
@@ -362,6 +382,7 @@ function App() {
             isMobile={isMobile}
           />
         </div>
+      </div>
       </div>
 
       <footer className="border-t border-[#323232] bg-[#3C3F41] px-2 sm:px-4 py-2">

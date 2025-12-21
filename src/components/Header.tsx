@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Shuffle, BookOpen, LogIn, CircleUser as UserCircle2, BarChart3, Terminal, Shield } from 'lucide-react';
+import { Shuffle, BookOpen, LogIn, CircleUser as UserCircle2, BarChart3, Terminal, Shield, PanelLeftClose, PanelLeft } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { MyAccountModal } from './MyAccountModal';
 import { useAuth } from '../context/AuthContext';
@@ -10,9 +10,11 @@ interface HeaderProps {
   onNavigateToProblems: () => void;
   onNavigateToDashboard?: () => void;
   onNavigateToAdmin?: () => void;
+  onToggleSidebar?: () => void;
+  isSidebarOpen?: boolean;
 }
 
-export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems, onNavigateToDashboard, onNavigateToAdmin }: HeaderProps) {
+export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems, onNavigateToDashboard, onNavigateToAdmin, onToggleSidebar, isSidebarOpen }: HeaderProps) {
   const { user, isAdmin } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showAccountModal, setShowAccountModal] = useState(false);
@@ -31,6 +33,21 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
         </div>
 
         <nav className="flex items-center gap-2">
+          {onToggleSidebar && (
+            <button
+              onClick={onToggleSidebar}
+              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#4C5052] px-3 py-1.5 rounded transition-all"
+              title={isSidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
+            >
+              {isSidebarOpen ? (
+                <PanelLeftClose className="w-4 h-4" />
+              ) : (
+                <PanelLeft className="w-4 h-4" />
+              )}
+              <span className="hidden lg:inline">Problems</span>
+            </button>
+          )}
+
           <button
             onClick={onRandomProblem}
             disabled={isLoadingProblem}
