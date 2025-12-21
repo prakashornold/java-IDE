@@ -123,63 +123,38 @@ export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEdito
         <div className="flex-1 overflow-auto bg-[#2B2B2B] p-6">
           <div className="max-w-4xl mx-auto space-y-6">
             <div>
-              <h1 className="text-2xl font-bold text-[#FFFFFF] mb-2">{currentProblem.title}</h1>
-              <div className="flex items-center gap-3">
-                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  currentProblem.difficulty === 'Easy'
-                    ? 'bg-green-500/20 text-green-400'
-                    : currentProblem.difficulty === 'Medium'
-                    ? 'bg-yellow-500/20 text-yellow-400'
-                    : 'bg-red-500/20 text-red-400'
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-[#808080] text-sm font-medium">Problem #{currentProblem.number}</span>
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${
+                  currentProblem.difficulty === 'basic'
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                    : currentProblem.difficulty === 'intermediate'
+                    ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                    : currentProblem.difficulty === 'advanced'
+                    ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                    : 'bg-red-500/20 text-red-400 border border-red-500/30'
                 }`}>
                   {currentProblem.difficulty}
                 </span>
-                <span className="text-[#808080] text-sm">{currentProblem.category}</span>
               </div>
+              <h1 className="text-2xl font-bold text-[#FFFFFF]">{currentProblem.title}</h1>
             </div>
 
-            <div className="prose prose-invert max-w-none">
-              <div className="text-[#CCCCCC] leading-relaxed whitespace-pre-wrap">
-                {currentProblem.description}
+            <div className="space-y-4">
+              <div>
+                <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3">Input</h2>
+                <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
+                  <pre className="text-[#CCCCCC] font-mono text-sm whitespace-pre-wrap break-words">{currentProblem.input}</pre>
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3">Expected Output</h2>
+                <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
+                  <pre className="text-[#CCCCCC] font-mono text-sm whitespace-pre-wrap break-words">{currentProblem.output}</pre>
+                </div>
               </div>
             </div>
-
-            {currentProblem.examples && currentProblem.examples.length > 0 && (
-              <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-[#FFFFFF]">Examples</h2>
-                {currentProblem.examples.map((example, index) => (
-                  <div key={index} className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
-                    <div className="space-y-2">
-                      <div>
-                        <span className="text-[#808080] text-sm">Input:</span>
-                        <pre className="text-[#CCCCCC] mt-1 font-mono text-sm">{example.input}</pre>
-                      </div>
-                      <div>
-                        <span className="text-[#808080] text-sm">Output:</span>
-                        <pre className="text-[#CCCCCC] mt-1 font-mono text-sm">{example.output}</pre>
-                      </div>
-                      {example.explanation && (
-                        <div>
-                          <span className="text-[#808080] text-sm">Explanation:</span>
-                          <p className="text-[#CCCCCC] mt-1 text-sm">{example.explanation}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {currentProblem.constraints && currentProblem.constraints.length > 0 && (
-              <div className="space-y-2">
-                <h2 className="text-xl font-semibold text-[#FFFFFF]">Constraints</h2>
-                <ul className="list-disc list-inside space-y-1 text-[#CCCCCC]">
-                  {currentProblem.constraints.map((constraint, index) => (
-                    <li key={index} className="text-sm">{constraint}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         </div>
       )}
