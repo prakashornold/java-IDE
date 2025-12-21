@@ -341,6 +341,7 @@ function App() {
               value={code}
               onChange={setCode}
               onRun={handleRunCode}
+              currentProblem={currentProblem}
             />
           </div>
         </div>
