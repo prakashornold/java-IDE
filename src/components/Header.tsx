@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Shuffle, Terminal, PanelLeftClose, PanelLeft, User, LogOut } from 'lucide-react';
+import { Shuffle, Terminal, PanelLeftClose, PanelLeft, User, LogOut, Info } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { useAuth } from '../context/AuthContext';
 
@@ -9,11 +9,12 @@ interface HeaderProps {
   onNavigateToDashboard?: () => void;
   onNavigateToAdmin?: () => void;
   onNavigateToAccountSettings?: () => void;
+  onNavigateToAbout?: () => void;
   onToggleSidebar?: () => void;
   isSidebarOpen?: boolean;
 }
 
-export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onNavigateToAccountSettings, onToggleSidebar, isSidebarOpen }: HeaderProps) {
+export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onNavigateToAccountSettings, onNavigateToAbout, onToggleSidebar, isSidebarOpen }: HeaderProps) {
   const { user, profile, isAdmin, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -106,6 +107,17 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
               title="Admin"
             >
               Admin
+            </button>
+          )}
+
+          {onNavigateToAbout && (
+            <button
+              onClick={onNavigateToAbout}
+              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+              title="About Us"
+            >
+              <Info className="w-4 h-4" />
+              <span className="hidden lg:inline">About</span>
             </button>
           )}
 

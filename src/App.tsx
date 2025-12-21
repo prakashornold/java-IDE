@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Sparkles, Code2, Heart, Eye, Play } from 'lucide-react';
+import { Sparkles, Code2, Heart } from 'lucide-react';
 import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
@@ -8,6 +8,7 @@ import { Dashboard } from './components/Dashboard';
 import { AdminPanel } from './components/AdminPanel';
 import { AccountSettings } from './components/AccountSettings';
 import { AuthModal } from './components/AuthModal';
+import { About } from './components/About';
 import { useServices } from './context/ServiceContext';
 import { useAuth } from './context/AuthContext';
 import { JavaProblem } from './types/problem.types';
@@ -32,7 +33,7 @@ function App() {
   const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
   const [isLoadingProblem, setIsLoadingProblem] = useState(false);
   const [showFullSolution, setShowFullSolution] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'home' | 'dashboard' | 'admin' | 'account-settings'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'dashboard' | 'admin' | 'account-settings' | 'about'>('home');
   const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
   const [executionCount, setExecutionCount] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -210,6 +211,14 @@ function App() {
     setCurrentPage('account-settings');
   };
 
+  const handleNavigateToAbout = () => {
+    setCurrentPage('about');
+  };
+
+  if (currentPage === 'about') {
+    return <About onNavigateHome={handleNavigateHome} />;
+  }
+
   if (currentPage === 'admin') {
     return <AdminPanel onNavigateHome={handleNavigateHome} />;
   }
@@ -242,6 +251,7 @@ function App() {
         onNavigateToDashboard={handleNavigateToDashboard}
         onNavigateToAdmin={handleNavigateToAdmin}
         onNavigateToAccountSettings={handleNavigateToAccountSettings}
+        onNavigateToAbout={handleNavigateToAbout}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
       />
@@ -328,6 +338,13 @@ function App() {
           </div>
           <div className="flex items-center gap-2">
             <span className="hidden sm:inline text-[#515151]">•</span>
+            <button
+              onClick={handleNavigateToAbout}
+              className="text-[10px] sm:text-xs font-medium text-[#6897BB] hover:text-[#87B7D7] transition-colors underline"
+            >
+              About Us
+            </button>
+            <span className="text-[#515151]">•</span>
             <span className="text-[10px] sm:text-xs font-medium text-[#808080]">© 2024 All Rights Reserved</span>
           </div>
         </div>
