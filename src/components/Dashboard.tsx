@@ -3,6 +3,7 @@ import { BarChart3, Zap, Target, Flame, Crown, ArrowLeft, TrendingUp } from 'luc
 import { supabase } from '../config/supabase';
 import { useAuth } from '../context/AuthContext';
 import { JavaProblem } from '../types/problem.types';
+import { Footer } from './Footer';
 
 interface DifficultyStats {
   difficulty: string;
@@ -141,7 +142,7 @@ export function Dashboard({ onNavigateHome, cachedProblems }: DashboardProps) {
   const overallPercentage = getCompletionPercentage(totalCompleted, totalProblems);
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: 'var(--bg-primary)' }}>
+    <div className="h-screen flex flex-col" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
           <div className="mb-6 sm:mb-8">
@@ -234,6 +235,7 @@ export function Dashboard({ onNavigateHome, cachedProblems }: DashboardProps) {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { Terminal, Code2, Play, BookOpen, Trophy, Users, Zap, Shield, Check, ArrowLeft, Heart } from 'lucide-react';
+import { Footer } from './Footer';
 
 interface AboutProps {
   onNavigateHome: () => void;
@@ -55,7 +56,7 @@ export function About({ onNavigateHome }: AboutProps) {
   ];
 
   return (
-    <div className="h-screen flex flex-col bg-[#2B2B2B] text-[#A9B7C6] overflow-hidden">
+    <div className="h-screen flex flex-col bg-[#2B2B2B] text-[#A9B7C6]">
       <header className="border-b border-[#323232] bg-[#1e1e1e] flex-shrink-0">
         <div className="px-4 sm:px-6 py-3 flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-3">
@@ -256,6 +257,7 @@ export function About({ onNavigateHome }: AboutProps) {
           </section>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

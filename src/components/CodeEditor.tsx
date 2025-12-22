@@ -78,9 +78,12 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
   };
 
   const handleEditorMount = (editor: any) => {
-    editor.addCommand(window.monaco.KeyMod.CtrlCmd | window.monaco.KeyCode.Enter, () => {
-      onRun();
-    });
+    const monacoInstance = (window as any).monaco;
+    if (monacoInstance) {
+      editor.addCommand(monacoInstance.KeyMod.CtrlCmd | monacoInstance.KeyCode.Enter, () => {
+        onRun();
+      });
+    }
 
     editor.focus();
   };

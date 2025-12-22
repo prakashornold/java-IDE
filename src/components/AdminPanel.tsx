@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { adminService, UserData, ProblemProgress, AddProblemData } from '../services/AdminService';
 import { UserManagement } from './admin/UserManagement';
 import { ProblemForm } from './admin/ProblemForm';
+import { Footer } from './Footer';
 
 interface AdminPanelProps {
   onNavigateHome?: () => void;
@@ -187,6 +188,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
           />
         )}
       </div>
+      <Footer />
     </div>
   );
 }

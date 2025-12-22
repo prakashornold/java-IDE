@@ -7,7 +7,7 @@ interface ProblemSidebarProps {
   onSelectProblem: (problem: JavaProblem) => void;
   isOpen: boolean;
   onClose: () => void;
-  currentProblemId?: number;
+  currentProblemId?: string;
   isMobile?: boolean;
 }
 

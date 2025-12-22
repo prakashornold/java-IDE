@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowLeft, User, Mail, Calendar, RefreshCw, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { Footer } from './Footer';
 
 interface AccountSettingsProps {
   onNavigateHome: () => void;
@@ -33,7 +34,7 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d1117]">
+    <div className="min-h-screen flex flex-col bg-[#0d1117]">
       <header className="border-b border-[#323232] bg-[#1e1e1e]">
         <div className="px-4 sm:px-6 py-3">
           <button
@@ -46,7 +47,7 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-8">
         <div className="bg-[#1e1e1e] rounded-xl border border-[#323232] shadow-2xl">
           <div className="p-6 sm:p-8">
             <div className="text-center mb-8">
@@ -144,6 +145,7 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

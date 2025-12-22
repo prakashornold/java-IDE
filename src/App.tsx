@@ -9,18 +9,18 @@ import { AccountSettings } from './components/AccountSettings';
 import { AuthModal } from './components/AuthModal';
 import { About } from './components/About';
 import { useServices } from './context/ServiceContext';
-import { useAuth } from './context/AuthContext';
 import { JavaProblem } from './types/problem.types';
 import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
+import { useNavigation } from './hooks/useNavigation';
+import { useExecutionLimit } from './hooks/useExecutionLimit';
+import { errorHandlingService } from './services/ErrorHandlingService';
 
 type LayoutMode = 'bottom' | 'side';
 
-const EXECUTION_LIMIT_KEY = 'code_execution_count';
-const EXECUTION_LIMIT = 3;
-
 function App() {
   const { problemService, compilerService } = useServices();
-  const { user } = useAuth();
+  const navigation = useNavigation();
+  const executionLimit = useExecutionLimit();
   const [code, setCode] = useState(DEFAULT_JAVA_CODE);
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
@@ -32,9 +32,7 @@ function App() {
   const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
   const [isLoadingProblem, setIsLoadingProblem] = useState(false);
   const [showFullSolution, setShowFullSolution] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'home' | 'dashboard' | 'admin' | 'account-settings' | 'about'>('home');
   const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
-  const [executionCount, setExecutionCount] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -63,16 +61,6 @@ function App() {
   }, [problemService]);
 
   useEffect(() => {
-    if (!user) {
-      const count = parseInt(localStorage.getItem(EXECUTION_LIMIT_KEY) || '0', 10);
-      setExecutionCount(count);
-    } else {
-      setExecutionCount(0);
-      localStorage.removeItem(EXECUTION_LIMIT_KEY);
-    }
-  }, [user]);
-
-  useEffect(() => {
     const cleanupHash = () => {
       const hash = window.location.hash;
       if (hash && (hash.includes('access_token') || hash.includes('refresh_token'))) {
@@ -86,7 +74,7 @@ function App() {
   }, []);
 
   const handleRunCode = async () => {
-    if (!user && executionCount >= EXECUTION_LIMIT) {
+    if (!executionLimit.canExecute) {
       setShowAuthModal(true);
       return;
     }
@@ -109,13 +97,10 @@ function App() {
         setHasError(false);
       }
 
-      if (!user) {
-        const newCount = executionCount + 1;
-        setExecutionCount(newCount);
-        localStorage.setItem(EXECUTION_LIMIT_KEY, newCount.toString());
-      }
-    } catch {
-      setOutput('Unexpected error occurred while running code');
+      executionLimit.incrementCount();
+    } catch (error) {
+      const errorMessage = errorHandlingService.handleError(error);
+      setOutput(errorMessage || 'Unexpected error occurred while running code');
       setHasError(true);
     } finally {
       setIsRunning(false);
@@ -166,8 +151,9 @@ function App() {
         setOutput('No problems found in database. Please seed the database first.');
         setHasError(true);
       }
-    } catch {
-      setOutput('Error loading random problem');
+    } catch (error) {
+      const errorMessage = errorHandlingService.handleError(error);
+      setOutput(errorMessage || 'Error loading random problem');
       setHasError(true);
     } finally {
       setIsLoadingProblem(false);
@@ -189,47 +175,27 @@ function App() {
     setShowFullSolution(false);
     setOutput('');
     setHasError(false);
-    if (currentPage !== 'home') {
-      setCurrentPage('home');
+    if (navigation.currentPage !== 'home') {
+      navigation.navigateToHome();
     }
   };
 
-  const handleNavigateToDashboard = () => {
-    setCurrentPage('dashboard');
-  };
-
-  const handleNavigateHome = () => {
-    setCurrentPage('home');
-  };
-
-  const handleNavigateToAdmin = () => {
-    setCurrentPage('admin');
-  };
-
-  const handleNavigateToAccountSettings = () => {
-    setCurrentPage('account-settings');
-  };
-
-  const handleNavigateToAbout = () => {
-    setCurrentPage('about');
-  };
-
-  if (currentPage === 'about') {
-    return <About onNavigateHome={handleNavigateHome} />;
+  if (navigation.currentPage === 'about') {
+    return <About onNavigateHome={navigation.navigateToHome} />;
   }
 
-  if (currentPage === 'admin') {
-    return <AdminPanel onNavigateHome={handleNavigateHome} />;
+  if (navigation.currentPage === 'admin') {
+    return <AdminPanel onNavigateHome={navigation.navigateToHome} />;
   }
 
-  if (currentPage === 'account-settings') {
-    return <AccountSettings onNavigateHome={handleNavigateHome} />;
+  if (navigation.currentPage === 'account-settings') {
+    return <AccountSettings onNavigateHome={navigation.navigateToHome} />;
   }
 
-  if (currentPage === 'dashboard') {
+  if (navigation.currentPage === 'dashboard') {
     return (
       <Dashboard
-        onNavigateHome={handleNavigateHome}
+        onNavigateHome={navigation.navigateToHome}
         cachedProblems={cachedProblems}
       />
     );
@@ -247,10 +213,10 @@ function App() {
       <Header
         onRandomProblem={handleRandomProblem}
         isLoadingProblem={isLoadingProblem}
-        onNavigateToDashboard={handleNavigateToDashboard}
-        onNavigateToAdmin={handleNavigateToAdmin}
-        onNavigateToAccountSettings={handleNavigateToAccountSettings}
-        onNavigateToAbout={handleNavigateToAbout}
+        onNavigateToDashboard={navigation.navigateToDashboard}
+        onNavigateToAdmin={navigation.navigateToAdmin}
+        onNavigateToAccountSettings={navigation.navigateToAccountSettings}
+        onNavigateToAbout={navigation.navigateToAbout}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
       />
