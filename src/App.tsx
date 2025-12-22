@@ -8,6 +8,7 @@ import { AdminPanel } from './components/AdminPanel';
 import { AccountSettings } from './components/AccountSettings';
 import { AuthModal } from './components/AuthModal';
 import { About } from './components/About';
+import { Footer } from './components/Footer';
 import { useServices } from './context/ServiceContext';
 import { JavaProblem } from './types/problem.types';
 import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
@@ -294,6 +295,7 @@ function App() {
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
       />
+      <Footer />
     </div>
   );
 }
