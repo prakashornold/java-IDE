@@ -4,29 +4,32 @@ import { UserData, ProblemProgress } from '../../services/AdminService';
 
 interface UserManagementProps {
   users: UserData[];
+  total: number;
+  currentPage: number;
+  pageSize: number;
   userProgress: Record<string, ProblemProgress>;
   loading: boolean;
   onToggleBlock: (userId: string, currentStatus: boolean) => void;
   onToggleAdmin: (userId: string, currentStatus: boolean) => void;
   onDeleteUser: (userId: string) => void;
+  onPageChange: (page: number) => void;
 }
 
 export function UserManagement({
   users,
+  total,
+  currentPage,
+  pageSize,
   userProgress,
   loading,
   onToggleBlock,
   onToggleAdmin,
-  onDeleteUser
+  onDeleteUser,
+  onPageChange
 }: UserManagementProps) {
-  const [currentPage, setCurrentPage] = useState(1);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
-  const pageSize = 10;
 
-  const totalPages = Math.ceil(users.length / pageSize);
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-  const paginatedUsers = users.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(total / pageSize);
 
   const handleDelete = (userId: string) => {
     if (deleteConfirm === userId) {
@@ -50,13 +53,13 @@ export function UserManagement({
     <div className="max-w-7xl mx-auto">
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
-          Users ({users.length})
+          Users ({total})
         </h2>
         <p style={{ color: 'var(--text-secondary)' }}>Manage user accounts, permissions, and access</p>
       </div>
 
       <div className="grid gap-4">
-        {paginatedUsers.map((user) => {
+        {users.map((user) => {
           const progress = userProgress[user.id] || { solved_count: 0, total_attempts: 0 };
           return (
             <div
@@ -140,7 +143,7 @@ export function UserManagement({
       {totalPages > 1 && (
         <div className="mt-6 flex items-center justify-center gap-4">
           <button
-            onClick={() => setCurrentPage(currentPage - 1)}
+            onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 disabled:opacity-50 disabled:cursor-not-allowed text-white"
           >
@@ -164,7 +167,7 @@ export function UserManagement({
               return (
                 <button
                   key={pageNum}
-                  onClick={() => setCurrentPage(pageNum)}
+                  onClick={() => onPageChange(pageNum)}
                   className={`w-10 h-10 rounded-lg font-semibold transition-all ${
                     currentPage === pageNum
                       ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
@@ -178,7 +181,7 @@ export function UserManagement({
           </div>
 
           <button
-            onClick={() => setCurrentPage(currentPage + 1)}
+            onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 disabled:opacity-50 disabled:cursor-not-allowed text-white"
           >

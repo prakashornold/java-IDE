@@ -44,14 +44,25 @@ export interface ProblemData {
 }
 
 export class AdminService {
-  async getAllUsers(): Promise<UserData[]> {
-    const { data, error } = await supabase
-      .from('user_profiles')
-      .select('*')
-      .order('created_at', { ascending: false });
+  async getAllUsers(page: number = 1, pageSize: number = 10): Promise<{ users: UserData[], total: number }> {
+    const from = (page - 1) * pageSize;
+    const to = from + pageSize - 1;
+
+    const [{ data, error }, { count, error: countError }] = await Promise.all([
+      supabase
+        .from('user_profiles')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .range(from, to),
+      supabase
+        .from('user_profiles')
+        .select('*', { count: 'exact', head: true })
+    ]);
 
     if (error) throw error;
-    return data || [];
+    if (countError) throw countError;
+
+    return { users: data || [], total: count || 0 };
   }
 
   async getUserProgress(): Promise<Record<string, ProblemProgress>> {

@@ -14,6 +14,8 @@ interface AdminPanelProps {
 export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const { isAdmin, profile } = useAuth();
   const [users, setUsers] = useState<UserData[]>([]);
+  const [usersTotal, setUsersTotal] = useState(0);
+  const [usersPage, setUsersPage] = useState(1);
   const [userProgress, setUserProgress] = useState<Record<string, ProblemProgress>>({});
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'users' | 'add-problem' | 'manage-problems'>('users');
@@ -34,10 +36,10 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
   useEffect(() => {
-    if (isAdmin) {
+    if (isAdmin && activeTab === 'users') {
       loadData();
     }
-  }, [isAdmin]);
+  }, [isAdmin, activeTab, usersPage]);
 
   useEffect(() => {
     if (isAdmin && activeTab === 'manage-problems') {
@@ -47,11 +49,13 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
 
   const loadData = async () => {
     try {
-      const [usersData, progressData] = await Promise.all([
-        adminService.getAllUsers(),
+      setLoading(true);
+      const [{ users: usersData, total }, progressData] = await Promise.all([
+        adminService.getAllUsers(usersPage, 10),
         adminService.getUserProgress()
       ]);
       setUsers(usersData);
+      setUsersTotal(total);
       setUserProgress(progressData);
     } catch (error) {
       console.error('Error loading data:', error);
@@ -256,11 +260,15 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
         {activeTab === 'users' && (
           <UserManagement
             users={users}
+            total={usersTotal}
+            currentPage={usersPage}
+            pageSize={10}
             userProgress={userProgress}
             loading={loading}
             onToggleBlock={toggleBlockUser}
             onToggleAdmin={toggleAdminStatus}
             onDeleteUser={handleDeleteUser}
+            onPageChange={setUsersPage}
           />
         )}
 
