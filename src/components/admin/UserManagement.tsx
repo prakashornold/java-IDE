@@ -1,4 +1,5 @@
-import { Ban, UserCheck } from 'lucide-react';
+import { useState } from 'react';
+import { Ban, UserCheck, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { UserData, ProblemProgress } from '../../services/AdminService';
 
 interface UserManagementProps {
@@ -7,6 +8,7 @@ interface UserManagementProps {
   loading: boolean;
   onToggleBlock: (userId: string, currentStatus: boolean) => void;
   onToggleAdmin: (userId: string, currentStatus: boolean) => void;
+  onDeleteUser: (userId: string) => void;
 }
 
 export function UserManagement({
@@ -14,8 +16,28 @@ export function UserManagement({
   userProgress,
   loading,
   onToggleBlock,
-  onToggleAdmin
+  onToggleAdmin,
+  onDeleteUser
 }: UserManagementProps) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const pageSize = 10;
+
+  const totalPages = Math.ceil(users.length / pageSize);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedUsers = users.slice(startIndex, endIndex);
+
+  const handleDelete = (userId: string) => {
+    if (deleteConfirm === userId) {
+      onDeleteUser(userId);
+      setDeleteConfirm(null);
+    } else {
+      setDeleteConfirm(userId);
+      setTimeout(() => setDeleteConfirm(null), 3000);
+    }
+  };
+
   if (loading) {
     return (
       <div className="text-center py-12">
@@ -34,7 +56,7 @@ export function UserManagement({
       </div>
 
       <div className="grid gap-4">
-        {users.map((user) => {
+        {paginatedUsers.map((user) => {
           const progress = userProgress[user.id] || { solved_count: 0, total_attempts: 0 };
           return (
             <div
@@ -95,12 +117,76 @@ export function UserManagement({
                     <Ban className="w-4 h-4" />
                     {user.is_blocked ? 'Unblock' : 'Block'}
                   </button>
+
+                  <button
+                    onClick={() => handleDelete(user.id)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
+                      deleteConfirm === user.id
+                        ? 'bg-gradient-to-r from-red-700 to-pink-700 hover:from-red-800 hover:to-pink-800'
+                        : 'bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800'
+                    } text-white`}
+                    title={deleteConfirm === user.id ? 'Click again to confirm' : 'Delete User'}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    {deleteConfirm === user.id ? 'Confirm?' : 'Delete'}
+                  </button>
                 </div>
               </div>
             </div>
           );
         })}
       </div>
+
+      {totalPages > 1 && (
+        <div className="mt-6 flex items-center justify-center gap-4">
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 disabled:opacity-50 disabled:cursor-not-allowed text-white"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Previous
+          </button>
+
+          <div className="flex items-center gap-2">
+            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+              let pageNum;
+              if (totalPages <= 5) {
+                pageNum = i + 1;
+              } else if (currentPage <= 3) {
+                pageNum = i + 1;
+              } else if (currentPage >= totalPages - 2) {
+                pageNum = totalPages - 4 + i;
+              } else {
+                pageNum = currentPage - 2 + i;
+              }
+
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => setCurrentPage(pageNum)}
+                  className={`w-10 h-10 rounded-lg font-semibold transition-all ${
+                    currentPage === pageNum
+                      ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
+                      : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 disabled:opacity-50 disabled:cursor-not-allowed text-white"
+          >
+            Next
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

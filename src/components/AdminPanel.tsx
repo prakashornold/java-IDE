@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Users, Shield, Plus, AlertCircle, ArrowLeft } from 'lucide-react';
+import { Users, Shield, Plus, AlertCircle, ArrowLeft, List } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { adminService, UserData, ProblemProgress, AddProblemData } from '../services/AdminService';
+import { adminService, UserData, ProblemProgress, AddProblemData, ProblemData } from '../services/AdminService';
 import { UserManagement } from './admin/UserManagement';
 import { ProblemForm } from './admin/ProblemForm';
+import { ProblemList } from './admin/ProblemList';
 import { Footer } from './Footer';
 
 interface AdminPanelProps {
@@ -15,15 +16,21 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const [users, setUsers] = useState<UserData[]>([]);
   const [userProgress, setUserProgress] = useState<Record<string, ProblemProgress>>({});
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'users' | 'problems'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'add-problem' | 'manage-problems'>('users');
   const [problemForm, setProblemForm] = useState<AddProblemData>({
     title: '',
     description: '',
+    category: 'General',
     difficulty: 'Easy',
     starter_code: '',
     solution_code: '',
     test_cases: ''
   });
+  const [editingProblemId, setEditingProblemId] = useState<string | null>(null);
+  const [problems, setProblems] = useState<ProblemData[]>([]);
+  const [problemsTotal, setProblemsTotal] = useState(0);
+  const [problemsPage, setProblemsPage] = useState(1);
+  const [loadingProblems, setLoadingProblems] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
   useEffect(() => {
@@ -31,6 +38,12 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
       loadData();
     }
   }, [isAdmin]);
+
+  useEffect(() => {
+    if (isAdmin && activeTab === 'manage-problems') {
+      loadProblems();
+    }
+  }, [isAdmin, activeTab, problemsPage]);
 
   const loadData = async () => {
     try {
@@ -65,19 +78,74 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
     }
   };
 
-  const handleAddProblem = async (e: React.FormEvent) => {
+  const loadProblems = async () => {
+    try {
+      setLoadingProblems(true);
+      const { problems: problemsData, total } = await adminService.getAllProblems(problemsPage, 10);
+      setProblems(problemsData);
+      setProblemsTotal(total);
+    } catch (error) {
+      console.error('Error loading problems:', error);
+    } finally {
+      setLoadingProblems(false);
+    }
+  };
+
+  const handleAddOrUpdateProblem = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitStatus(null);
 
     try {
-      await adminService.addProblem(problemForm);
+      if (editingProblemId) {
+        await adminService.updateProblem(editingProblemId, problemForm);
+        setSubmitStatus({ type: 'success', message: 'Problem updated successfully!' });
+        setEditingProblemId(null);
+      } else {
+        await adminService.addProblem(problemForm);
+        setSubmitStatus({ type: 'success', message: 'Problem added successfully!' });
+      }
 
-      setSubmitStatus({ type: 'success', message: 'Problem added successfully!' });
       resetProblemForm();
       setTimeout(() => setSubmitStatus(null), 2000);
+
+      if (activeTab === 'manage-problems') {
+        await loadProblems();
+      }
     } catch (error) {
-      console.error('Error adding problem:', error);
-      setSubmitStatus({ type: 'error', message: 'Failed to add problem. Please try again.' });
+      console.error('Error saving problem:', error);
+      setSubmitStatus({ type: 'error', message: 'Failed to save problem. Please try again.' });
+    }
+  };
+
+  const handleEditProblem = (problem: ProblemData) => {
+    setProblemForm({
+      title: problem.title,
+      description: problem.description,
+      category: problem.category,
+      difficulty: problem.difficulty,
+      starter_code: problem.input,
+      solution_code: problem.solution,
+      test_cases: problem.test_cases
+    });
+    setEditingProblemId(problem.id);
+    setActiveTab('add-problem');
+  };
+
+  const handleDeleteProblem = async (id: string) => {
+    try {
+      await adminService.deleteProblem(id);
+      await loadProblems();
+    } catch (error) {
+      console.error('Error deleting problem:', error);
+    }
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    try {
+      await adminService.deleteUser(userId);
+      await loadData();
+    } catch (error) {
+      console.error('Error deleting user:', error);
     }
   };
 
@@ -85,11 +153,13 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
     setProblemForm({
       title: '',
       description: '',
+      category: 'General',
       difficulty: 'Easy',
       starter_code: '',
       solution_code: '',
       test_cases: ''
     });
+    setEditingProblemId(null);
   };
 
   if (!isAdmin) {
@@ -155,15 +225,29 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
             User Management
           </button>
           <button
-            onClick={() => setActiveTab('problems')}
+            onClick={() => {
+              setActiveTab('add-problem');
+              resetProblemForm();
+            }}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-              activeTab === 'problems'
+              activeTab === 'add-problem'
                 ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
                 : 'text-gray-400 hover:text-white'
             }`}
           >
             <Plus className="w-5 h-5" />
-            Add Problems
+            Add Problem
+          </button>
+          <button
+            onClick={() => setActiveTab('manage-problems')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
+              activeTab === 'manage-problems'
+                ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <List className="w-5 h-5" />
+            Manage Problems
           </button>
         </div>
       </div>
@@ -176,15 +260,29 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
             loading={loading}
             onToggleBlock={toggleBlockUser}
             onToggleAdmin={toggleAdminStatus}
+            onDeleteUser={handleDeleteUser}
           />
         )}
 
-        {activeTab === 'problems' && (
+        {activeTab === 'add-problem' && (
           <ProblemForm
             formData={problemForm}
             onFormChange={setProblemForm}
-            onSubmit={handleAddProblem}
+            onSubmit={handleAddOrUpdateProblem}
             submitStatus={submitStatus}
+          />
+        )}
+
+        {activeTab === 'manage-problems' && (
+          <ProblemList
+            problems={problems}
+            total={problemsTotal}
+            currentPage={problemsPage}
+            pageSize={10}
+            loading={loadingProblems}
+            onEdit={handleEditProblem}
+            onDelete={handleDeleteProblem}
+            onPageChange={setProblemsPage}
           />
         )}
       </div>

@@ -63,24 +63,45 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-              Difficulty
-            </label>
-            <select
-              value={formData.difficulty}
-              onChange={(e) => handleChange('difficulty', e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border"
-              style={{
-                backgroundColor: 'var(--bg-primary)',
-                borderColor: 'var(--border-color)',
-                color: 'var(--text-primary)'
-              }}
-            >
-              <option value="Easy">Easy</option>
-              <option value="Medium">Medium</option>
-              <option value="Hard">Hard</option>
-            </select>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                Category
+              </label>
+              <input
+                type="text"
+                value={formData.category}
+                onChange={(e) => handleChange('category', e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border"
+                style={{
+                  backgroundColor: 'var(--bg-primary)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
+                placeholder="e.g., Arrays, Strings, OOP"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+                Difficulty
+              </label>
+              <select
+                value={formData.difficulty}
+                onChange={(e) => handleChange('difficulty', e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border"
+                style={{
+                  backgroundColor: 'var(--bg-primary)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
+              >
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
           </div>
 
           <div>
