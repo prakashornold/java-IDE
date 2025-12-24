@@ -4,6 +4,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useRef } from 'react';
 import { JavaProblem } from '../types/problem.types';
+import { formatJavaCode } from '../utils/javaFormatter';
 
 interface CodeEditorProps {
   value: string;
@@ -94,7 +95,9 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
 
   const handleFormatCode = () => {
     if (editorRef.current) {
-      editorRef.current.getAction('editor.action.formatDocument')?.run();
+      const currentCode = editorRef.current.getValue();
+      const formattedCode = formatJavaCode(currentCode);
+      editorRef.current.setValue(formattedCode);
     }
   };
 
