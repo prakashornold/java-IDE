@@ -36,6 +36,9 @@ export function formatJavaCode(code: string): string {
           }
 
           const indent = '    '.repeat(indentLevel);
+          const baseIndentLength = indent.length;
+          const continuationSpaces = Math.max(2, Math.floor(baseIndentLength * 0.3));
+
           formattedLines.push(indent + parts[0].trim());
 
           if (!parts[0].trim().startsWith('}')) {
@@ -46,7 +49,7 @@ export function formatJavaCode(code: string): string {
 
           for (let j = 1; j < parts.length; j++) {
             if (parts[j].trim().length > 0) {
-              const chainIndent = '    '.repeat(indentLevel);
+              const chainIndent = '    '.repeat(indentLevel) + ' '.repeat(continuationSpaces);
               formattedLines.push(chainIndent + parts[j].trim());
             }
           }
