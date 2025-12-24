@@ -100,12 +100,14 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
       setIsFormatting(true);
       const currentCode = editorRef.current.getValue();
 
-      const response = await fetch('https://tools.tutorialspoint.com/format_javascript.php', {
+      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/format-java`;
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
         },
-        body: `code=${encodeURIComponent(currentCode)}`
+        body: JSON.stringify({ code: currentCode })
       });
 
       if (!response.ok) {
