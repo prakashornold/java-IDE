@@ -19,8 +19,11 @@ export function formatJavaCode(code: string): string {
       indentLevel = Math.max(0, indentLevel - 1);
     }
 
-    // Handle method chaining (streams, builder patterns, etc.)
-    if (line.includes('.') && !line.startsWith('.')) {
+    // Detect if this is a stream chain that should be split
+    const isStreamChain = detectStreamChain(line);
+
+    // Handle stream method chaining
+    if (isStreamChain) {
       const chainPattern = /^([^.]+)(\..+)$/;
       const match = line.match(chainPattern);
 
@@ -31,7 +34,7 @@ export function formatJavaCode(code: string): string {
         // Split chain by dots followed by method calls
         const chainMethods = chainPart.split(/(?=\.[a-zA-Z_$][a-zA-Z0-9_$]*\()/);
 
-        if (chainMethods.length > 1) {
+        if (chainMethods.length > 0) {
           // Format the base part
           const formattedBase = formatLine(beforeChain);
           const baseIndent = INDENT.repeat(indentLevel);
@@ -59,7 +62,7 @@ export function formatJavaCode(code: string): string {
       }
     }
 
-    // Format regular line
+    // Format regular line (no stream chain splitting)
     const formattedLine = formatLine(line);
     const indent = INDENT.repeat(indentLevel);
     formattedLines.push(indent + formattedLine);
@@ -79,6 +82,29 @@ export function formatJavaCode(code: string): string {
   }
 
   return formattedLines.join('\n');
+}
+
+function detectStreamChain(line: string): boolean {
+  // Check if this is a stream operation that should be split across lines
+  const streamKeywords = ['.stream()', '.parallelStream()', '.filter(', '.map(', '.flatMap(',
+                          '.reduce(', '.collect(', '.forEach(', '.peek(', '.sorted(',
+                          '.distinct(', '.limit(', '.skip(', '.allMatch(', '.anyMatch(',
+                          '.noneMatch(', '.findFirst(', '.findAny(', '.count(', '.min(', '.max(',
+                          '.toArray(', '.of('];
+
+  // Check if line contains stream operations
+  const hasStreamOperation = streamKeywords.some(keyword => line.includes(keyword));
+
+  if (!hasStreamOperation) {
+    return false;
+  }
+
+  // Count method calls in the chain
+  const methodCallMatches = line.match(/\.[a-zA-Z_$][a-zA-Z0-9_$]*\(/g);
+  const methodCallCount = methodCallMatches ? methodCallMatches.length : 0;
+
+  // Only split if there are multiple method calls (3 or more for streams)
+  return methodCallCount >= 3;
 }
 
 function formatLine(line: string): string {
@@ -101,11 +127,13 @@ function formatLine(line: string): string {
   // Space after comma
   formatted = formatted.replace(/,\s*/g, ', ');
 
-  // Space around binary operators
+  // Space around binary operators (but be careful with special cases)
   formatted = formatted.replace(/\s*([+\-*/%=<>!&|^]+)\s*/g, (match, operator) => {
     // Don't add spaces for unary operators or special cases
     if (operator === '++' || operator === '--') return operator;
     if (operator === '!') return operator;
+    // Handle arrow functions in lambdas
+    if (operator === '->') return ' -> ';
     return ` ${operator} `;
   });
 
@@ -115,7 +143,7 @@ function formatLine(line: string): string {
   // No space before semicolon
   formatted = formatted.replace(/\s+;/g, ';');
 
-  // No space inside parentheses (unless it's after a keyword)
+  // No space inside parentheses
   formatted = formatted.replace(/\(\s+/g, '(');
   formatted = formatted.replace(/\s+\)/g, ')');
 
