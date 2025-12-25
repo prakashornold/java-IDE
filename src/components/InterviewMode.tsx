@@ -99,21 +99,22 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
             <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-[#365880] rounded">
               <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" strokeWidth={2.5} />
             </div>
-            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-semibold text-[#A9B7C6]">
-              JavaCodingPractice.com - Interview Mode
+            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-semibold text-[#A9B7C6] flex items-center gap-2">
+              <span>JavaCodingPractice.com - Interview Mode</span>
+              {user && (
+                <>
+                  <span className="hidden sm:inline">-</span>
+                  <span className="flex items-center gap-1.5 text-[#BBBBBB]">
+                    <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <span className="hidden sm:inline">{userName}</span>
+                    <span className="sm:hidden">{userName.split(' ')[0]}</span>
+                  </span>
+                </>
+              )}
             </h1>
           </div>
 
           <div className="flex items-center gap-3">
-            {user && (
-              <div className="flex items-center gap-2 text-sm font-medium text-[#BBBBBB] px-3 py-1.5">
-                <User className="w-4 h-4" />
-                <span className="hidden sm:inline">{userName}</span>
-                <span className="sm:hidden">
-                  {userName.split(' ')[0]}
-                </span>
-              </div>
-            )}
             {onNavigateHome && (
               <button
                 onClick={onNavigateHome}
