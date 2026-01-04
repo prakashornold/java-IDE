@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BarChart3, Zap, Target, Flame, Crown, ArrowLeft, TrendingUp } from 'lucide-react';
-import { supabase } from '../config/supabase';
+import axios from 'axios';
+import { appConfig } from '../config/app.config';
 import { useAuth } from '../context/AuthContext';
 import { JavaProblem } from '../types/problem.types';
 import { Footer } from './Footer';
@@ -37,15 +38,11 @@ export function Dashboard({ onNavigateHome, cachedProblems }: DashboardProps) {
     try {
       const problems = cachedProblems;
 
-      const { data: progress, error: progressError } = await supabase
-        .from('user_problem_progress')
-        .select('problem_id, completed')
-        .eq('user_id', user.id)
-        .eq('completed', true);
+      // Fetch user progress from backend API
+      const response = await axios.get(`${appConfig.api.baseUrl}/user/progress`);
+      const progress = response.data as Array<{ problem_id: string; completed: boolean }>;
 
-      if (progressError) throw progressError;
-
-      const completedIds = new Set(progress?.map(p => p.problem_id) || []);
+      const completedIds = new Set(progress?.map((p) => p.problem_id) || []);
 
       const difficultyMap = new Map<string, { total: number; completed: number }>();
       const difficulties = ['basic', 'intermediate', 'advanced', 'expert'];

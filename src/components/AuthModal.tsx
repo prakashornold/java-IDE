@@ -1,6 +1,6 @@
 import { X, Terminal } from 'lucide-react';
 import { createPortal } from 'react-dom';
-import { supabase } from '../config/supabase';
+import { appConfig } from '../config/app.config';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -12,20 +12,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   const handleGoogleSignIn = async () => {
     try {
-      const siteUrl = import.meta.env.VITE_SITE_URL || window.location.origin;
-      const redirectUrl = `${siteUrl}${window.location.pathname}`;
+      // Redirect to backend Google OAuth endpoint
+      const redirectUrl = `${window.location.origin}/auth/callback`;
+      const authUrl = `${appConfig.api.baseUrl}/auth/google?redirect_uri=${encodeURIComponent(redirectUrl)}`;
 
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: redirectUrl,
-        },
-      });
-
-      if (error) {
-        console.error('Error signing in with Google:', error);
-        alert('Failed to sign in with Google. Please try again.');
-      }
+      // Redirect to backend OAuth flow
+      window.location.href = authUrl;
     } catch (error) {
       console.error('Error:', error);
       alert('An error occurred. Please try again.');

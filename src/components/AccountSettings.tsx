@@ -8,15 +8,14 @@ interface AccountSettingsProps {
 }
 
 export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
-  const { user, profile, refreshProfile, isAdmin } = useAuth();
+  const { user, refreshProfile, isAdmin } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
 
-  const userName = user?.user_metadata?.full_name ||
-                   (profile?.first_name && profile?.last_name
-                     ? `${profile.first_name} ${profile.last_name}`
-                     : profile?.first_name || profile?.last_name || 'User');
+  const userName = (user?.first_name && user?.last_name
+    ? `${user.first_name} ${user.last_name}`
+    : user?.first_name || user?.last_name || user?.email?.split('@')[0] || 'User');
 
-  const userAvatar = user?.user_metadata?.avatar_url || profile?.avatar_url;
+  const userAvatar = user?.avatar_url;
 
   const handleRefresh = async () => {
     setRefreshing(true);

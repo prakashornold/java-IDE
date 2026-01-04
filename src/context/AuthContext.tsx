@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '../config/supabase';
+import axios from 'axios';
+import { appConfig } from '../config/app.config';
 
-interface UserProfile {
+interface User {
   id: string;
   email: string;
   first_name: string | null;
@@ -10,102 +10,111 @@ interface UserProfile {
   avatar_url: string | null;
   is_admin: boolean;
   is_blocked: boolean;
+  created_at: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  profile: UserProfile | null;
-  session: Session | null;
   loading: boolean;
   isAdmin: boolean;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  setAccessToken: (token: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const TOKEN_KEY = 'access_token';
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Setup axios interceptor to add auth token to requests
+  useEffect(() => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          // Token expired or invalid
+          localStorage.removeItem(TOKEN_KEY);
+          setUser(null);
+          delete axios.defaults.headers.common['Authorization'];
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      axios.interceptors.response.eject(interceptor);
+    };
+  }, []);
 
   useEffect(() => {
     const initializeAuth = async () => {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await loadUserProfile(session.user.id);
-        } else {
-          setLoading(false);
+      const token = localStorage.getItem(TOKEN_KEY);
+      if (token) {
+        try {
+          await loadUserProfile();
+        } catch (error) {
+          console.error('Error loading user profile:', error);
+          localStorage.removeItem(TOKEN_KEY);
+          delete axios.defaults.headers.common['Authorization'];
         }
-      } catch (error) {
-        console.error('Error initializing auth:', error);
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     initializeAuth();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      (async () => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          await loadUserProfile(session.user.id);
-        } else {
-          setProfile(null);
-        }
-        setLoading(false);
-      })();
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
-  const loadUserProfile = async (userId: string) => {
+  const loadUserProfile = async () => {
     try {
-      const { data, error } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', userId)
-        .maybeSingle();
-
-      if (error) {
-        console.error('Error loading user profile:', error);
-      } else {
-        console.log('Profile loaded:', data);
-        console.log('Is admin:', data?.is_admin);
-        setProfile(data);
-      }
+      const response = await axios.get(`${appConfig.api.baseUrl}/auth/profile`);
+      setUser(response.data);
     } catch (error) {
       console.error('Error loading user profile:', error);
-    } finally {
-      setLoading(false);
+      throw error;
     }
   };
 
+  const setAccessToken = (token: string) => {
+    localStorage.setItem(TOKEN_KEY, token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    loadUserProfile().catch(console.error);
+  };
+
   const signOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
-    setSession(null);
+    try {
+      await axios.post(`${appConfig.api.baseUrl}/auth/logout`);
+    } catch (error) {
+      console.error('Error during logout:', error);
+    } finally {
+      localStorage.removeItem(TOKEN_KEY);
+      delete axios.defaults.headers.common['Authorization'];
+      setUser(null);
+    }
   };
 
   const refreshProfile = async () => {
     if (user) {
-      await loadUserProfile(user.id);
+      try {
+        await loadUserProfile();
+      } catch (error) {
+        console.error('Error refreshing profile:', error);
+      }
     }
   };
 
-  const isAdmin = profile?.is_admin ?? false;
+  const isAdmin = user?.is_admin ?? false;
 
   return (
-    <AuthContext.Provider value={{ user, profile, session, loading, isAdmin, signOut, refreshProfile }}>
+    <AuthContext.Provider value={{ user, loading, isAdmin, signOut, refreshProfile, setAccessToken }}>
       {children}
     </AuthContext.Provider>
   );

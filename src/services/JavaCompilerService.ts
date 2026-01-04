@@ -7,11 +7,8 @@ export class JavaCompilerService implements ICompilerService {
   private serviceUrl: string;
 
   constructor() {
-    const supabaseUrl = appConfig.database.supabase?.url;
-    if (!supabaseUrl) {
-      throw new Error('Compiler service URL is not configured');
-    }
-    this.serviceUrl = appConfig.compiler.serviceUrl || `${supabaseUrl}/functions/v1/compile-java`;
+    const apiBaseUrl = appConfig.api.baseUrl;
+    this.serviceUrl = appConfig.compiler.serviceUrl || `${apiBaseUrl}/compile`;
   }
 
   private extractMainClassName(code: string): string {
@@ -81,7 +78,7 @@ export class JavaCompilerService implements ICompilerService {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          const errorData = error.response.data as any;
+          const errorData = error.response.data as { data?: { error?: string }; error?: string };
           return {
             error: errorData?.data?.error || errorData?.error || 'Compilation error occurred',
             status: 'error',

@@ -6,7 +6,7 @@ export function formatJavaCode(code: string): string {
   const CONTINUATION_INDENT = '        '; // 8 spaces for method chaining
 
   for (let i = 0; i < lines.length; i++) {
-    let line = lines[i].trim();
+    const line = lines[i].trim();
 
     // Skip empty lines
     if (line === '') {
@@ -87,10 +87,10 @@ export function formatJavaCode(code: string): string {
 function detectStreamChain(line: string): boolean {
   // Check if this is a stream operation that should be split across lines
   const streamKeywords = ['.stream()', '.parallelStream()', '.filter(', '.map(', '.flatMap(',
-                          '.reduce(', '.collect(', '.forEach(', '.peek(', '.sorted(',
-                          '.distinct(', '.limit(', '.skip(', '.allMatch(', '.anyMatch(',
-                          '.noneMatch(', '.findFirst(', '.findAny(', '.count(', '.min(', '.max(',
-                          '.toArray(', '.of('];
+    '.reduce(', '.collect(', '.forEach(', '.peek(', '.sorted(',
+    '.distinct(', '.limit(', '.skip(', '.allMatch(', '.anyMatch(',
+    '.noneMatch(', '.findFirst(', '.findAny(', '.count(', '.min(', '.max(',
+    '.toArray(', '.of('];
 
   // Check if line contains stream operations
   const hasStreamOperation = streamKeywords.some(keyword => line.includes(keyword));
@@ -128,7 +128,7 @@ function formatLine(line: string): string {
   formatted = formatted.replace(/,\s*/g, ', ');
 
   // Space around binary operators (but be careful with special cases)
-  formatted = formatted.replace(/\s*([+\-*/%=<>!&|^]+)\s*/g, (match, operator) => {
+  formatted = formatted.replace(/\s*([+\-*/%=<>!&|^]+)\s*/g, (_, operator) => {
     // Don't add spaces for unary operators or special cases
     if (operator === '++' || operator === '--') return operator;
     if (operator === '!') return operator;

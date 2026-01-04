@@ -1,4 +1,5 @@
 import Editor from '@monaco-editor/react';
+import type * as monaco from 'monaco-editor';
 import { Loader2, Play, Eye, AlignLeft } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
@@ -23,7 +24,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
   const [activeTab, setActiveTab] = useState<TabType>('code');
   const [isFormatting, setIsFormatting] = useState(false);
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
 
   function getEditorOptions() {
     const width = window.innerWidth;
@@ -81,9 +82,10 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     onChange(value || '');
   };
 
-  const handleEditorMount = (editor: any) => {
+  const handleEditorMount = (editor: monaco.editor.IStandaloneCodeEditor) => {
     editorRef.current = editor;
-    const monacoInstance = (window as any).monaco;
+    // Access monaco from window when it's available
+    const monacoInstance = (window as typeof window & { monaco?: typeof monaco }).monaco;
     if (monacoInstance) {
       editor.addCommand(monacoInstance.KeyMod.CtrlCmd | monacoInstance.KeyCode.Enter, () => {
         onRun();
@@ -100,24 +102,30 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
       setIsFormatting(true);
       const currentCode = editorRef.current.getValue();
 
-      const apiUrl = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/format-java`;
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code: currentCode })
-      });
+      // Use local formatter utility instead of backend API for now
+      // You can uncomment the API call if your backend implements /format endpoint
+      const { formatJavaCode } = await import('../utils/javaFormatter');
+      const formattedCode = formatJavaCode(currentCode);
+      editorRef.current.setValue(formattedCode);
 
-      if (!response.ok) {
-        throw new Error('Failed to format code');
-      }
-
-      const data = await response.json();
-      if (data.code) {
-        editorRef.current.setValue(data.code);
-      }
+      // Alternative: Use backend API for formatting (uncomment if backend has /format endpoint)
+      // const { appConfig } = await import('../config/app.config');
+      // const response = await fetch(`${appConfig.api.baseUrl}/format`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ code: currentCode })
+      // });
+      // 
+      // if (!response.ok) {
+      //   throw new Error('Failed to format code');
+      // }
+      // 
+      // const data = await response.json();
+      // if (data.code) {
+      //   editorRef.current.setValue(data.code);
+      // }
     } catch (error) {
       console.error('Error formatting code:', error);
     } finally {
@@ -132,21 +140,19 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
           <div className="flex">
             <button
               onClick={() => setActiveTab('problem')}
-              className={`px-4 py-2 text-xs font-medium transition-colors ${
-                activeTab === 'problem'
-                  ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                  : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-              }`}
+              className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'problem'
+                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+                }`}
             >
               Problem
             </button>
             <button
               onClick={() => setActiveTab('code')}
-              className={`px-4 py-2 text-xs font-medium transition-colors ${
-                activeTab === 'code'
-                  ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                  : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-              }`}
+              className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'code'
+                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+                }`}
             >
               Code
             </button>
@@ -158,11 +164,10 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
                   setActiveTab('solution');
                 }
               }}
-              className={`px-4 py-2 text-xs font-medium transition-colors ${
-                activeTab === 'solution'
-                  ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                  : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-              }`}
+              className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'solution'
+                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+                }`}
             >
               Solution
             </button>
@@ -177,11 +182,10 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
             <button
               onClick={onShowSolution}
               disabled={showFullSolution}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded transition-all ${
-                showFullSolution
-                  ? 'bg-[#45494A] text-[#808080] cursor-not-allowed'
-                  : 'bg-[#2a2d2e] hover:bg-[#3a3d3e] text-[#BBBBBB] border border-[#6B6B6B]'
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded transition-all ${showFullSolution
+                ? 'bg-[#45494A] text-[#808080] cursor-not-allowed'
+                : 'bg-[#2a2d2e] hover:bg-[#3a3d3e] text-[#BBBBBB] border border-[#6B6B6B]'
+                }`}
               title="Show complete solution"
             >
               <Eye className="w-3.5 h-3.5" />
@@ -220,15 +224,14 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
                 <div>
                   <div className="flex items-center gap-3 mb-3">
                     <span className="text-[#808080] text-sm font-medium">Problem #{currentProblem.number}</span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${
-                      currentProblem.difficulty === 'basic'
-                        ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                        : currentProblem.difficulty === 'intermediate'
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${currentProblem.difficulty === 'basic'
+                      ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                      : currentProblem.difficulty === 'intermediate'
                         ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
                         : currentProblem.difficulty === 'advanced'
-                        ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                        : 'bg-red-500/20 text-red-400 border border-red-500/30'
-                    }`}>
+                          ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                          : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                      }`}>
                       {currentProblem.difficulty}
                     </span>
                   </div>

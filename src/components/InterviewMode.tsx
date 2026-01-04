@@ -19,7 +19,7 @@ interface InterviewModeProps {
 export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
   const { compilerService } = useServices();
   const executionLimit = useExecutionLimit();
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
   const [code, setCode] = useState(INTERVIEW_MODE_CODE);
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
@@ -30,10 +30,9 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const userName = user?.user_metadata?.full_name ||
-                   (profile?.first_name && profile?.last_name
-                     ? `${profile.first_name} ${profile.last_name}`
-                     : profile?.first_name || profile?.last_name || 'User');
+  const userName = (user?.first_name && user?.last_name
+    ? `${user.first_name} ${user.last_name}`
+    : user?.first_name || user?.last_name || user?.email?.split('@')[0] || 'User');
 
   const handleRunCode = async () => {
     if (!executionLimit.canExecute) {
@@ -143,7 +142,7 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
               onRun={handleRunCode}
               currentProblem={null}
               isRunning={isRunning}
-              onShowSolution={() => {}}
+              onShowSolution={() => { }}
               showFullSolution={false}
             />
           </div>
@@ -167,7 +166,7 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
             isRunning={isRunning}
             hasError={hasError}
             layoutMode={layoutMode}
-            onToggleLayout={() => {}}
+            onToggleLayout={() => { }}
             isMobile={false}
           />
         </div>

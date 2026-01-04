@@ -15,17 +15,16 @@ interface HeaderProps {
 }
 
 export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onNavigateToAccountSettings, onNavigateToInterview, onToggleSidebar, isSidebarOpen }: HeaderProps) {
-  const { user, profile, isAdmin, signOut } = useAuth();
+  const { user, isAdmin, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
-  const userName = user?.user_metadata?.full_name ||
-                   (profile?.first_name && profile?.last_name
-                     ? `${profile.first_name} ${profile.last_name}`
-                     : profile?.first_name || profile?.last_name || 'User');
+  const userName = (user?.first_name && user?.last_name
+    ? `${user.first_name} ${user.last_name}`
+    : user?.first_name || user?.last_name || user?.email?.split('@')[0] || 'User');
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -89,103 +88,103 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
-          {onToggleSidebar && (
-            <button
-              onClick={onToggleSidebar}
-              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
-              title={isSidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
-            >
-              {isSidebarOpen ? (
-                <PanelLeftClose className="w-4 h-4" />
-              ) : (
-                <PanelLeft className="w-4 h-4" />
-              )}
-              <span className="hidden lg:inline">Problems</span>
-            </button>
-          )}
-
-          <button
-            onClick={onRandomProblem}
-            disabled={isLoadingProblem}
-            className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 rounded transition-all"
-            title="Random problem"
-          >
-            <Shuffle className="w-4 h-4" />
-            <span className="hidden sm:inline">{isLoadingProblem ? 'Loading...' : 'Random'}</span>
-          </button>
-
-          {onNavigateToInterview && (
-            <button
-              onClick={onNavigateToInterview}
-              className="text-sm font-medium text-[#6897BB] hover:text-[#87CEEB] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
-              title="Take Test"
-            >
-              Take Test
-            </button>
-          )}
-
-          {onNavigateToDashboard && user && (
-            <button
-              onClick={onNavigateToDashboard}
-              className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
-              title="Dashboard"
-            >
-              Dashboard
-            </button>
-          )}
-
-          {onNavigateToAdmin && isAdmin && (
-            <button
-              onClick={onNavigateToAdmin}
-              className="text-sm font-medium text-[#CC7832] hover:text-[#FFA759] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
-              title="Admin"
-            >
-              Admin
-            </button>
-          )}
-
-          {user ? (
-            <div className="relative" ref={dropdownRef}>
+            {onToggleSidebar && (
               <button
-                onClick={() => setShowDropdown(!showDropdown)}
+                onClick={onToggleSidebar}
                 className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
-                title="Account"
+                title={isSidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
               >
-                <span className="hidden sm:inline">{userName}</span>
-                <span className="sm:hidden">
-                  {userName.split(' ')[0]}
-                </span>
+                {isSidebarOpen ? (
+                  <PanelLeftClose className="w-4 h-4" />
+                ) : (
+                  <PanelLeft className="w-4 h-4" />
+                )}
+                <span className="hidden lg:inline">Problems</span>
               </button>
+            )}
 
-              {showDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-[#1e1e1e] border border-[#323232] rounded-lg shadow-xl py-1 z-50">
-                  <button
-                    onClick={handleMyProfile}
-                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] transition-all"
-                  >
-                    <User className="w-4 h-4" />
-                    My Profile
-                  </button>
-                  <div className="border-t border-[#323232] my-1"></div>
-                  <button
-                    onClick={handleSignOut}
-                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-[#2a2d2e] transition-all"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
             <button
-              onClick={() => setShowAuthModal(true)}
-              className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] px-4 py-1.5 rounded border border-[#555555] hover:bg-[#2a2d2e] transition-all"
-              title="Login"
+              onClick={onRandomProblem}
+              disabled={isLoadingProblem}
+              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 rounded transition-all"
+              title="Random problem"
             >
-              Login
+              <Shuffle className="w-4 h-4" />
+              <span className="hidden sm:inline">{isLoadingProblem ? 'Loading...' : 'Random'}</span>
             </button>
-          )}
+
+            {onNavigateToInterview && (
+              <button
+                onClick={onNavigateToInterview}
+                className="text-sm font-medium text-[#6897BB] hover:text-[#87CEEB] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+                title="Take Test"
+              >
+                Take Test
+              </button>
+            )}
+
+            {onNavigateToDashboard && user && (
+              <button
+                onClick={onNavigateToDashboard}
+                className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+                title="Dashboard"
+              >
+                Dashboard
+              </button>
+            )}
+
+            {onNavigateToAdmin && isAdmin && (
+              <button
+                onClick={onNavigateToAdmin}
+                className="text-sm font-medium text-[#CC7832] hover:text-[#FFA759] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+                title="Admin"
+              >
+                Admin
+              </button>
+            )}
+
+            {user ? (
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+                  title="Account"
+                >
+                  <span className="hidden sm:inline">{userName}</span>
+                  <span className="sm:hidden">
+                    {userName.split(' ')[0]}
+                  </span>
+                </button>
+
+                {showDropdown && (
+                  <div className="absolute right-0 mt-2 w-48 bg-[#1e1e1e] border border-[#323232] rounded-lg shadow-xl py-1 z-50">
+                    <button
+                      onClick={handleMyProfile}
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] transition-all"
+                    >
+                      <User className="w-4 h-4" />
+                      My Profile
+                    </button>
+                    <div className="border-t border-[#323232] my-1"></div>
+                    <button
+                      onClick={handleSignOut}
+                      className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-[#2a2d2e] transition-all"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] px-4 py-1.5 rounded border border-[#555555] hover:bg-[#2a2d2e] transition-all"
+                title="Login"
+              >
+                Login
+              </button>
+            )}
           </nav>
         </div>
       </div>

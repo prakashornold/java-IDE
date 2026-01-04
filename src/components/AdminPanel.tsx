@@ -12,7 +12,7 @@ interface AdminPanelProps {
 }
 
 export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
-  const { isAdmin, profile } = useAuth();
+  const { isAdmin, user } = useAuth();
   const [users, setUsers] = useState<UserData[]>([]);
   const [usersTotal, setUsersTotal] = useState(0);
   const [usersPage, setUsersPage] = useState(1);
@@ -174,7 +174,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
           <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Access Denied</h2>
           <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>You do not have admin privileges.</p>
           <p className="text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>
-            Email: {profile?.email || 'Not logged in'}<br/>
+            Email: {user?.email || 'Not logged in'}<br />
             Admin Status: {isAdmin ? 'Yes' : 'No'}
           </p>
           {onNavigateHome && (
@@ -201,7 +201,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
                 Admin Panel
               </h1>
               <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
-                Logged in as: {profile?.email}
+                Logged in as: {user?.email}
               </p>
             </div>
           </div>
@@ -219,11 +219,10 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
         <div className="flex gap-4">
           <button
             onClick={() => setActiveTab('users')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-              activeTab === 'users'
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${activeTab === 'users'
                 ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
                 : 'text-gray-400 hover:text-white'
-            }`}
+              }`}
           >
             <Users className="w-5 h-5" />
             User Management
@@ -233,22 +232,20 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
               setActiveTab('add-problem');
               resetProblemForm();
             }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-              activeTab === 'add-problem'
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${activeTab === 'add-problem'
                 ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
                 : 'text-gray-400 hover:text-white'
-            }`}
+              }`}
           >
             <Plus className="w-5 h-5" />
             Add Problem
           </button>
           <button
             onClick={() => setActiveTab('manage-problems')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-              activeTab === 'manage-problems'
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${activeTab === 'manage-problems'
                 ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
                 : 'text-gray-400 hover:text-white'
-            }`}
+              }`}
           >
             <List className="w-5 h-5" />
             Manage Problems

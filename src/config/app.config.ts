@@ -6,22 +6,19 @@ export interface AppConfig {
   theme: {
     defaultTheme: 'light' | 'dark';
   };
-  database: {
-    supabase: {
-      url: string;
-      anonKey: string;
-    };
+  api: {
+    baseUrl: string;
   };
   compiler: {
     serviceUrl?: string;
   };
 }
 
-const validateEnvVariable = (key: string, value: string | undefined): string => {
-  if (!value) {
+const validateEnvVariable = (key: string, value: string | undefined, defaultValue?: string): string => {
+  if (!value && !defaultValue) {
     throw new Error(`Missing required environment variable: ${key}`);
   }
-  return value;
+  return value || defaultValue!;
 };
 
 const getConfig = (): AppConfig => {
@@ -33,11 +30,8 @@ const getConfig = (): AppConfig => {
     theme: {
       defaultTheme: (import.meta.env.VITE_DEFAULT_THEME as 'light' | 'dark') || 'dark',
     },
-    database: {
-      supabase: {
-        url: validateEnvVariable('VITE_SUPABASE_URL', import.meta.env.VITE_SUPABASE_URL),
-        anonKey: validateEnvVariable('VITE_SUPABASE_ANON_KEY', import.meta.env.VITE_SUPABASE_ANON_KEY),
-      },
+    api: {
+      baseUrl: validateEnvVariable('VITE_BACKEND_API_URL', import.meta.env.VITE_BACKEND_API_URL, 'http://localhost:8080/api/v1'),
     },
     compiler: {
       serviceUrl: import.meta.env.VITE_COMPILER_SERVICE_URL,

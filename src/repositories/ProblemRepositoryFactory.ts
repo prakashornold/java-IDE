@@ -1,13 +1,10 @@
 import { IProblemRepository } from './IProblemRepository';
-import { SupabaseProblemRepository } from './SupabaseProblemRepository';
+import { ApiProblemRepository } from './ApiProblemRepository';
 import { appConfig } from '../config/app.config';
 
 export class ProblemRepositoryFactory {
   static create(): IProblemRepository {
-    const { database } = appConfig;
-    return new SupabaseProblemRepository(
-      database.supabase.url,
-      database.supabase.anonKey
-    );
+    const { api } = appConfig;
+    return new ApiProblemRepository(api.baseUrl);
   }
 }
