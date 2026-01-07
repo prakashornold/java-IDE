@@ -22,8 +22,8 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const [problemForm, setProblemForm] = useState<AddProblemData>({
     title: '',
     description: '',
-    category: 'General',
-    difficulty: 'Easy',
+    category: 'Streams',
+    difficulty: 'basic',
     starter_code: '',
     solution_code: ''
   });
@@ -159,8 +159,8 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
     setProblemForm({
       title: '',
       description: '',
-      category: 'General',
-      difficulty: 'Easy',
+      category: 'Streams',
+      difficulty: 'basic',
       starter_code: '',
       solution_code: ''
     });

@@ -23,7 +23,7 @@ export interface AddProblemData {
   difficulty: string;
   starter_code: string;
   solution_code: string;
-  test_cases?: string;
+  hints?: string;
 }
 
 export interface ProblemData {
@@ -35,7 +35,7 @@ export interface ProblemData {
   difficulty: string;
   starter_code: string;
   solution_code: string;
-  test_cases: string;
+  hints: string;
   input: string;
   solution: string;
   output: string;
@@ -151,7 +151,6 @@ export class AdminService {
       .from('java_problems')
       .insert([{
         ...problemData,
-        test_cases: problemData.test_cases || '',
         number: nextNumber,
         input: problemData.starter_code || '',  // Keep for backward compatibility
         solution: problemData.solution_code || '',  // Keep for backward compatibility

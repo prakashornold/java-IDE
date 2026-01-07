@@ -4,10 +4,12 @@ export interface JavaProblem {
   id: string;
   number: number;
   title: string;
+  category: string;
   difficulty: DifficultyLevel;
   input: string;
   solution: string;
   output: string;
+  hints?: string;
   created_at: string;
   updated_at: string;
 }
