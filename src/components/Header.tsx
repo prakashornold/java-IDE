@@ -6,7 +6,6 @@ import { useAuth } from '../context/AuthContext';
 interface HeaderProps {
   onRandomProblem: () => void;
   isLoadingProblem: boolean;
-  onNavigateToDashboard?: () => void;
   onNavigateToAdmin?: () => void;
   onNavigateToAccountSettings?: () => void;
   onNavigateToInterview?: () => void;
@@ -15,7 +14,7 @@ interface HeaderProps {
   isSidebarOpen?: boolean;
 }
 
-export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onNavigateToAccountSettings, onNavigateToInterview, onNavigateToCheatsheet, onToggleSidebar, isSidebarOpen }: HeaderProps) {
+export function Header({ onRandomProblem, isLoadingProblem, onNavigateToAdmin, onNavigateToAccountSettings, onNavigateToInterview, onNavigateToCheatsheet, onToggleSidebar, isSidebarOpen }: HeaderProps) {
   const { user, profile, isAdmin, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -130,15 +129,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
               </button>
             )}
 
-            {onNavigateToDashboard && user && (
-              <button
-                onClick={onNavigateToDashboard}
-                className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
-                title="Dashboard"
-              >
-                Dashboard
-              </button>
-            )}
+
 
             {onNavigateToAdmin && isAdmin && (
               <button
@@ -251,17 +242,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
               </button>
             )}
 
-            {onNavigateToDashboard && user && (
-              <>
-                <div className="border-t border-[#323232] my-1"></div>
-                <button
-                  onClick={() => handleNavigate(onNavigateToDashboard)}
-                  className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-2.5 rounded transition-all w-full text-left"
-                >
-                  Dashboard
-                </button>
-              </>
-            )}
+
 
             {onNavigateToAdmin && isAdmin && (
               <button

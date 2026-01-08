@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from 'react';
 import { JavaProblem, hasContent } from '../types/problem.types';
 import { codeSkeletonGenerator } from '../services/CodeSkeletonGenerator';
 import { ShareButton } from './ShareButton';
+import { renderMarkdown } from '../utils/markdownUtils';
 
 interface CodeEditorProps {
   value: string;
@@ -207,7 +208,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
           </div>
         ) : (
           <div className="px-4 py-2 text-sm font-medium text-[#A9B7C6]">
-            Interview Mode - Write your code below
+            Code Editor
           </div>
         )}
         <div className="flex items-center gap-2 px-3">
@@ -290,7 +291,9 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
                   Description
                 </h2>
                 <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
-                  <p className="text-[#CCCCCC] text-sm leading-relaxed whitespace-pre-wrap">{currentProblem.description}</p>
+                  <div className="markdown-content">
+                    {renderMarkdown(currentProblem.description || '')}
+                  </div>
                 </div>
               </div>
             )}
@@ -341,12 +344,8 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
 
               {hasContent(currentProblem.hints) ? (
                 <div className="bg-[#1e1e1e] rounded-lg p-5 border border-[#323232]">
-                  <div className="space-y-3">
-                    {currentProblem.hints!.split('\n').filter(hint => hint.trim()).map((hint, index) => (
-                      <p key={index} className="text-sm text-[#CCCCCC] leading-relaxed">
-                        {index + 1}. {hint.trim()}
-                      </p>
-                    ))}
+                  <div className="markdown-content">
+                    {renderMarkdown(currentProblem.hints!)}
                   </div>
                 </div>
               ) : (

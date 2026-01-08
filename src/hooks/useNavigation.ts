@@ -4,7 +4,6 @@ import { PageType } from '../types/navigation.types';
 export interface UseNavigationResult {
   currentPage: PageType;
   navigateToHome: () => void;
-  navigateToDashboard: () => void;
   navigateToAdmin: () => void;
   navigateToAccountSettings: () => void;
   navigateToInterview: () => void;
@@ -16,7 +15,6 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
 
   const getPageFromPath = useCallback((path: string): PageType => {
     if (path === '/' || path === '') return 'home';
-    if (path === '/dashboard') return 'dashboard';
     if (path === '/admin') return 'admin';
     if (path === '/account-settings') return 'account-settings';
     if (path === '/about') return 'about';
@@ -44,7 +42,6 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
   }, []);
 
   const navigateToHome = useCallback(() => navigateTo('home'), [navigateTo]);
-  const navigateToDashboard = useCallback(() => navigateTo('dashboard'), [navigateTo]);
   const navigateToAdmin = useCallback(() => navigateTo('admin'), [navigateTo]);
   const navigateToAccountSettings = useCallback(() => navigateTo('account-settings'), [navigateTo]);
   const navigateToInterview = useCallback(() => navigateTo('interview'), [navigateTo]);
@@ -53,7 +50,6 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
   return {
     currentPage,
     navigateToHome,
-    navigateToDashboard,
     navigateToAdmin,
     navigateToAccountSettings,
     navigateToInterview,

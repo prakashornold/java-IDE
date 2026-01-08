@@ -3,7 +3,6 @@ import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
 import { ProblemSidebar } from './components/ProblemSidebar';
-import { Dashboard } from './components/Dashboard';
 import { AdminPanel } from './components/AdminPanel';
 import { AccountSettings } from './components/AccountSettings';
 import { InterviewMode } from './components/InterviewMode';
@@ -29,7 +28,6 @@ function App() {
   const getInitialPage = (): typeof navigation.currentPage => {
     const path = window.location.pathname;
     if (path === '/interview') return 'interview';
-    if (path === '/dashboard') return 'dashboard';
     if (path === '/admin') return 'admin';
     if (path === '/account-settings') return 'account-settings';
     if (path === '/cheatsheet') return 'cheatsheet';
@@ -281,15 +279,6 @@ function App() {
     return <AccountSettings onNavigateHome={navigation.navigateToHome} />;
   }
 
-  if (navigation.currentPage === 'dashboard') {
-    return (
-      <Dashboard
-        onNavigateHome={navigation.navigateToHome}
-        cachedProblems={cachedProblems}
-      />
-    );
-  }
-
   if (navigation.currentPage === 'cheatsheet') {
     return <CheatsheetPage onNavigateHome={navigation.navigateToHome} />;
   }
@@ -314,7 +303,6 @@ function App() {
       <Header
         onRandomProblem={handleRandomProblem}
         isLoadingProblem={isLoadingProblem}
-        onNavigateToDashboard={navigation.navigateToDashboard}
         onNavigateToAdmin={navigation.navigateToAdmin}
         onNavigateToAccountSettings={navigation.navigateToAccountSettings}
         onNavigateToInterview={navigation.navigateToInterview}
