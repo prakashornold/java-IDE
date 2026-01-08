@@ -17,6 +17,8 @@ import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
 import { useNavigation } from './hooks/useNavigation';
 import { useExecutionLimit } from './hooks/useExecutionLimit';
 import { errorHandlingService } from './services/ErrorHandlingService';
+import { problemLinkService } from './services/ProblemLinkService';
+import { metaTagService } from './services/MetaTagService';
 import { Loader2, Code2 } from 'lucide-react';
 
 type LayoutMode = 'bottom' | 'side';
@@ -48,7 +50,6 @@ function App() {
   const [isResizing, setIsResizing] = useState(false);
   const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
   const [isLoadingProblem, setIsLoadingProblem] = useState(false);
-  const [showFullSolution, setShowFullSolution] = useState(false);
   const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -85,6 +86,41 @@ function App() {
     };
     loadProblems();
   }, [problemService]);
+
+  /**
+   * Load problem from URL parameter on initial page load
+   * This enables deep linking to specific problems
+   */
+  useEffect(() => {
+    const loadProblemFromUrl = async () => {
+      const problemSlug = problemLinkService.getProblemSlugFromUrl();
+      if (problemSlug && cachedProblems) {
+        const titlePattern = problemLinkService.slugToTitlePattern(problemSlug);
+        const problem = cachedProblems.find(
+          p => p.title.toLowerCase().includes(titlePattern)
+        );
+
+        if (problem) {
+          setCurrentProblem(problem);
+          const practiceCode = problemService.extractPracticeCode(problem.solution || '');
+          setCode(practiceCode);
+        }
+      }
+    };
+
+    loadProblemFromUrl();
+  }, [cachedProblems, problemService]);
+
+  /**
+   * Update meta tags when current problem changes
+   */
+  useEffect(() => {
+    if (currentProblem) {
+      metaTagService.updateProblemMetaTags(currentProblem);
+    } else {
+      metaTagService.resetToDefaults();
+    }
+  }, [currentProblem]);
 
   useEffect(() => {
     const cleanupHash = () => {
@@ -168,9 +204,8 @@ function App() {
       const problem = await problemService.getRandomProblem();
       if (problem) {
         setCurrentProblem(problem);
-        const practiceCode = problemService.extractPracticeCode(problem.solution);
+        const practiceCode = problemService.extractPracticeCode(problem.solution || '');
         setCode(practiceCode);
-        setShowFullSolution(false);
         setOutput('');
         setHasError(false);
       } else {
@@ -187,20 +222,26 @@ function App() {
   };
 
   const handleShowSolution = () => {
-    if (!currentProblem) return;
+    if (!currentProblem || !currentProblem.solution) return;
     setCode(currentProblem.solution);
-    setShowFullSolution(true);
     setOutput('');
     setHasError(false);
   };
 
+  /**
+   * Handles problem selection from sidebar
+   * Updates URL with problem slug for sharing
+   */
   const handleSelectProblem = (problem: JavaProblem) => {
     setCurrentProblem(problem);
-    const practiceCode = problemService.extractPracticeCode(problem.solution);
+    const practiceCode = problemService.extractPracticeCode(problem.solution || '');
     setCode(practiceCode);
-    setShowFullSolution(false);
     setOutput('');
     setHasError(false);
+
+    // Update URL with problem slug
+    problemLinkService.updateUrlWithProblem(problem.title);
+
     if (navigation.currentPage !== 'home') {
       navigation.navigateToHome();
     }
@@ -315,7 +356,7 @@ function App() {
                 currentProblem={currentProblem}
                 isRunning={isRunning}
                 onShowSolution={handleShowSolution}
-                showFullSolution={showFullSolution}
+                onShowAuthModal={() => setShowAuthModal(true)}
               />
             </div>
           </div>

@@ -1,9 +1,11 @@
 import Editor from '@monaco-editor/react';
-import { Loader2, Play, Eye } from 'lucide-react';
+import { Loader2, Play, Eye, Info } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useRef } from 'react';
-import { JavaProblem } from '../types/problem.types';
+import { JavaProblem, hasContent } from '../types/problem.types';
+import { codeSkeletonGenerator } from '../services/CodeSkeletonGenerator';
+import { ShareButton } from './ShareButton';
 
 interface CodeEditorProps {
   value: string;
@@ -12,16 +14,23 @@ interface CodeEditorProps {
   currentProblem?: JavaProblem | null;
   isRunning?: boolean;
   onShowSolution?: () => void;
-  showFullSolution?: boolean;
+  onShowAuthModal?: () => void; // Add callback to show auth modal
 }
 
-type TabType = 'problem' | 'hints' | 'code' | 'solution';
+type TabType = 'problem' | 'hints' | 'code';
 
-export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, onShowSolution, showFullSolution }: CodeEditorProps) {
+/**
+ * Code Editor Component
+ * Main coding interface with skeleton code and solution toggle
+ * Follows clean code principles and SOLID design patterns
+ */
+export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, onShowSolution, onShowAuthModal }: CodeEditorProps) {
   const { theme } = useTheme();
   const { user } = useAuth();
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
-  const [activeTab, setActiveTab] = useState<TabType>('code');
+  const [activeTab, setActiveTab] = useState<TabType>('code'); // Default to Code tab
+  const [isShowingSolution, setIsShowingSolution] = useState(false);
+  const [skeletonCode, setSkeletonCode] = useState<string>('');
   const editorRef = useRef<any>(null);
 
   function getEditorOptions() {
@@ -76,6 +85,58 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  /**
+   * Initialize skeleton code when problem changes
+   */
+  useEffect(() => {
+    if (currentProblem) {
+      const solutionCode = currentProblem.solution_code || currentProblem.solution || currentProblem.starter_code || '';
+      const skeleton = codeSkeletonGenerator.generateSkeleton(solutionCode);
+      setSkeletonCode(skeleton);
+      setIsShowingSolution(false);
+
+      // Set skeleton code as initial editor value
+      if (!isShowingSolution) {
+        onChange(skeleton);
+      }
+    }
+  }, [currentProblem]);
+
+  /**
+   * Handles showing/hiding the full solution
+   * Shows auth modal if user not authenticated
+   */
+  const handleToggleSolution = () => {
+    if (!user && onShowAuthModal) {
+      onShowAuthModal();
+      return;
+    }
+
+    if (!isShowingSolution) {
+      const fullSolution = currentProblem?.solution_code || currentProblem?.solution || '';
+      onChange(fullSolution);
+      setIsShowingSolution(true);
+      if (onShowSolution) {
+        onShowSolution();
+      }
+    } else {
+      onChange(skeletonCode);
+      setIsShowingSolution(false);
+    }
+  };
+
+  /**
+   * Handles run button click
+   * Shows auth modal if user not authenticated
+   */
+  const handleRunClick = () => {
+    if (!user && onShowAuthModal) {
+      onShowAuthModal();
+      return;
+    }
+    onRun();
+  };
+
   const handleEditorChange = (value: string | undefined) => {
     onChange(value || '');
   };
@@ -97,24 +158,43 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
       <div className="flex items-center justify-between border-b border-[#323232] bg-[#1e1e1e]">
         {currentProblem ? (
           <div className="flex">
-            <button
-              onClick={() => setActiveTab('problem')}
-              className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'problem'
-                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-                }`}
-            >
-              Problem
-            </button>
-            <button
-              onClick={() => setActiveTab('hints')}
-              className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'hints'
-                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-                }`}
-            >
-              Hints
-            </button>
+            {/* Show info button to access other tabs */}
+            {activeTab === 'code' && (
+              <button
+                onClick={() => setActiveTab('problem')}
+                className="px-3 py-2 text-xs font-medium transition-colors text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e] flex items-center gap-1"
+                title="View problem details"
+              >
+                <Info className="w-3.5 h-3.5" />
+                <span>Info</span>
+              </button>
+            )}
+
+            {/* Show all tabs when not on Code tab */}
+            {activeTab !== 'code' && (
+              <>
+                <button
+                  onClick={() => setActiveTab('problem')}
+                  className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'problem'
+                    ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                    : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+                    }`}
+                >
+                  Problem
+                </button>
+                <button
+                  onClick={() => setActiveTab('hints')}
+                  className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'hints'
+                    ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                    : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+                    }`}
+                >
+                  Hints
+                </button>
+              </>
+            )}
+
+            {/* Always show Code tab button */}
             <button
               onClick={() => setActiveTab('code')}
               className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'code'
@@ -124,21 +204,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
             >
               Code
             </button>
-            <button
-              onClick={() => {
-                if (!user) {
-                  setActiveTab('solution');
-                } else {
-                  setActiveTab('solution');
-                }
-              }}
-              className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'solution'
-                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-                }`}
-            >
-              Solution
-            </button>
           </div>
         ) : (
           <div className="px-4 py-2 text-sm font-medium text-[#A9B7C6]">
@@ -146,26 +211,48 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
           </div>
         )}
         <div className="flex items-center gap-2 px-3">
-          {activeTab !== 'solution' && (
+          {/* Show buttons only on Code tab */}
+          {activeTab === 'code' && (
             <>
-              {currentProblem && onShowSolution && (
+              {/* Share Button - Always visible */}
+              {currentProblem && (
+                <ShareButton problemTitle={currentProblem.title} />
+              )}
+
+              {/* Show Solution - Clickable for all, prompts login if not authenticated */}
+              {currentProblem && !isShowingSolution && (
                 <button
-                  onClick={onShowSolution}
-                  disabled={showFullSolution}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded transition-all ${showFullSolution
-                    ? 'bg-[#45494A] text-[#808080] cursor-not-allowed'
-                    : 'bg-[#2a2d2e] hover:bg-[#3a3d3e] text-[#BBBBBB] border border-[#6B6B6B]'
-                    }`}
-                  title="Show complete solution"
+                  onClick={handleToggleSolution}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded transition-all bg-[#2a2d2e] hover:bg-[#3a3d3e] text-[#BBBBBB] border border-[#6B6B6B]"
+                  title={!user ? 'Click to login and view solution' : 'Show complete solution'}
                 >
                   <Eye className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Show Solution</span>
                 </button>
               )}
+              {currentProblem && isShowingSolution && (
+                <button
+                  onClick={handleToggleSolution}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded transition-all bg-[#3a3d3e] text-[#808080] border border-[#6B6B6B]"
+                  title="Hide solution and return to skeleton code"
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Hide Solution</span>
+                </button>
+              )}
+
+              {/* Run Button - Clickable for all, prompts login if not authenticated */}
               <button
-                onClick={onRun}
+                onClick={handleRunClick}
                 disabled={isRunning}
-                className="flex items-center gap-1.5 bg-[#365880] hover:bg-[#4A6B8C] disabled:bg-[#45494A] disabled:cursor-not-allowed text-white px-4 py-1.5 rounded text-xs font-medium transition-all border border-[#466D94]"
+                className="flex items-center gap-1.5 px-4 py-1.5 rounded text-xs font-medium transition-all bg-[#365880] hover:bg-[#4A6B8C] disabled:bg-[#45494A] disabled:cursor-not-allowed text-white border border-[#466D94]"
+                title={
+                  !user
+                    ? 'Click to login and run code'
+                    : isRunning
+                      ? 'Running...'
+                      : 'Run code (Ctrl+Enter)'
+                }
               >
                 <Play className="w-3.5 h-3.5" fill="currentColor" />
                 <span>{isRunning ? 'Running...' : 'Run'}</span>
@@ -178,70 +265,63 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
       {currentProblem && activeTab === 'problem' && (
         <div className="flex-1 overflow-auto bg-[#2B2B2B] p-6">
           <div className="max-w-4xl mx-auto space-y-6">
-            {currentProblem ? (
-              <>
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-[#808080] text-sm font-medium">Problem #{currentProblem.number}</span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${currentProblem.difficulty === 'basic'
-                      ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-                      : currentProblem.difficulty === 'intermediate'
-                        ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                        : currentProblem.difficulty === 'advanced'
-                          ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                          : 'bg-red-500/20 text-red-400 border border-red-500/30'
-                      }`}>
-                      {currentProblem.difficulty}
-                    </span>
-                  </div>
-                  <h1 className="text-2xl font-bold text-[#FFFFFF] mb-4">{currentProblem.title}</h1>
-                </div>
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-[#808080] text-sm font-medium">Problem #{currentProblem.number}</span>
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${currentProblem.difficulty === 'basic'
+                  ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                  : currentProblem.difficulty === 'intermediate'
+                    ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                    : currentProblem.difficulty === 'advanced'
+                      ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                      : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                  }`}>
+                  {currentProblem.difficulty}
+                </span>
+              </div>
+              <h1 className="text-2xl font-bold text-[#FFFFFF] mb-4">{currentProblem.title}</h1>
+            </div>
 
-                <div className="space-y-6">
-                  <div>
-                    <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3 flex items-center gap-2">
-                      <span className="w-1 h-5 bg-blue-500 rounded"></span>
-                      Sample Input
-                    </h2>
-                    <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
-                      <pre className="text-[#CCCCCC] font-mono text-sm whitespace-pre-wrap break-words overflow-x-auto">{currentProblem.input}</pre>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3 flex items-center gap-2">
-                      <span className="w-1 h-5 bg-green-500 rounded"></span>
-                      Expected Output
-                    </h2>
-                    <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
-                      <pre className="text-[#CCCCCC] font-mono text-sm whitespace-pre-wrap break-words overflow-x-auto">{currentProblem.output}</pre>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
+            {/* Description - Only show if present */}
+            {hasContent(currentProblem.description) && (
               <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide bg-green-500/20 text-green-400 border border-green-500/30`}>
-                    BASIC
-                  </span>
-                </div>
-                <h1 className="text-2xl font-bold text-[#FFFFFF] mb-4">Welcome Program</h1>
-                <p className="text-[#CCCCCC] mb-6">Write a Java program that prints a welcome message to the console.</p>
-
-                <div className="space-y-6">
-                  <div>
-                    <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3 flex items-center gap-2">
-                      <span className="w-1 h-5 bg-green-500 rounded"></span>
-                      Expected Output
-                    </h2>
-                    <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
-                      <pre className="text-[#CCCCCC] font-mono text-sm">Welcome to JavaCodingPractice.com!</pre>
-                    </div>
-                  </div>
+                <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3 flex items-center gap-2">
+                  <span className="w-1 h-5 bg-purple-500 rounded"></span>
+                  Description
+                </h2>
+                <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
+                  <p className="text-[#CCCCCC] text-sm leading-relaxed whitespace-pre-wrap">{currentProblem.description}</p>
                 </div>
               </div>
             )}
+
+            <div className="space-y-6">
+              {/* Sample Input - Only show if present */}
+              {hasContent(currentProblem.input) && (
+                <div>
+                  <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3 flex items-center gap-2">
+                    <span className="w-1 h-5 bg-blue-500 rounded"></span>
+                    Sample Input
+                  </h2>
+                  <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
+                    <pre className="text-[#CCCCCC] font-mono text-sm whitespace-pre-wrap break-words overflow-x-auto">{currentProblem.input}</pre>
+                  </div>
+                </div>
+              )}
+
+              {/* Expected Output - Only show if present */}
+              {hasContent(currentProblem.output) && (
+                <div>
+                  <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3 flex items-center gap-2">
+                    <span className="w-1 h-5 bg-green-500 rounded"></span>
+                    Expected Output
+                  </h2>
+                  <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
+                    <pre className="text-[#CCCCCC] font-mono text-sm whitespace-pre-wrap break-words overflow-x-auto">{currentProblem.output}</pre>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -256,96 +336,26 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
               </div>
             </div>
           ) : (
-            <div className="max-w-4xl mx-auto space-y-6">
-              <div>
-                <h2 className="text-xl font-bold text-[#FFFFFF] mb-4 flex items-center gap-2">
-                  <span className="w-1 h-6 bg-yellow-500 rounded"></span>
-                  Hints
-                </h2>
-              </div>
+            <div className="max-w-4xl mx-auto space-y-4">
+              <h2 className="text-xl font-bold text-[#FFFFFF] mb-4">Hints</h2>
 
-              {currentProblem.hints ? (
-                <div className="space-y-4">
-                  {currentProblem.hints.split('\n').filter(hint => hint.trim()).map((hint, index) => (
-                    <div key={index} className="bg-[#1e1e1e] rounded-lg p-5 border border-[#323232]">
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                          <span className="text-yellow-400 text-xs font-bold">{index + 1}</span>
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm text-[#CCCCCC] leading-relaxed">
-                            {hint.trim()}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+              {hasContent(currentProblem.hints) ? (
+                <div className="bg-[#1e1e1e] rounded-lg p-5 border border-[#323232]">
+                  <div className="space-y-3">
+                    {currentProblem.hints!.split('\n').filter(hint => hint.trim()).map((hint, index) => (
+                      <p key={index} className="text-sm text-[#CCCCCC] leading-relaxed">
+                        {index + 1}. {hint.trim()}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <div className="bg-[#1e1e1e] rounded-lg p-5 border border-[#323232]">
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                        <span className="text-yellow-400 text-xs font-bold">1</span>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-sm font-semibold text-[#FFFFFF] mb-2">Understand the Problem</h3>
-                        <p className="text-sm text-[#CCCCCC] leading-relaxed">
-                          Read the problem statement carefully and identify the input and expected output. Break down the problem into smaller steps.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#1e1e1e] rounded-lg p-5 border border-[#323232]">
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                        <span className="text-yellow-400 text-xs font-bold">2</span>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-sm font-semibold text-[#FFFFFF] mb-2">Plan Your Approach</h3>
-                        <p className="text-sm text-[#CCCCCC] leading-relaxed">
-                          Think about the data structures and algorithms that might be useful. Consider edge cases and constraints.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#1e1e1e] rounded-lg p-5 border border-[#323232]">
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                        <span className="text-yellow-400 text-xs font-bold">3</span>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-sm font-semibold text-[#FFFFFF] mb-2">Write Clean Code</h3>
-                        <p className="text-sm text-[#CCCCCC] leading-relaxed">
-                          Start with the basic structure and add logic step by step. Use meaningful variable names and add comments where necessary.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="bg-[#1e1e1e] rounded-lg p-5 border border-[#323232]">
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                        <span className="text-yellow-400 text-xs font-bold">4</span>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-sm font-semibold text-[#FFFFFF] mb-2">Test Your Code</h3>
-                        <p className="text-sm text-[#CCCCCC] leading-relaxed">
-                          Run your code with the sample input first, then test with edge cases. Debug any issues before submitting.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                <div className="bg-[#1e1e1e] rounded-lg p-5 border border-[#323232]">
+                  <p className="text-sm text-[#CCCCCC]">
+                    No specific hints available for this problem. Try breaking down the problem into smaller steps.
+                  </p>
                 </div>
               )}
-
-              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mt-6">
-                <p className="text-sm text-blue-300">
-                  <strong>💡 Pro Tip:</strong> If you're stuck, try working through a simpler version of the problem first, then build up to the full solution.
-                </p>
-              </div>
             </div>
           )}
         </div>
@@ -383,39 +393,13 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
                 <p className="text-sm text-[#808080]">Sign in to view the solution</p>
               </div>
             </div>
-          ) : currentProblem ? (
-            <div className="h-full">
-              <Editor
-                height="100%"
-                width="100%"
-                defaultLanguage="java"
-                value={currentProblem.solution}
-                options={{
-                  ...editorOptions,
-                  readOnly: true,
-                }}
-                theme={theme === 'dark' ? 'vs-dark' : 'light'}
-                loading={
-                  <div className="h-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
-                    <div className="flex flex-col items-center gap-3">
-                      <Loader2 className="w-8 h-8 animate-spin" style={{ color: 'var(--accent-primary)' }} />
-                      <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Loading Solution...</p>
-                    </div>
-                  </div>
-                }
-              />
-            </div>
           ) : (
             <div className="h-full">
               <Editor
                 height="100%"
                 width="100%"
                 defaultLanguage="java"
-                value={`public class Main {
-    public static void main(String[] args) {
-        System.out.println("Welcome to JavaCodingPractice.com!");
-    }
-}`}
+                value={currentProblem.solution || currentProblem.solution_code || ''}
                 options={{
                   ...editorOptions,
                   readOnly: true,

@@ -21,11 +21,14 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const [activeTab, setActiveTab] = useState<'users' | 'add-problem' | 'manage-problems'>('users');
   const [problemForm, setProblemForm] = useState<AddProblemData>({
     title: '',
-    description: '',
     category: 'Streams',
     difficulty: 'basic',
+    description: '',
+    input: '',
+    output: '',
     starter_code: '',
-    solution_code: ''
+    solution_code: '',
+    hints: ''
   });
   const [editingProblemId, setEditingProblemId] = useState<string | null>(null);
   const [problems, setProblems] = useState<ProblemData[]>([]);
@@ -127,11 +130,14 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const handleEditProblem = (problem: ProblemData) => {
     setProblemForm({
       title: problem.title,
-      description: problem.description,
       category: problem.category,
       difficulty: problem.difficulty,
-      starter_code: problem.starter_code || problem.input,  // Use new field, fallback to old
-      solution_code: problem.solution_code || problem.solution  // Use new field, fallback to old
+      description: problem.description || '',
+      input: problem.input || '',
+      output: problem.output || '',
+      starter_code: problem.starter_code || '',
+      solution_code: problem.solution_code || '',
+      hints: problem.hints || ''
     });
     setEditingProblemId(problem.id);
     setActiveTab('add-problem');
@@ -158,11 +164,14 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const resetProblemForm = () => {
     setProblemForm({
       title: '',
-      description: '',
       category: 'Streams',
       difficulty: 'basic',
+      description: '',
+      input: '',
+      output: '',
       starter_code: '',
-      solution_code: ''
+      solution_code: '',
+      hints: ''
     });
     setEditingProblemId(null);
   };

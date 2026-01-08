@@ -16,29 +16,39 @@ export interface ProblemProgress {
   total_attempts: number;
 }
 
+/**
+ * Data Transfer Object for adding new problems
+ * Contains all fields required to create a problem
+ */
 export interface AddProblemData {
   title: string;
-  description: string;
   category: string;
   difficulty: string;
+  description?: string;
+  input?: string;
+  output?: string;
   starter_code: string;
   solution_code: string;
   hints?: string;
 }
 
+/**
+ * Complete problem data from database
+ * Matches java_problems table schema exactly
+ */
 export interface ProblemData {
   id: string;
   number: number;
   title: string;
-  description: string;
   category: string;
   difficulty: string;
-  starter_code: string;
-  solution_code: string;
-  hints: string;
-  input: string;
-  solution: string;
-  output: string;
+  description?: string;
+  input?: string;
+  output?: string;
+  starter_code?: string;
+  solution_code?: string;
+  hints?: string;
+  solution?: string;
   created_at: string;
   updated_at: string;
 }
@@ -137,6 +147,10 @@ export class AdminService {
     if (error) throw error;
   }
 
+  /**
+   * Adds a new problem to the database
+   * @param problemData Complete problem data to insert
+   */
   async addProblem(problemData: AddProblemData): Promise<void> {
     const { data: lastProblem } = await supabase
       .from('java_problems')
@@ -150,11 +164,17 @@ export class AdminService {
     const { error } = await supabase
       .from('java_problems')
       .insert([{
-        ...problemData,
         number: nextNumber,
-        input: problemData.starter_code || '',  // Keep for backward compatibility
-        solution: problemData.solution_code || '',  // Keep for backward compatibility
-        output: ''
+        title: problemData.title,
+        category: problemData.category,
+        difficulty: problemData.difficulty,
+        description: problemData.description || '',
+        input: problemData.input || '',
+        output: problemData.output || '',
+        starter_code: problemData.starter_code,
+        solution_code: problemData.solution_code,
+        solution: problemData.solution_code, // Legacy field for backward compatibility
+        hints: problemData.hints || ''
       }]);
 
     if (error) throw error;
@@ -203,12 +223,20 @@ export class AdminService {
     return { problems: data || [], total: count || 0 };
   }
 
+  /**
+   * Updates an existing problem in the database
+   * @param id Problem ID to update
+   * @param problemData Partial problem data to update
+   */
   async updateProblem(id: string, problemData: Partial<AddProblemData>): Promise<void> {
     const updateData: any = {
-      ...problemData,
-      input: problemData.starter_code || '',  // Keep for backward compatibility
-      solution: problemData.solution_code || ''  // Keep for backward compatibility
+      ...problemData
     };
+
+    // Maintain backward compatibility with legacy 'solution' field
+    if (problemData.solution_code) {
+      updateData.solution = problemData.solution_code;
+    }
 
     const { error } = await supabase
       .from('java_problems')

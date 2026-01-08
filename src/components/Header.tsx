@@ -72,10 +72,15 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
           <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-[#365880] rounded flex-shrink-0">
             <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" strokeWidth={2.5} />
           </div>
-          <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-semibold text-[#A9B7C6] truncate">
-            <span className="hidden sm:inline">JavaCodingPractice.com</span>
-            <span className="sm:hidden">JavaCodingPractice</span>
-          </h1>
+          <div className="flex flex-col justify-center min-w-0">
+            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-semibold text-[#A9B7C6] truncate">
+              <span className="hidden sm:inline">JavaCodingPractice.com</span>
+              <span className="sm:hidden">JavaCoding</span>
+            </h1>
+            <p className="text-[9px] xs:text-[10px] sm:text-xs text-[#808080] tracking-tight truncate hidden xs:block">
+              Makes Easy to Practice AnyTime AnyWhere
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">

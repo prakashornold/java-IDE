@@ -8,6 +8,10 @@ interface ProblemFormProps {
   submitStatus: { type: 'success' | 'error'; message: string } | null;
 }
 
+/**
+ * Form component for adding/editing problems
+ * Follows controlled component pattern and includes all database fields
+ */
 export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: ProblemFormProps) {
   const handleChange = (field: keyof AddProblemData, value: string) => {
     onFormChange({ ...formData, [field]: value });
@@ -16,7 +20,7 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
   return (
     <div className="h-full overflow-auto" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="max-w-[1600px] mx-auto p-3">
-        {/* Compact Header */}
+        {/* Header */}
         <div className="mb-3 pb-2 border-b" style={{ borderColor: 'var(--border-color)' }}>
           <h2 className="text-lg font-bold" style={{ color: 'var(--text-primary)' }}>
             Add New Problem
@@ -24,7 +28,7 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
         </div>
 
         <form onSubmit={onSubmit} className="space-y-3">
-          {/* Row 1: Title, Category, Difficulty - 3 columns */}
+          {/* Row 1: Metadata - Title, Category, Difficulty */}
           <div className="grid grid-cols-12 gap-3">
             <div className="col-span-6">
               <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
@@ -77,6 +81,7 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
                   borderColor: 'var(--border-color)',
                   color: 'var(--text-primary)'
                 }}
+                required
               >
                 <option value="basic">Basic</option>
                 <option value="intermediate">Intermediate</option>
@@ -92,7 +97,7 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
               Description <span className="text-[10px] opacity-60">(Optional)</span>
             </label>
             <textarea
-              value={formData.description}
+              value={formData.description || ''}
               onChange={(e) => handleChange('description', e.target.value)}
               rows={2}
               className="w-full px-2 py-1.5 text-xs rounded border"
@@ -108,11 +113,61 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
           {/* Section Divider */}
           <div className="flex items-center gap-2 py-1">
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
+            <span className="text-xs font-semibold text-gray-500">INPUT / OUTPUT</span>
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
+          </div>
+
+          {/* Row 3: Input and Output - side by side */}
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
+                Sample Input <span className="text-[10px] opacity-60">(Optional)</span>
+              </label>
+              <textarea
+                value={formData.input || ''}
+                onChange={(e) => handleChange('input', e.target.value)}
+                rows={4}
+                className="w-full px-2 py-1.5 rounded border font-mono"
+                style={{
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)',
+                  fontSize: '11px',
+                  lineHeight: '1.4'
+                }}
+                placeholder="5&#10;10&#10;15"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
+                Expected Output <span className="text-[10px] opacity-60">(Optional)</span>
+              </label>
+              <textarea
+                value={formData.output || ''}
+                onChange={(e) => handleChange('output', e.target.value)}
+                rows={4}
+                className="w-full px-2 py-1.5 rounded border font-mono"
+                style={{
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)',
+                  fontSize: '11px',
+                  lineHeight: '1.4'
+                }}
+                placeholder="30"
+              />
+            </div>
+          </div>
+
+          {/* Section Divider */}
+          <div className="flex items-center gap-2 py-1">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
             <span className="text-xs font-semibold text-gray-500">CODE SECTIONS</span>
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
           </div>
 
-          {/* Row 3: Starter Code and Solution Code - side by side */}
+          {/* Row 4: Starter Code and Solution Code - side by side */}
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
@@ -130,7 +185,7 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
                   fontSize: '11px',
                   lineHeight: '1.4'
                 }}
-                placeholder="public class Solution { ... }"
+                placeholder="public class Solution {&#10;    // Write your code here&#10;}"
                 required
               />
             </div>
@@ -151,16 +206,16 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
                   fontSize: '11px',
                   lineHeight: '1.4'
                 }}
-                placeholder="public class Solution { ... }"
+                placeholder="public class Solution {&#10;    // Complete solution&#10;}"
                 required
               />
             </div>
           </div>
 
-          {/* Row 4: Hints */}
+          {/* Row 5: Hints */}
           <div>
             <label className="block text-xs font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>
-              Hints <span className="text-[10px] opacity-60">(Optional - one hint per line)</span>
+              Hints <span className="text-[10px] opacity-60">(Optional - plain text)</span>
             </label>
             <textarea
               value={formData.hints || ''}
@@ -172,7 +227,7 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
                 borderColor: 'var(--border-color)',
                 color: 'var(--text-primary)'
               }}
-              placeholder="Enter each hint on a new line..."
+              placeholder="Enter hints as plain text..."
             />
           </div>
 
