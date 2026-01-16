@@ -1,5 +1,5 @@
 import Editor from '@monaco-editor/react';
-import { Loader2, Play, Eye, Info, PanelLeftClose, PanelLeft } from 'lucide-react';
+import { Loader2, Play, Eye, PanelLeftClose, PanelLeft } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useRef } from 'react';
@@ -31,7 +31,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
   const { theme } = useTheme();
   const { user } = useAuth();
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
-  const [activeTab, setActiveTab] = useState<TabType>('code'); // Default to Code tab
+  const [activeTab, setActiveTab] = useState<TabType>('problem'); // Default to Problem tab
   const [isShowingSolution, setIsShowingSolution] = useState(false);
   const [skeletonCode, setSkeletonCode] = useState<string>('');
   const editorRef = useRef<any>(null);
@@ -90,6 +90,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
 
   /**
    * Initialize skeleton code when problem changes
+   * Also switch to Problem tab to show problem description
    */
   useEffect(() => {
     if (currentProblem) {
@@ -102,6 +103,9 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
       if (!isShowingSolution) {
         onChange(skeleton);
       }
+
+      // Switch to Problem tab when a new problem is selected
+      setActiveTab('problem');
     }
   }, [currentProblem]);
 
@@ -160,44 +164,42 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     <div className="h-full w-full overflow-hidden flex flex-col">
       <div className="flex items-center justify-between border-b border-[#323232] bg-[#1e1e1e]">
         {currentProblem ? (
-          <div className="flex">
-            {/* Show info button to access other tabs */}
-            {activeTab === 'code' && (
+          <div className="flex items-center">
+            {/* Sidebar toggle button */}
+            {onToggleSidebar && (
               <button
-                onClick={() => setActiveTab('problem')}
-                className="px-3 py-2 text-xs font-medium transition-colors text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e] flex items-center gap-1"
-                title="View problem details"
+                onClick={onToggleSidebar}
+                className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-2 transition-all border-r border-[#323232]"
+                title={isSidebarOpen ? 'Hide problems sidebar' : 'Show problems sidebar'}
               >
-                <Info className="w-3.5 h-3.5" />
-                <span>Info</span>
+                {isSidebarOpen ? (
+                  <PanelLeftClose className="w-4 h-4" />
+                ) : (
+                  <PanelLeft className="w-4 h-4" />
+                )}
+                <span className="hidden sm:inline">Problems</span>
               </button>
             )}
 
-            {/* Show all tabs when not on Code tab */}
-            {activeTab !== 'code' && (
-              <>
-                <button
-                  onClick={() => setActiveTab('problem')}
-                  className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'problem'
-                    ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                    : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-                    }`}
-                >
-                  Problem
-                </button>
-                <button
-                  onClick={() => setActiveTab('hints')}
-                  className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'hints'
-                    ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                    : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-                    }`}
-                >
-                  Hints
-                </button>
-              </>
-            )}
-
-            {/* Always show Code tab button */}
+            {/* Always show all tabs */}
+            <button
+              onClick={() => setActiveTab('problem')}
+              className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'problem'
+                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+                }`}
+            >
+              Problem
+            </button>
+            <button
+              onClick={() => setActiveTab('hints')}
+              className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'hints'
+                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+                }`}
+            >
+              Hints
+            </button>
             <button
               onClick={() => setActiveTab('code')}
               className={`px-4 py-2 text-xs font-medium transition-colors ${activeTab === 'code'
@@ -398,41 +400,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
               </div>
             }
           />
-        </div>
-      )}
-
-      {currentProblem && activeTab === 'solution' && (
-        <div className="flex-1 overflow-auto bg-[#2B2B2B]">
-          {!user ? (
-            <div className="h-full flex items-center justify-center">
-              <div className="text-center px-4 py-6">
-                <p className="text-lg font-semibold text-[#FFFFFF] mb-2">Please login</p>
-                <p className="text-sm text-[#808080]">Sign in to view the solution</p>
-              </div>
-            </div>
-          ) : (
-            <div className="h-full">
-              <Editor
-                height="100%"
-                width="100%"
-                defaultLanguage="java"
-                value={currentProblem.solution || currentProblem.solution_code || ''}
-                options={{
-                  ...editorOptions,
-                  readOnly: true,
-                }}
-                theme={theme === 'dark' ? 'vs-dark' : 'light'}
-                loading={
-                  <div className="h-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
-                    <div className="flex flex-col items-center gap-3">
-                      <Loader2 className="w-8 h-8 animate-spin" style={{ color: 'var(--accent-primary)' }} />
-                      <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Loading Solution...</p>
-                    </div>
-                  </div>
-                }
-              />
-            </div>
-          )}
         </div>
       )}
     </div>

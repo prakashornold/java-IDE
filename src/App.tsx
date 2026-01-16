@@ -203,6 +203,11 @@ function App() {
     // Update URL with problem slug
     problemLinkService.updateUrlWithProblem(problem.title);
 
+    // Ensure sidebar is open when a problem is selected (except on mobile)
+    if (!isMobile) {
+      setIsSidebarOpen(true);
+    }
+
     if (navigation.currentPage !== 'home') {
       navigation.navigateToHome();
     }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronRight, ChevronDown, List, X } from 'lucide-react';
+import { ChevronRight, ChevronDown, List } from 'lucide-react';
 import { JavaProblem } from '../types/problem.types';
 
 interface ProblemSidebarProps {
@@ -74,18 +74,9 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
         onClick={onClose}
       />
       <div className="w-full bg-[#1e1e1e] border-r border-[#323232] flex flex-col h-full md:relative fixed left-0 top-0 z-50 md:z-auto md:w-full" style={{ width: isMobile ? '16rem' : '100%' }}>
-        <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#323232] bg-[#1e1e1e]">
-          <div className="flex items-center gap-2">
-            <List className="w-4 h-4 text-[#808080]" />
-            <span className="text-sm font-semibold text-[#A9B7C6]">Problems</span>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-1 rounded hover:bg-[#2a2d2e] transition-all"
-            title="Close sidebar"
-          >
-            <X className="w-4 h-4 text-[#808080] hover:text-[#BBBBBB]" />
-          </button>
+        <div className="flex items-center px-3 py-2.5 border-b border-[#323232] bg-[#1e1e1e]">
+          <List className="w-4 h-4 text-[#808080]" />
+          <span className="text-sm font-semibold text-[#A9B7C6] ml-2">Problems</span>
         </div>
 
         <div className="flex-1 overflow-y-auto">
