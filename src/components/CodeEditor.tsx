@@ -232,8 +232,8 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
           </div>
         )}
         <div className="flex items-center gap-2 px-3">
-          {/* Show buttons only on Code tab */}
-          {activeTab === 'code' && (
+          {/* Show buttons on Code tab or when no problem is selected (home page) */}
+          {(activeTab === 'code' || !currentProblem) && (
             <>
               {/* Share Button - Always visible */}
               {currentProblem && (
