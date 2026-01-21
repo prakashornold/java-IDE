@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { FilePlus, FolderPlus, Grid3x3, Home, Cloud, CloudOff } from 'lucide-react';
+import { FilePlus, FolderPlus, Grid3x3, Home } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { notesService } from '../services/NotesService';
-import { googleDriveService } from '../services/GoogleDriveService';
 import { Note, Folder } from '../types/notes.types';
 import { NoteCard } from './notes/NoteCard';
 import { FolderCard } from './notes/FolderCard';
@@ -26,12 +25,10 @@ export function NotesPage({ onNavigateHome }: NotesPageProps) {
   const [noteTitle, setNoteTitle] = useState('Untitled Note');
   const [noteContent, setNoteContent] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const [isGoogleDriveConnected, setIsGoogleDriveConnected] = useState(false);
 
   useEffect(() => {
     if (user) {
       loadData();
-      setIsGoogleDriveConnected(googleDriveService.isAuthenticated());
     }
   }, [user, currentFolder]);
 
@@ -66,31 +63,17 @@ export function NotesPage({ onNavigateHome }: NotesPageProps) {
     setIsSaving(true);
     try {
       if (editingNote) {
-        const updatedNote = await notesService.updateNote(editingNote.id, {
+        await notesService.updateNote(editingNote.id, {
           title: noteTitle,
           content: noteContent,
           folder_id: currentFolder,
         });
-
-        if (isGoogleDriveConnected) {
-          const driveId = await googleDriveService.syncNote(updatedNote);
-          if (driveId && driveId !== updatedNote.google_drive_id) {
-            await notesService.updateNote(updatedNote.id, { google_drive_id: driveId } as any);
-          }
-        }
       } else if (isCreatingNote) {
-        const newNote = await notesService.createNote({
+        await notesService.createNote({
           title: noteTitle,
           content: noteContent,
           folder_id: currentFolder,
         });
-
-        if (isGoogleDriveConnected) {
-          const driveId = await googleDriveService.syncNote(newNote);
-          if (driveId) {
-            await notesService.updateNote(newNote.id, { google_drive_id: driveId } as any);
-          }
-        }
       }
 
       setEditingNote(null);
@@ -123,13 +106,7 @@ export function NotesPage({ onNavigateHome }: NotesPageProps) {
     if (!confirm('Are you sure you want to delete this note?')) return;
 
     try {
-      const note = notes.find((n) => n.id === noteId);
       await notesService.deleteNote(noteId);
-
-      if (note?.google_drive_id && isGoogleDriveConnected) {
-        await googleDriveService.deleteFromDrive(note.google_drive_id);
-      }
-
       await loadData();
     } catch (error) {
       console.error('Error deleting note:', error);
@@ -138,17 +115,10 @@ export function NotesPage({ onNavigateHome }: NotesPageProps) {
 
   const handleCreateFolder = async (name: string) => {
     try {
-      const newFolder = await notesService.createFolder({
+      await notesService.createFolder({
         name,
         parent_id: currentFolder,
       });
-
-      if (isGoogleDriveConnected) {
-        const driveId = await googleDriveService.syncFolder(newFolder);
-        if (driveId) {
-          await notesService.updateFolder(newFolder.id, { google_drive_id: driveId } as any);
-        }
-      }
 
       await loadData();
     } catch (error) {
@@ -173,26 +143,11 @@ export function NotesPage({ onNavigateHome }: NotesPageProps) {
     if (!confirm('Are you sure you want to delete this folder? All notes inside will be moved to root.')) return;
 
     try {
-      const folder = folders.find((f) => f.id === folderId);
       await notesService.deleteFolder(folderId);
-
-      if (folder?.google_drive_id && isGoogleDriveConnected) {
-        await googleDriveService.deleteFromDrive(folder.google_drive_id);
-      }
-
       await loadData();
     } catch (error) {
       console.error('Error deleting folder:', error);
     }
-  };
-
-  const handleConnectGoogleDrive = async () => {
-    await googleDriveService.authenticate();
-  };
-
-  const handleDisconnectGoogleDrive = () => {
-    googleDriveService.logout();
-    setIsGoogleDriveConnected(false);
   };
 
   if (!user) {
@@ -248,26 +203,6 @@ export function NotesPage({ onNavigateHome }: NotesPageProps) {
             </div>
 
             <div className="flex items-center gap-2">
-              {isGoogleDriveConnected ? (
-                <button
-                  onClick={handleDisconnectGoogleDrive}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded text-sm font-medium text-[#6AAB73] hover:bg-[#2a2d2e] transition-all"
-                  title="Disconnect Google Drive"
-                >
-                  <Cloud className="w-4 h-4" />
-                  <span className="hidden sm:inline">Connected</span>
-                </button>
-              ) : (
-                <button
-                  onClick={handleConnectGoogleDrive}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded text-sm font-medium text-[#808080] hover:bg-[#2a2d2e] transition-all"
-                  title="Connect Google Drive"
-                >
-                  <CloudOff className="w-4 h-4" />
-                  <span className="hidden sm:inline">Connect Drive</span>
-                </button>
-              )}
-
               <button
                 onClick={() => setShowCreateFolderModal(true)}
                 className="flex items-center gap-2 px-4 py-1.5 rounded text-sm font-medium bg-[#CC7832] text-white hover:bg-[#E6913F] transition-all"
