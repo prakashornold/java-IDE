@@ -37,10 +37,10 @@ export class NotesService {
     return data;
   }
 
-  async createNote(noteData: NoteFormData): Promise<Note> {
+  async createNote(noteData: NoteFormData, userId: string): Promise<Note> {
     const { data, error } = await supabase
       .from('notes')
-      .insert([noteData])
+      .insert([{ ...noteData, user_id: userId }])
       .select()
       .single();
 
@@ -115,10 +115,10 @@ export class NotesService {
     return data;
   }
 
-  async createFolder(folderData: FolderFormData): Promise<Folder> {
+  async createFolder(folderData: FolderFormData, userId: string): Promise<Folder> {
     const { data, error } = await supabase
       .from('folders')
-      .insert([folderData])
+      .insert([{ ...folderData, user_id: userId }])
       .select()
       .single();
 
