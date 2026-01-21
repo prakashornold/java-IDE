@@ -4,6 +4,7 @@ import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
 import { ProblemSidebar } from './components/ProblemSidebar';
 import { AdminPanel } from './components/AdminPanel';
+import { NotesPage } from './components/NotesPage';
 import { AuthModal } from './components/AuthModal';
 import { Footer } from './components/Footer';
 import { RedirectPage } from './components/RedirectPage';
@@ -25,6 +26,7 @@ function App() {
   const getInitialPage = (): typeof navigation.currentPage => {
     const path = window.location.pathname;
     if (path === '/admin') return 'admin';
+    if (path === '/notes') return 'notes';
     if (path === '/udemint') return 'udemint';
     if (path === '/freeai') return 'freeai';
     return 'home';
@@ -249,6 +251,10 @@ function App() {
     return <AdminPanel onNavigateHome={navigation.navigateToHome} />;
   }
 
+  if (navigation.currentPage === 'notes') {
+    return <NotesPage onNavigateHome={navigation.navigateToHome} />;
+  }
+
   if (navigation.currentPage === 'udemint') {
     return <RedirectPage redirectKey="udemint" />;
   }
@@ -268,6 +274,7 @@ function App() {
     >
       <Header
         onNavigateToAdmin={navigation.navigateToAdmin}
+        onNavigateToNotes={navigation.navigateToNotes}
       />
 
       <div className="flex-1 flex overflow-hidden">

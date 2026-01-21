@@ -1,13 +1,14 @@
 import { useState, useRef } from 'react';
-import { Terminal, LogOut, Menu, X, User, Mail, Calendar, Shield } from 'lucide-react';
+import { Terminal, LogOut, Menu, X, User, Mail, Calendar, Shield, FileText } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
   onNavigateToAdmin?: () => void;
+  onNavigateToNotes?: () => void;
 }
 
-export function Header({ onNavigateToAdmin }: HeaderProps) {
+export function Header({ onNavigateToAdmin, onNavigateToNotes }: HeaderProps) {
   const { user, profile, isAdmin, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -147,6 +148,17 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
+            {onNavigateToNotes && user && (
+              <button
+                onClick={onNavigateToNotes}
+                className="flex items-center gap-1.5 text-sm font-medium text-[#6897BB] hover:text-[#8AB4D9] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+                title="Notes"
+              >
+                <FileText className="w-4 h-4" />
+                <span>Notes</span>
+              </button>
+            )}
+
             {onNavigateToAdmin && isAdmin && (
               <button
                 onClick={onNavigateToAdmin}
@@ -186,6 +198,16 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
           className="md:hidden absolute top-[57px] left-0 right-0 bg-[#1e1e1e] border-b border-[#323232] shadow-xl z-50 max-h-[calc(100vh-57px)] overflow-y-auto"
         >
           <nav className="px-4 py-3 flex flex-col gap-2">
+            {onNavigateToNotes && user && (
+              <button
+                onClick={() => handleNavigate(onNavigateToNotes)}
+                className="flex items-center gap-2 text-sm font-medium text-[#6897BB] hover:text-[#8AB4D9] hover:bg-[#2a2d2e] px-3 py-2.5 rounded transition-all w-full text-left"
+              >
+                <FileText className="w-4 h-4" />
+                Notes
+              </button>
+            )}
+
             {onNavigateToAdmin && isAdmin && (
               <button
                 onClick={() => handleNavigate(onNavigateToAdmin)}
