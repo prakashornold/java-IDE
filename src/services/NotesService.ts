@@ -9,7 +9,11 @@ export class NotesService {
       .order('updated_at', { ascending: false });
 
     if (folderId !== undefined) {
-      query = query.eq('folder_id', folderId);
+      if (folderId === null) {
+        query = query.is('folder_id', null);
+      } else {
+        query = query.eq('folder_id', folderId);
+      }
     }
 
     const { data, error } = await query;
@@ -87,7 +91,11 @@ export class NotesService {
       .order('name', { ascending: true });
 
     if (parentId !== undefined) {
-      query = query.eq('parent_id', parentId);
+      if (parentId === null) {
+        query = query.is('parent_id', null);
+      } else {
+        query = query.eq('parent_id', parentId);
+      }
     }
 
     const { data, error } = await query;
