@@ -43,8 +43,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     const result = await devLogin(mode);
 
     if (result.success) {
-      console.log(`✅ Successfully logged in as ${mode}`);
-      // Auth state will update automatically via Supabase onAuthStateChange
       onClose();
     } else {
       alert(`Failed to login as ${mode}: ${result.error}`);

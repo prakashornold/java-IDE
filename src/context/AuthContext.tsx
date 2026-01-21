@@ -77,8 +77,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (error) {
         console.error('Error loading user profile:', error);
       } else {
-        console.log('Profile loaded:', data);
-        console.log('Is admin:', data?.is_admin);
         setProfile(data);
       }
     } catch (error) {
