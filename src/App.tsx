@@ -33,6 +33,7 @@ function App() {
   const navigation = useNavigation(getInitialPage());
   const executionLimit = useExecutionLimit();
   const [code, setCode] = useState(DEFAULT_JAVA_CODE);
+  const [stdin, setStdin] = useState('');
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -137,7 +138,7 @@ function App() {
     setHasError(false);
 
     try {
-      const result = await compilerService.execute(code);
+      const result = await compilerService.execute(code, stdin);
 
       if (result.error) {
         setOutput(result.error);
@@ -197,6 +198,7 @@ function App() {
     setCurrentProblem(problem);
     const practiceCode = problemService.extractPracticeCode(problem.solution || '');
     setCode(practiceCode);
+    setStdin('');
     setOutput('');
     setHasError(false);
 
@@ -216,6 +218,7 @@ function App() {
   const handleShowSolution = () => {
     if (!currentProblem || !currentProblem.solution) return;
     setCode(currentProblem.solution);
+    setStdin('');
     setOutput('');
     setHasError(false);
   };
@@ -335,6 +338,8 @@ function App() {
               layoutMode={layoutMode}
               onToggleLayout={toggleLayout}
               isMobile={isMobile}
+              stdin={stdin}
+              onStdinChange={setStdin}
             />
           </div>
         </div>
