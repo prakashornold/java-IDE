@@ -226,9 +226,10 @@ export function NotesPage({ onNavigateHome }: NotesPageProps) {
     <div className="h-screen flex flex-col bg-[#2B2B2B]">
       <Header />
 
-      <div className="flex-1 overflow-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <div className="flex items-center justify-between mb-6">
+      {/* Notes Header Section */}
+      <div className="border-b border-[#323232] bg-[#313335]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-14">
             <div className="flex items-center gap-3">
               {currentFolder && (
                 <button
@@ -236,12 +237,12 @@ export function NotesPage({ onNavigateHome }: NotesPageProps) {
                   className="flex items-center gap-2 px-3 py-1.5 rounded text-sm font-medium text-[#A9B7C6] hover:bg-[#2a2d2e] transition-all"
                 >
                   <Home className="w-4 h-4" />
-                  Back to Root
+                  <span>Back to Root</span>
                 </button>
               )}
               <div className="flex items-center gap-2">
                 <Grid3x3 className="w-5 h-5 text-[#808080]" />
-                <h1 className="text-xl font-bold text-[#A9B7C6]">My Notes</h1>
+                <h1 className="text-lg font-bold text-[#A9B7C6]">My Notes</h1>
               </div>
             </div>
 
@@ -251,7 +252,7 @@ export function NotesPage({ onNavigateHome }: NotesPageProps) {
                 className="flex items-center gap-2 px-4 py-1.5 rounded text-sm font-medium bg-[#CC7832] text-white hover:bg-[#E6913F] transition-all"
               >
                 <FolderPlus className="w-4 h-4" />
-                <span className="hidden sm:inline">New Folder</span>
+                <span>New Folder</span>
               </button>
 
               <button
@@ -259,10 +260,15 @@ export function NotesPage({ onNavigateHome }: NotesPageProps) {
                 className="flex items-center gap-2 px-4 py-1.5 rounded text-sm font-medium bg-[#365880] text-white hover:bg-[#4A6FA5] transition-all"
               >
                 <FilePlus className="w-4 h-4" />
-                <span className="hidden sm:inline">New Note</span>
+                <span>New Note</span>
               </button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
 
           <div className="mb-6">
             <div className="relative">
