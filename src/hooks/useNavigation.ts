@@ -13,7 +13,6 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
   const getPageFromPath = useCallback((path: string): PageType => {
     if (path === '/' || path === '') return 'home';
     if (path === '/admin') return 'admin';
-    if (path === '/about') return 'about';
     if (path === '/udemint') return 'udemint';
     if (path === '/freeai') return 'freeai';
     return 'home';

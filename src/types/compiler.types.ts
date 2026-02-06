@@ -15,19 +15,5 @@ export interface CompilerAPIResponse {
   data: {
     output?: string;
     error?: string;
-    codeStatus?: {
-      id: number;
-      description: string;
-    };
-    time?: string;
-    memory?: number;
   };
-}
-
-export type ExecutionStatus = 'idle' | 'running' | 'success' | 'error';
-
-export interface ExecutionResult {
-  output: string;
-  hasError: boolean;
-  status: ExecutionStatus;
 }

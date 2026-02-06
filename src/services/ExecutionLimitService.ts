@@ -35,10 +35,6 @@ export class ExecutionLimitService implements IExecutionLimitService {
   resetExecutionCount(): void {
     localStorage.removeItem(this.storageKey);
   }
-
-  getLimit(): number {
-    return this.limit;
-  }
 }
 
 export const executionLimitService = new ExecutionLimitService();

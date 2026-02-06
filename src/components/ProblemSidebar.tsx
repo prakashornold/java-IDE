@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ChevronRight, ChevronDown, List, FolderOpen, Folder } from 'lucide-react';
 import { JavaProblem } from '../types/problem.types';
+import { getDifficultyColor, getDifficultyBgColor, compareDifficulty } from '../config/difficultyConfig';
 
 interface ProblemSidebarProps {
   problems: JavaProblem[];
@@ -54,26 +55,6 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
     setExpandedDifficulties(newExpanded);
   };
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'basic': return '#6aab73';
-      case 'intermediate': return '#5294d0';
-      case 'advanced': return '#cc7832';
-      case 'expert': return '#cf6679';
-      default: return '#d5d9e0';
-    }
-  };
-
-  const getDifficultyBg = (difficulty: string) => {
-    switch (difficulty) {
-      case 'basic': return 'rgba(106, 171, 115, 0.06)';
-      case 'intermediate': return 'rgba(82, 148, 208, 0.06)';
-      case 'advanced': return 'rgba(204, 120, 50, 0.06)';
-      case 'expert': return 'rgba(207, 102, 121, 0.06)';
-      default: return 'transparent';
-    }
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -121,10 +102,7 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
                   {isCategoryExpanded && (
                     <div className="animate-fade-in">
                       {Object.entries(difficulties)
-                        .sort((a, b) => {
-                          const order = { basic: 0, intermediate: 1, advanced: 2, expert: 3 };
-                          return (order[a[0] as keyof typeof order] || 99) - (order[b[0] as keyof typeof order] || 99);
-                        })
+                        .sort((a, b) => compareDifficulty(a[0], b[0]))
                         .map(([difficulty, difficultyProblems]) => {
                           const difficultyKey = `${category}-${difficulty}`;
                           const isDifficultyExpanded = expandedDifficulties.has(difficultyKey);
@@ -134,7 +112,7 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
                               <button
                                 onClick={() => toggleDifficulty(difficultyKey)}
                                 className="w-full flex items-center gap-2 pl-7 pr-3.5 py-2 hover:bg-[#25262f] transition-colors"
-                                style={{ background: isDifficultyExpanded ? getDifficultyBg(difficulty) : undefined }}
+                                style={{ background: isDifficultyExpanded ? getDifficultyBgColor(difficulty) : undefined }}
                               >
                                 {isDifficultyExpanded ? (
                                   <ChevronDown className="w-3 h-3 text-[#7d8490]" />

@@ -7,6 +7,7 @@ import { JavaProblem, hasContent } from '../types/problem.types';
 import { codeSkeletonGenerator } from '../services/CodeSkeletonGenerator';
 import { ShareButton } from './ShareButton';
 import { renderMarkdown } from '../utils/markdownUtils';
+import { getDifficultyBadgeClass } from '../config/difficultyConfig';
 
 interface CodeEditorProps {
   value: string;
@@ -22,11 +23,6 @@ interface CodeEditorProps {
 
 type TabType = 'problem' | 'hints' | 'code';
 
-/**
- * Code Editor Component
- * Main coding interface with skeleton code and solution toggle
- * Follows clean code principles and SOLID design patterns
- */
 export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, onShowSolution, onShowAuthModal, onToggleSidebar, isSidebarOpen }: CodeEditorProps) {
   const { theme } = useTheme();
   const { user } = useAuth();
@@ -88,10 +84,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  /**
-   * Initialize skeleton code when problem changes
-   * Also switch to Problem tab to show problem description
-   */
   useEffect(() => {
     if (currentProblem) {
       const solutionCode = currentProblem.solution_code || currentProblem.solution || currentProblem.starter_code || '';
@@ -107,10 +99,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     }
   }, [currentProblem]);
 
-  /**
-   * Handles showing/hiding the full solution
-   * Shows auth modal if user not authenticated
-   */
   const handleToggleSolution = () => {
     if (!user && onShowAuthModal) {
       onShowAuthModal();
@@ -130,10 +118,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     }
   };
 
-  /**
-   * Handles run button click
-   * Shows auth modal if user not authenticated
-   */
   const handleRunClick = () => {
     if (!user && onShowAuthModal) {
       onShowAuthModal();
@@ -156,16 +140,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     }
 
     editor.focus();
-  };
-
-  const getDifficultyStyle = (difficulty: string) => {
-    switch (difficulty) {
-      case 'basic': return 'bg-[#6aab73]/12 text-[#6aab73] border border-[#6aab73]/25';
-      case 'intermediate': return 'bg-[#5294d0]/12 text-[#5294d0] border border-[#5294d0]/25';
-      case 'advanced': return 'bg-[#cc7832]/12 text-[#cc7832] border border-[#cc7832]/25';
-      case 'expert': return 'bg-[#cf6679]/12 text-[#cf6679] border border-[#cf6679]/25';
-      default: return 'bg-[#9ba1ad]/12 text-[#9ba1ad] border border-[#9ba1ad]/25';
-    }
   };
 
   const getSectionAccent = (type: 'description' | 'input' | 'output') => {
@@ -300,7 +274,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
             <div>
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-[#7d8490] text-sm font-mono">#{currentProblem.number}</span>
-                <span className={`px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider ${getDifficultyStyle(currentProblem.difficulty)}`}>
+                <span className={`px-2.5 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wider ${getDifficultyBadgeClass(currentProblem.difficulty)}`}>
                   {currentProblem.difficulty}
                 </span>
               </div>
