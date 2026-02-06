@@ -5,7 +5,6 @@ export interface UseNavigationResult {
   currentPage: PageType;
   navigateToHome: () => void;
   navigateToAdmin: () => void;
-  navigateToNotes: () => void;
 }
 
 export function useNavigation(initialPage: PageType = 'home'): UseNavigationResult {
@@ -14,7 +13,6 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
   const getPageFromPath = useCallback((path: string): PageType => {
     if (path === '/' || path === '') return 'home';
     if (path === '/admin') return 'admin';
-    if (path === '/notes') return 'notes';
     if (path === '/about') return 'about';
     if (path === '/udemint') return 'udemint';
     if (path === '/freeai') return 'freeai';
@@ -39,12 +37,10 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
 
   const navigateToHome = useCallback(() => navigateTo('home'), [navigateTo]);
   const navigateToAdmin = useCallback(() => navigateTo('admin'), [navigateTo]);
-  const navigateToNotes = useCallback(() => navigateTo('notes'), [navigateTo]);
 
   return {
     currentPage,
     navigateToHome,
     navigateToAdmin,
-    navigateToNotes,
   };
 }

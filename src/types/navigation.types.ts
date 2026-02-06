@@ -1,4 +1,4 @@
-export type PageType = 'home' | 'dashboard' | 'admin' | 'about' | 'udemint' | 'freeai' | 'notes';
+export type PageType = 'home' | 'dashboard' | 'admin' | 'about' | 'udemint' | 'freeai';
 
 export interface NavigationProps {
   onNavigateHome: () => void;
