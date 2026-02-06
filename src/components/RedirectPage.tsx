@@ -22,7 +22,7 @@ export function RedirectPage({ redirectKey }: RedirectPageProps) {
         <div className="min-h-screen bg-[#13141a] flex items-center justify-center">
             <div className="text-center">
                 <Loader2 className="w-10 h-10 animate-spin text-[#5294d0] mx-auto mb-4" />
-                <p className="text-[#848996] text-sm font-medium">Redirecting...</p>
+                <p className="text-[#9ba1ad] text-sm font-medium">Redirecting...</p>
             </div>
         </div>
     );

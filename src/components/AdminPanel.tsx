@@ -180,10 +180,10 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
     return (
       <div className="flex items-center justify-center h-screen bg-[#13141a]">
         <div className="text-center">
-          <AlertCircle className="w-16 h-16 mx-auto mb-4 text-[#585d6a]" />
-          <h2 className="text-2xl font-bold mb-2 text-[#e8eaed]">Access Denied</h2>
-          <p className="mb-4 text-[#848996]">You do not have admin privileges.</p>
-          <p className="text-sm mb-4 text-[#585d6a]">
+          <AlertCircle className="w-16 h-16 mx-auto mb-4 text-[#7d8490]" />
+          <h2 className="text-2xl font-bold mb-2 text-[#f1f3f5]">Access Denied</h2>
+          <p className="mb-4 text-[#9ba1ad]">You do not have admin privileges.</p>
+          <p className="text-sm mb-4 text-[#7d8490]">
             Email: {profile?.email || 'Not logged in'}<br />
             Admin Status: {isAdmin ? 'Yes' : 'No'}
           </p>
@@ -209,10 +209,10 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
               <Shield className="w-4 h-4 text-[#cc7832]" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-[#e8eaed] tracking-tight">
+              <h1 className="text-lg font-bold text-[#f1f3f5] tracking-tight">
                 Admin Panel
               </h1>
-              <p className="text-xs text-[#585d6a]">
+              <p className="text-xs text-[#7d8490]">
                 {profile?.email}
               </p>
             </div>
@@ -220,7 +220,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
           {onNavigateHome && (
             <button
               onClick={onNavigateHome}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#848996] hover:text-[#c8ccd4] hover:bg-[#25262f] rounded-lg font-medium transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#9ba1ad] hover:text-[#d5d9e0] hover:bg-[#25262f] rounded-lg font-medium transition-all"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Home
@@ -233,7 +233,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
             onClick={() => setActiveTab('users')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${activeTab === 'users'
               ? 'bg-[#5294d0]/15 text-[#5294d0] border border-[#5294d0]/25'
-              : 'text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f]'
+              : 'text-[#7d8490] hover:text-[#d5d9e0] hover:bg-[#25262f]'
               }`}
           >
             <Users className="w-3.5 h-3.5" />
@@ -246,7 +246,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
             }}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${activeTab === 'add-problem'
               ? 'bg-[#5294d0]/15 text-[#5294d0] border border-[#5294d0]/25'
-              : 'text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f]'
+              : 'text-[#7d8490] hover:text-[#d5d9e0] hover:bg-[#25262f]'
               }`}
           >
             <Plus className="w-3.5 h-3.5" />
@@ -256,7 +256,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
             onClick={() => setActiveTab('manage-problems')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${activeTab === 'manage-problems'
               ? 'bg-[#5294d0]/15 text-[#5294d0] border border-[#5294d0]/25'
-              : 'text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f]'
+              : 'text-[#7d8490] hover:text-[#d5d9e0] hover:bg-[#25262f]'
               }`}
           >
             <List className="w-3.5 h-3.5" />

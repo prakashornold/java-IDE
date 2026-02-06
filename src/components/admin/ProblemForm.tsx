@@ -21,7 +21,7 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
     <div className="h-full overflow-auto bg-[#13141a]">
       <div className="max-w-[1600px] mx-auto p-3">
         <div className="mb-3 pb-2 border-b border-[#282934]">
-          <h2 className="text-lg font-bold text-[#e8eaed] tracking-tight">
+          <h2 className="text-lg font-bold text-[#f1f3f5] tracking-tight">
             Add New Problem
           </h2>
         </div>
@@ -29,41 +29,41 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
         <form onSubmit={onSubmit} className="space-y-3">
           <div className="grid grid-cols-12 gap-3">
             <div className="col-span-6">
-              <label className="block text-xs font-semibold mb-1 text-[#c8ccd4]">
+              <label className="block text-xs font-semibold mb-1 text-[#d5d9e0]">
                 Title *
               </label>
               <input
                 type="text"
                 value={formData.title}
                 onChange={(e) => handleChange('title', e.target.value)}
-                className="w-full px-2 py-1.5 text-sm rounded-md border border-[#282934] bg-[#1a1b22] text-[#c8ccd4] focus:border-[#5294d0] focus:outline-none transition-colors"
+                className="w-full px-2 py-1.5 text-sm rounded-md border border-[#282934] bg-[#1a1b22] text-[#d5d9e0] focus:border-[#5294d0] focus:outline-none transition-colors"
                 placeholder="Problem title..."
                 required
               />
             </div>
 
             <div className="col-span-3">
-              <label className="block text-xs font-semibold mb-1 text-[#c8ccd4]">
+              <label className="block text-xs font-semibold mb-1 text-[#d5d9e0]">
                 Category *
               </label>
               <input
                 type="text"
                 value={formData.category}
                 onChange={(e) => handleChange('category', e.target.value)}
-                className="w-full px-2 py-1.5 text-sm rounded-md border border-[#282934] bg-[#1a1b22] text-[#c8ccd4] focus:border-[#5294d0] focus:outline-none transition-colors"
+                className="w-full px-2 py-1.5 text-sm rounded-md border border-[#282934] bg-[#1a1b22] text-[#d5d9e0] focus:border-[#5294d0] focus:outline-none transition-colors"
                 placeholder="e.g., Arrays"
                 required
               />
             </div>
 
             <div className="col-span-3">
-              <label className="block text-xs font-semibold mb-1 text-[#c8ccd4]">
+              <label className="block text-xs font-semibold mb-1 text-[#d5d9e0]">
                 Difficulty *
               </label>
               <select
                 value={formData.difficulty}
                 onChange={(e) => handleChange('difficulty', e.target.value)}
-                className="w-full px-2 py-1.5 text-sm rounded-md border border-[#282934] bg-[#1a1b22] text-[#c8ccd4] focus:border-[#5294d0] focus:outline-none transition-colors"
+                className="w-full px-2 py-1.5 text-sm rounded-md border border-[#282934] bg-[#1a1b22] text-[#d5d9e0] focus:border-[#5294d0] focus:outline-none transition-colors"
                 required
               >
                 <option value="basic">Basic</option>
@@ -75,48 +75,48 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1 text-[#c8ccd4]">
-              Description <span className="text-[10px] text-[#585d6a]">(Optional)</span>
+            <label className="block text-xs font-semibold mb-1 text-[#d5d9e0]">
+              Description <span className="text-[11px] text-[#7d8490]">(Optional)</span>
             </label>
             <textarea
               value={formData.description || ''}
               onChange={(e) => handleChange('description', e.target.value)}
               rows={2}
-              className="w-full px-2 py-1.5 text-xs rounded-md border border-[#282934] bg-[#1a1b22] text-[#c8ccd4] focus:border-[#5294d0] focus:outline-none transition-colors"
+              className="w-full px-2 py-1.5 text-xs rounded-md border border-[#282934] bg-[#1a1b22] text-[#d5d9e0] focus:border-[#5294d0] focus:outline-none transition-colors"
               placeholder="Problem description..."
             />
           </div>
 
           <div className="flex items-center gap-2 py-1">
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#282934] to-transparent"></div>
-            <span className="text-xs font-semibold text-[#585d6a]">INPUT / OUTPUT</span>
+            <span className="text-xs font-semibold text-[#7d8490]">INPUT / OUTPUT</span>
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#282934] to-transparent"></div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1 text-[#c8ccd4]">
-                Sample Input <span className="text-[10px] text-[#585d6a]">(Optional)</span>
+              <label className="block text-xs font-semibold mb-1 text-[#d5d9e0]">
+                Sample Input <span className="text-[11px] text-[#7d8490]">(Optional)</span>
               </label>
               <textarea
                 value={formData.input || ''}
                 onChange={(e) => handleChange('input', e.target.value)}
                 rows={4}
-                className="w-full px-2 py-1.5 rounded-md border border-[#282934] bg-[#1a1b22] text-[#c8ccd4] font-mono focus:border-[#5294d0] focus:outline-none transition-colors"
+                className="w-full px-2 py-1.5 rounded-md border border-[#282934] bg-[#1a1b22] text-[#d5d9e0] font-mono focus:border-[#5294d0] focus:outline-none transition-colors"
                 style={{ fontSize: '11px', lineHeight: '1.4' }}
                 placeholder="5&#10;10&#10;15"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold mb-1 text-[#c8ccd4]">
-                Expected Output <span className="text-[10px] text-[#585d6a]">(Optional)</span>
+              <label className="block text-xs font-semibold mb-1 text-[#d5d9e0]">
+                Expected Output <span className="text-[11px] text-[#7d8490]">(Optional)</span>
               </label>
               <textarea
                 value={formData.output || ''}
                 onChange={(e) => handleChange('output', e.target.value)}
                 rows={4}
-                className="w-full px-2 py-1.5 rounded-md border border-[#282934] bg-[#1a1b22] text-[#c8ccd4] font-mono focus:border-[#5294d0] focus:outline-none transition-colors"
+                className="w-full px-2 py-1.5 rounded-md border border-[#282934] bg-[#1a1b22] text-[#d5d9e0] font-mono focus:border-[#5294d0] focus:outline-none transition-colors"
                 style={{ fontSize: '11px', lineHeight: '1.4' }}
                 placeholder="30"
               />
@@ -125,20 +125,20 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
 
           <div className="flex items-center gap-2 py-1">
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#282934] to-transparent"></div>
-            <span className="text-xs font-semibold text-[#585d6a]">CODE SECTIONS</span>
+            <span className="text-xs font-semibold text-[#7d8490]">CODE SECTIONS</span>
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-[#282934] to-transparent"></div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold mb-1 text-[#c8ccd4]">
+              <label className="block text-xs font-semibold mb-1 text-[#d5d9e0]">
                 Starter Code *
               </label>
               <textarea
                 value={formData.starter_code}
                 onChange={(e) => handleChange('starter_code', e.target.value)}
                 rows={12}
-                className="w-full px-2 py-1.5 rounded-md border border-[#282934] bg-[#1a1b22] text-[#c8ccd4] font-mono focus:border-[#5294d0] focus:outline-none transition-colors"
+                className="w-full px-2 py-1.5 rounded-md border border-[#282934] bg-[#1a1b22] text-[#d5d9e0] font-mono focus:border-[#5294d0] focus:outline-none transition-colors"
                 style={{ fontSize: '11px', lineHeight: '1.4' }}
                 placeholder="public class Solution {&#10;    // Write your code here&#10;}"
                 required
@@ -146,14 +146,14 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
             </div>
 
             <div>
-              <label className="block text-xs font-semibold mb-1 text-[#c8ccd4]">
+              <label className="block text-xs font-semibold mb-1 text-[#d5d9e0]">
                 Solution Code *
               </label>
               <textarea
                 value={formData.solution_code}
                 onChange={(e) => handleChange('solution_code', e.target.value)}
                 rows={12}
-                className="w-full px-2 py-1.5 rounded-md border border-[#282934] bg-[#1a1b22] text-[#c8ccd4] font-mono focus:border-[#5294d0] focus:outline-none transition-colors"
+                className="w-full px-2 py-1.5 rounded-md border border-[#282934] bg-[#1a1b22] text-[#d5d9e0] font-mono focus:border-[#5294d0] focus:outline-none transition-colors"
                 style={{ fontSize: '11px', lineHeight: '1.4' }}
                 placeholder="public class Solution {&#10;    // Complete solution&#10;}"
                 required
@@ -162,14 +162,14 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
           </div>
 
           <div>
-            <label className="block text-xs font-semibold mb-1 text-[#c8ccd4]">
-              Hints <span className="text-[10px] text-[#585d6a]">(Optional - plain text)</span>
+            <label className="block text-xs font-semibold mb-1 text-[#d5d9e0]">
+              Hints <span className="text-[11px] text-[#7d8490]">(Optional - plain text)</span>
             </label>
             <textarea
               value={formData.hints || ''}
               onChange={(e) => handleChange('hints', e.target.value)}
               rows={2}
-              className="w-full px-2 py-1.5 text-xs rounded-md border border-[#282934] bg-[#1a1b22] text-[#c8ccd4] focus:border-[#5294d0] focus:outline-none transition-colors"
+              className="w-full px-2 py-1.5 text-xs rounded-md border border-[#282934] bg-[#1a1b22] text-[#d5d9e0] focus:border-[#5294d0] focus:outline-none transition-colors"
               placeholder="Enter hints as plain text..."
             />
           </div>

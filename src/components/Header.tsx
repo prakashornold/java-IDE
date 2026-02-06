@@ -51,11 +51,11 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
             <Terminal className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-white transition-transform group-hover:scale-110" strokeWidth={2.5} />
           </div>
           <div className="flex flex-col justify-center flex-1 min-w-0">
-            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-[#e8eaed] tracking-tight sm:truncate leading-tight">
+            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-[#f1f3f5] tracking-tight sm:truncate leading-tight">
               <span className="hidden sm:inline">JavaCodingPractice.com</span>
               <span className="sm:hidden whitespace-nowrap">JavaCodingPractice.com</span>
             </h1>
-            <p className="text-[9px] xs:text-[10px] sm:text-xs text-[#585d6a] tracking-tight truncate hidden xs:block leading-tight">
+            <p className="text-[10px] sm:text-xs text-[#7d8490] tracking-tight truncate hidden xs:block leading-tight">
               Makes Easy to Practice AnyTime AnyWhere
             </p>
           </div>
@@ -97,7 +97,7 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
                       <div className="flex-1 min-w-0">
                         <h3 className="text-white font-semibold text-sm truncate">{userName}</h3>
                         {isAdmin && (
-                          <span className="inline-block mt-1 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-[#cc7832] text-white rounded">
+                          <span className="inline-block mt-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-[#cc7832] text-white rounded">
                             Admin
                           </span>
                         )}
@@ -109,16 +109,16 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
                     <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-[#25262f] transition-colors">
                       <Mail className="w-3.5 h-3.5 text-[#5294d0] flex-shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[9px] text-[#585d6a] uppercase tracking-wider font-medium">Email</p>
-                        <p className="text-[11px] text-[#c8ccd4] truncate mt-0.5">{user?.email || 'Not provided'}</p>
+                        <p className="text-[10px] text-[#7d8490] uppercase tracking-wider font-medium">Email</p>
+                        <p className="text-xs text-[#d5d9e0] truncate mt-0.5">{user?.email || 'Not provided'}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-[#25262f] transition-colors">
                       <Calendar className="w-3.5 h-3.5 text-[#5294d0] flex-shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[9px] text-[#585d6a] uppercase tracking-wider font-medium">Member Since</p>
-                        <p className="text-[11px] text-[#c8ccd4] mt-0.5">{formatDate(user?.created_at)}</p>
+                        <p className="text-[10px] text-[#7d8490] uppercase tracking-wider font-medium">Member Since</p>
+                        <p className="text-xs text-[#d5d9e0] mt-0.5">{formatDate(user?.created_at)}</p>
                       </div>
                     </div>
                   </div>
@@ -131,7 +131,7 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="md:hidden flex items-center justify-center w-9 h-9 text-[#848996] hover:text-white hover:bg-[#2c2d38] rounded-lg transition-all"
+            className="md:hidden flex items-center justify-center w-9 h-9 text-[#9ba1ad] hover:text-white hover:bg-[#2c2d38] rounded-lg transition-all"
             title="Menu"
           >
             {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -152,7 +152,7 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
             {user ? (
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-1.5 text-xs font-medium text-[#848996] hover:text-[#cf6679] hover:bg-[#cf6679]/[0.08] px-3 py-2 rounded-lg transition-all"
+                className="flex items-center gap-1.5 text-xs font-medium text-[#9ba1ad] hover:text-[#cf6679] hover:bg-[#cf6679]/[0.08] px-3 py-2 rounded-lg transition-all"
                 title="Logout"
               >
                 <LogOut className="w-3.5 h-3.5" />
@@ -192,7 +192,7 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
                 <div className="border-t border-[#282934] my-1.5" />
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center gap-2 text-sm font-medium text-[#848996] hover:text-[#cf6679] hover:bg-[#cf6679]/[0.08] px-3 py-2.5 rounded-lg transition-all w-full text-left"
+                  className="flex items-center gap-2 text-sm font-medium text-[#9ba1ad] hover:text-[#cf6679] hover:bg-[#cf6679]/[0.08] px-3 py-2.5 rounded-lg transition-all w-full text-left"
                 >
                   <LogOut className="w-4 h-4" />
                   Logout

@@ -108,17 +108,17 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 <Terminal className="w-[18px] h-[18px] text-white" strokeWidth={2.5} />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-[#e8eaed] tracking-tight">
+                <h2 className="text-lg font-bold text-[#f1f3f5] tracking-tight">
                   {isLogin ? 'Welcome Back' : 'Create Account'}
                 </h2>
-                <p className="text-[11px] text-[#585d6a]">
+                <p className="text-xs text-[#7d8490]">
                   {isLogin ? 'Sign in to your account' : 'Join JavaCodingPractice.com'}
                 </p>
               </div>
             </div>
             <button
               onClick={handleClose}
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f] transition-all"
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-[#7d8490] hover:text-[#d5d9e0] hover:bg-[#25262f] transition-all"
             >
               <X className="w-4 h-4" />
             </button>
@@ -128,29 +128,29 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             {!isLogin && (
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-[#848996] mb-1.5">First Name</label>
+                  <label className="block text-xs font-medium text-[#9ba1ad] mb-1.5">First Name</label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#585d6a]" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#7d8490]" />
                     <input
                       type="text"
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                       placeholder="First name"
-                      className="w-full pl-9 pr-3 py-2.5 bg-[#1a1b22] border border-[#282934] rounded-lg text-sm text-[#c8ccd4] placeholder:text-[#3e4250] focus:border-[#5294d0] focus:outline-none transition-colors"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#1a1b22] border border-[#282934] rounded-lg text-sm text-[#d5d9e0] placeholder:text-[#5d6472] focus:border-[#5294d0] focus:outline-none transition-colors"
                       required={!isLogin}
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#848996] mb-1.5">Last Name</label>
+                  <label className="block text-xs font-medium text-[#9ba1ad] mb-1.5">Last Name</label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#585d6a]" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#7d8490]" />
                     <input
                       type="text"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                       placeholder="Last name"
-                      className="w-full pl-9 pr-3 py-2.5 bg-[#1a1b22] border border-[#282934] rounded-lg text-sm text-[#c8ccd4] placeholder:text-[#3e4250] focus:border-[#5294d0] focus:outline-none transition-colors"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#1a1b22] border border-[#282934] rounded-lg text-sm text-[#d5d9e0] placeholder:text-[#5d6472] focus:border-[#5294d0] focus:outline-none transition-colors"
                       required={!isLogin}
                     />
                   </div>
@@ -159,25 +159,25 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             )}
 
             <div>
-              <label className="block text-xs font-medium text-[#848996] mb-1.5">Email</label>
+              <label className="block text-xs font-medium text-[#9ba1ad] mb-1.5">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full px-3 py-2.5 bg-[#1a1b22] border border-[#282934] rounded-lg text-sm text-[#c8ccd4] placeholder:text-[#3e4250] focus:border-[#5294d0] focus:outline-none transition-colors"
+                className="w-full px-3 py-2.5 bg-[#1a1b22] border border-[#282934] rounded-lg text-sm text-[#d5d9e0] placeholder:text-[#5d6472] focus:border-[#5294d0] focus:outline-none transition-colors"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-[#848996] mb-1.5">Password</label>
+              <label className="block text-xs font-medium text-[#9ba1ad] mb-1.5">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full px-3 py-2.5 bg-[#1a1b22] border border-[#282934] rounded-lg text-sm text-[#c8ccd4] placeholder:text-[#3e4250] focus:border-[#5294d0] focus:outline-none transition-colors"
+                className="w-full px-3 py-2.5 bg-[#1a1b22] border border-[#282934] rounded-lg text-sm text-[#d5d9e0] placeholder:text-[#5d6472] focus:border-[#5294d0] focus:outline-none transition-colors"
                 required
                 minLength={6}
               />
@@ -200,7 +200,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-lg font-semibold text-sm bg-gradient-to-r from-[#3a6d9e] to-[#2a5580] hover:from-[#4480b3] hover:to-[#336599] disabled:from-[#333440] disabled:to-[#333440] disabled:text-[#585d6a] text-white transition-all shadow-sm shadow-[#3a6d9e]/20"
+              className="w-full py-2.5 rounded-lg font-semibold text-sm bg-gradient-to-r from-[#3a6d9e] to-[#2a5580] hover:from-[#4480b3] hover:to-[#336599] disabled:from-[#333440] disabled:to-[#333440] disabled:text-[#7d8490] text-white transition-all shadow-sm shadow-[#3a6d9e]/20"
             >
               {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Create Account'}
             </button>
@@ -213,7 +213,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   setError('');
                   setSuccess('');
                 }}
-                className="text-xs text-[#848996] hover:text-[#5294d0] transition-colors"
+                className="text-xs text-[#9ba1ad] hover:text-[#5294d0] transition-colors"
               >
                 {isLogin ? (
                   <>Don't have an account? <span className="font-semibold text-[#5294d0]">Sign up</span></>

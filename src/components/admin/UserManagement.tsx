@@ -73,7 +73,7 @@ export function UserManagement({
   if (loading) {
     return (
       <div className="text-center py-12">
-        <p className="text-sm text-[#848996]">Loading users...</p>
+        <p className="text-sm text-[#9ba1ad]">Loading users...</p>
       </div>
     );
   }
@@ -81,7 +81,7 @@ export function UserManagement({
   return (
     <div className="max-w-7xl mx-auto">
       <div className="border-b border-[#282934] mb-3">
-        <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-[#585d6a]">
+        <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-[#7d8490]">
           <button
             onClick={() => handleSort('name')}
             className="col-span-2 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
@@ -136,13 +136,13 @@ export function UserManagement({
               <div className="grid grid-cols-12 gap-3 px-3 py-3 items-center">
                 <div className="col-span-2">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-sm font-medium text-[#e8eaed]">
+                    <h3 className="text-sm font-medium text-[#f1f3f5]">
                       {user.first_name && user.last_name
                         ? `${user.first_name} ${user.last_name}`
                         : 'Anonymous'}
                     </h3>
                     {user.is_blocked && (
-                      <span className="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-[#cf6679]/12 text-[#cf6679] border border-[#cf6679]/25">
+                      <span className="px-1.5 py-0.5 rounded-md text-[11px] font-bold bg-[#cf6679]/12 text-[#cf6679] border border-[#cf6679]/25">
                         BLOCKED
                       </span>
                     )}
@@ -151,15 +151,15 @@ export function UserManagement({
 
                 <div className="col-span-2">
                   <div className="flex items-center gap-1">
-                    <Mail className="w-3 h-3 text-[#585d6a]" />
-                    <p className="text-xs truncate text-[#848996]">{user.email}</p>
+                    <Mail className="w-3 h-3 text-[#7d8490]" />
+                    <p className="text-xs truncate text-[#9ba1ad]">{user.email}</p>
                   </div>
                 </div>
 
                 <div className="col-span-2">
                   <div className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3 text-[#585d6a]" />
-                    <span className="text-xs text-[#848996]">
+                    <Calendar className="w-3 h-3 text-[#7d8490]" />
+                    <span className="text-xs text-[#9ba1ad]">
                       {new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                   </div>
@@ -169,25 +169,25 @@ export function UserManagement({
                   <div className="flex items-center justify-center gap-3 text-xs">
                     <div className="flex items-center gap-1">
                       <Target className="w-3 h-3 text-[#6aab73]" />
-                      <span className="text-[#848996]">
+                      <span className="text-[#9ba1ad]">
                         <span className="font-medium text-[#6aab73]">{progress.solved_count}</span> solved
                       </span>
                     </div>
                     <span className="text-[#383946]">|</span>
-                    <span className="text-[#848996]">
-                      <span className="font-medium text-[#c8ccd4]">{progress.total_attempts}</span> attempts
+                    <span className="text-[#9ba1ad]">
+                      <span className="font-medium text-[#d5d9e0]">{progress.total_attempts}</span> attempts
                     </span>
                   </div>
                 </div>
 
                 <div className="col-span-1 flex justify-center">
                   {user.is_admin && (
-                    <span className="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-[#cc7832]/12 text-[#cc7832] border border-[#cc7832]/25">
+                    <span className="px-1.5 py-0.5 rounded-md text-[11px] font-bold bg-[#cc7832]/12 text-[#cc7832] border border-[#cc7832]/25">
                       ADMIN
                     </span>
                   )}
                   {!user.is_admin && (
-                    <span className="px-1.5 py-0.5 rounded-md text-[10px] font-medium text-[#585d6a]">
+                    <span className="px-1.5 py-0.5 rounded-md text-[11px] font-medium text-[#7d8490]">
                       User
                     </span>
                   )}
@@ -222,7 +222,7 @@ export function UserManagement({
                     onClick={() => handleDelete(user.id)}
                     className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all ${deleteConfirm === user.id
                       ? 'bg-[#cf6679]/20 hover:bg-[#cf6679]/30 text-[#cf6679] border border-[#cf6679]/40'
-                      : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#848996] border border-[#383946]'
+                      : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#9ba1ad] border border-[#383946]'
                       }`}
                     title={deleteConfirm === user.id ? 'Click to confirm' : 'Delete'}
                   >
@@ -238,7 +238,7 @@ export function UserManagement({
 
       {totalPages > 1 && (
         <div className="mt-4 flex items-center justify-between">
-          <p className="text-xs text-[#848996]">
+          <p className="text-xs text-[#9ba1ad]">
             Showing {((currentPage - 1) * pageSize) + 1}-{Math.min(currentPage * pageSize, total)} of {total}
           </p>
 
@@ -246,7 +246,7 @@ export function UserManagement({
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all bg-[#25262f] hover:bg-[#2c2d38] disabled:opacity-50 disabled:cursor-not-allowed text-[#c8ccd4] border border-[#383946]"
+              className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all bg-[#25262f] hover:bg-[#2c2d38] disabled:opacity-50 disabled:cursor-not-allowed text-[#d5d9e0] border border-[#383946]"
             >
               <ChevronLeft className="w-3 h-3" />
               Prev
@@ -271,7 +271,7 @@ export function UserManagement({
                     onClick={() => onPageChange(pageNum)}
                     className={`w-7 h-7 rounded-md text-xs font-medium transition-all ${currentPage === pageNum
                       ? 'bg-[#5294d0]/15 text-[#5294d0] border border-[#5294d0]/25'
-                      : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#c8ccd4] border border-[#383946]'
+                      : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#d5d9e0] border border-[#383946]'
                       }`}
                   >
                     {pageNum}
@@ -283,7 +283,7 @@ export function UserManagement({
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all bg-[#25262f] hover:bg-[#2c2d38] disabled:opacity-50 disabled:cursor-not-allowed text-[#c8ccd4] border border-[#383946]"
+              className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all bg-[#25262f] hover:bg-[#2c2d38] disabled:opacity-50 disabled:cursor-not-allowed text-[#d5d9e0] border border-[#383946]"
             >
               Next
               <ChevronRight className="w-3 h-3" />

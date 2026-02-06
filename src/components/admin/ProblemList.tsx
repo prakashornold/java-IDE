@@ -80,14 +80,14 @@ export function ProblemList({
       case 'expert':
         return 'text-[#cf6679] bg-[#cf6679]/10 border-[#cf6679]/25';
       default:
-        return 'text-[#848996] bg-[#848996]/10 border-[#848996]/25';
+        return 'text-[#9ba1ad] bg-[#9ba1ad]/10 border-[#9ba1ad]/25';
     }
   };
 
   if (loading) {
     return (
       <div className="text-center py-12">
-        <p className="text-sm text-[#848996]">Loading problems...</p>
+        <p className="text-sm text-[#9ba1ad]">Loading problems...</p>
       </div>
     );
   }
@@ -96,12 +96,12 @@ export function ProblemList({
     <div className="max-w-7xl mx-auto">
       {problems.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-sm text-[#848996]">No problems found</p>
+          <p className="text-sm text-[#9ba1ad]">No problems found</p>
         </div>
       ) : (
         <>
           <div className="border-b border-[#282934] mb-3">
-            <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-[#585d6a]">
+            <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-[#7d8490]">
               <button
                 onClick={() => handleSort('number')}
                 className="col-span-1 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
@@ -145,8 +145,8 @@ export function ProblemList({
                 <div className="grid grid-cols-12 gap-3 px-3 py-3 items-center">
                   <div className="col-span-1">
                     <div className="flex items-center gap-1">
-                      <Hash className="w-3 h-3 text-[#585d6a]" />
-                      <span className="text-xs font-semibold text-[#848996]">
+                      <Hash className="w-3 h-3 text-[#7d8490]" />
+                      <span className="text-xs font-semibold text-[#9ba1ad]">
                         {problem.number}
                       </span>
                     </div>
@@ -154,33 +154,33 @@ export function ProblemList({
 
                   <div className="col-span-4">
                     <div className="flex items-center gap-2">
-                      <BookOpen className="w-3 h-3 text-[#585d6a]" />
-                      <h3 className="text-sm font-medium truncate text-[#e8eaed]">
+                      <BookOpen className="w-3 h-3 text-[#7d8490]" />
+                      <h3 className="text-sm font-medium truncate text-[#f1f3f5]">
                         {problem.title}
                       </h3>
                     </div>
-                    <p className="text-xs mt-0.5 line-clamp-1 text-[#585d6a]">
+                    <p className="text-xs mt-0.5 line-clamp-1 text-[#7d8490]">
                       {problem.description}
                     </p>
                   </div>
 
                   <div className="col-span-2">
-                    <span className="text-xs px-1.5 py-0.5 rounded-md border border-[#282934] bg-[#1e1f26] text-[#848996]">
+                    <span className="text-xs px-1.5 py-0.5 rounded-md border border-[#282934] bg-[#1e1f26] text-[#9ba1ad]">
                       {problem.category}
                     </span>
                   </div>
 
                   <div className="col-span-1">
                     <div className="flex items-center gap-1">
-                      <BarChart3 className="w-3 h-3 text-[#585d6a]" />
-                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md border ${getDifficultyColor(problem.difficulty)}`}>
+                      <BarChart3 className="w-3 h-3 text-[#7d8490]" />
+                      <span className={`text-[11px] font-bold px-1.5 py-0.5 rounded-md border ${getDifficultyColor(problem.difficulty)}`}>
                         {problem.difficulty}
                       </span>
                     </div>
                   </div>
 
                   <div className="col-span-2">
-                    <span className="text-xs text-[#848996]">
+                    <span className="text-xs text-[#9ba1ad]">
                       {new Date(problem.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                   </div>
@@ -199,7 +199,7 @@ export function ProblemList({
                       onClick={() => handleDelete(problem.id)}
                       className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all ${deleteConfirm === problem.id
                         ? 'bg-[#cf6679]/20 hover:bg-[#cf6679]/30 text-[#cf6679] border border-[#cf6679]/40'
-                        : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#848996] border border-[#383946]'
+                        : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#9ba1ad] border border-[#383946]'
                         }`}
                       title={deleteConfirm === problem.id ? 'Click to confirm' : 'Delete'}
                     >
@@ -214,7 +214,7 @@ export function ProblemList({
 
           {totalPages > 1 && (
             <div className="mt-4 flex items-center justify-between">
-              <p className="text-xs text-[#848996]">
+              <p className="text-xs text-[#9ba1ad]">
                 Showing {((currentPage - 1) * pageSize) + 1}-{Math.min(currentPage * pageSize, total)} of {total}
               </p>
 
@@ -222,7 +222,7 @@ export function ProblemList({
                 <button
                   onClick={() => onPageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all bg-[#25262f] hover:bg-[#2c2d38] disabled:opacity-50 disabled:cursor-not-allowed text-[#c8ccd4] border border-[#383946]"
+                  className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all bg-[#25262f] hover:bg-[#2c2d38] disabled:opacity-50 disabled:cursor-not-allowed text-[#d5d9e0] border border-[#383946]"
                 >
                   <ChevronLeft className="w-3 h-3" />
                   Prev
@@ -247,7 +247,7 @@ export function ProblemList({
                         onClick={() => onPageChange(pageNum)}
                         className={`w-7 h-7 rounded-md text-xs font-medium transition-all ${currentPage === pageNum
                           ? 'bg-[#5294d0]/15 text-[#5294d0] border border-[#5294d0]/25'
-                          : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#c8ccd4] border border-[#383946]'
+                          : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#d5d9e0] border border-[#383946]'
                           }`}
                       >
                         {pageNum}
@@ -259,7 +259,7 @@ export function ProblemList({
                 <button
                   onClick={() => onPageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all bg-[#25262f] hover:bg-[#2c2d38] disabled:opacity-50 disabled:cursor-not-allowed text-[#c8ccd4] border border-[#383946]"
+                  className="flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all bg-[#25262f] hover:bg-[#2c2d38] disabled:opacity-50 disabled:cursor-not-allowed text-[#d5d9e0] border border-[#383946]"
                 >
                   Next
                   <ChevronRight className="w-3 h-3" />

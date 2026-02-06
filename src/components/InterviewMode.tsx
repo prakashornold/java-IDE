@@ -100,7 +100,7 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
             <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-[#4080b5] to-[#2a5580] rounded-lg flex-shrink-0 shadow-lg shadow-[#3a6d9e]/15">
               <Terminal className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-white" strokeWidth={2.5} />
             </div>
-            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-[#e8eaed] tracking-tight flex items-center gap-2">
+            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-[#f1f3f5] tracking-tight flex items-center gap-2">
               <span>JavaCodingPractice.com - Interview Mode</span>
               {user && (
                 <>
@@ -119,7 +119,7 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
             {onNavigateHome && (
               <button
                 onClick={onNavigateHome}
-                className="flex items-center gap-1.5 text-xs font-medium text-[#848996] hover:text-[#c8ccd4] hover:bg-[#25262f] px-3 py-2 rounded-lg transition-all"
+                className="flex items-center gap-1.5 text-xs font-medium text-[#9ba1ad] hover:text-[#d5d9e0] hover:bg-[#25262f] px-3 py-2 rounded-lg transition-all"
                 title="Home"
               >
                 <Home className="w-4 h-4" />

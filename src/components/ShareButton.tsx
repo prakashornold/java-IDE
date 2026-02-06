@@ -24,7 +24,7 @@ export function ShareButton({ problemTitle, className = '' }: ShareButtonProps) 
             onClick={handleShare}
             className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all ${isCopied
                     ? 'bg-[#6aab73]/15 text-[#6aab73] border border-[#6aab73]/30'
-                    : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#848996] hover:text-[#c8ccd4] border border-[#383946]'
+                    : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#9ba1ad] hover:text-[#d5d9e0] border border-[#383946]'
                 } ${className}`}
             title={isCopied ? 'Link copied to clipboard!' : 'Share this problem'}
         >

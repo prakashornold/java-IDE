@@ -40,7 +40,7 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
         <div className="px-4 sm:px-6 py-2.5">
           <button
             onClick={onNavigateHome}
-            className="flex items-center gap-2 text-xs font-medium text-[#848996] hover:text-[#c8ccd4] hover:bg-[#25262f] px-3 py-2 rounded-lg transition-all"
+            className="flex items-center gap-2 text-xs font-medium text-[#9ba1ad] hover:text-[#d5d9e0] hover:bg-[#25262f] px-3 py-2 rounded-lg transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Home
@@ -66,15 +66,15 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
                 </div>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-[#e8eaed] flex items-center gap-3 tracking-tight">
+                <h1 className="text-2xl font-bold text-[#f1f3f5] flex items-center gap-3 tracking-tight">
                   {userName}
                   {isAdmin && (
-                    <span className="px-2.5 py-0.5 text-[10px] rounded-md bg-[#cc7832]/15 text-[#cc7832] font-bold border border-[#cc7832]/25">
+                    <span className="px-2.5 py-0.5 text-[11px] rounded-md bg-[#cc7832]/15 text-[#cc7832] font-bold border border-[#cc7832]/25">
                       ADMIN
                     </span>
                   )}
                 </h1>
-                <p className="text-sm text-[#848996] mt-1">Manage your profile information</p>
+                <p className="text-sm text-[#9ba1ad] mt-1">Manage your profile information</p>
               </div>
             </div>
           </div>
@@ -86,8 +86,8 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
                   <User className="w-4 h-4 text-[#5294d0]" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] text-[#585d6a] font-medium uppercase tracking-wider">Full Name</p>
-                  <p className="text-sm font-medium text-[#e8eaed] truncate mt-0.5">
+                  <p className="text-[11px] text-[#7d8490] font-medium uppercase tracking-wider">Full Name</p>
+                  <p className="text-sm font-medium text-[#f1f3f5] truncate mt-0.5">
                     {userName}
                   </p>
                 </div>
@@ -98,8 +98,8 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
                   <Mail className="w-4 h-4 text-[#5294d0]" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] text-[#585d6a] font-medium uppercase tracking-wider">Email Address</p>
-                  <p className="text-sm font-medium text-[#e8eaed] truncate mt-0.5">
+                  <p className="text-[11px] text-[#7d8490] font-medium uppercase tracking-wider">Email Address</p>
+                  <p className="text-sm font-medium text-[#f1f3f5] truncate mt-0.5">
                     {user?.email || 'Not provided'}
                   </p>
                 </div>
@@ -110,8 +110,8 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
                   <Calendar className="w-4 h-4 text-[#5294d0]" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] text-[#585d6a] font-medium uppercase tracking-wider">Member Since</p>
-                  <p className="text-sm font-medium text-[#e8eaed] mt-0.5">
+                  <p className="text-[11px] text-[#7d8490] font-medium uppercase tracking-wider">Member Since</p>
+                  <p className="text-sm font-medium text-[#f1f3f5] mt-0.5">
                     {formatDate(user?.created_at)}
                   </p>
                 </div>
@@ -123,7 +123,7 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
                     <Shield className="w-4 h-4 text-[#cc7832]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[10px] text-[#585d6a] font-medium uppercase tracking-wider">Role</p>
+                    <p className="text-[11px] text-[#7d8490] font-medium uppercase tracking-wider">Role</p>
                     <p className="text-sm font-medium text-[#cc7832] mt-0.5">
                       Administrator
                     </p>
@@ -136,7 +136,7 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
               <button
                 onClick={handleRefresh}
                 disabled={refreshing}
-                className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#3a6d9e] to-[#2a5580] hover:from-[#4480b3] hover:to-[#336599] disabled:from-[#333440] disabled:to-[#333440] disabled:text-[#585d6a] text-white font-semibold py-2.5 px-6 rounded-lg transition-all shadow-sm shadow-[#3a6d9e]/20 text-sm"
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#3a6d9e] to-[#2a5580] hover:from-[#4480b3] hover:to-[#336599] disabled:from-[#333440] disabled:to-[#333440] disabled:text-[#7d8490] text-white font-semibold py-2.5 px-6 rounded-lg transition-all shadow-sm shadow-[#3a6d9e]/20 text-sm"
               >
                 <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
                 {refreshing ? 'Refreshing...' : 'Refresh Profile'}

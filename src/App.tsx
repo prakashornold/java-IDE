@@ -232,12 +232,12 @@ function App() {
             </div>
           </div>
           <div className="flex flex-col items-center gap-4">
-            <h1 className="text-2xl font-bold text-[#e8eaed] tracking-tight">JavaCodingPractice.com</h1>
+            <h1 className="text-2xl font-bold text-[#f1f3f5] tracking-tight">JavaCodingPractice.com</h1>
             <div className="flex items-center gap-3">
               <div className="relative">
                 <Loader2 className="w-4 h-4 animate-spin text-[#5294d0]" />
               </div>
-              <p className="text-sm text-[#848996] font-medium">Initializing IDE...</p>
+              <p className="text-sm text-[#9ba1ad] font-medium">Initializing IDE...</p>
             </div>
             <div className="w-48 h-1 bg-[#1e1f26] rounded-full overflow-hidden mt-1">
               <div className="h-full bg-gradient-to-r from-[#3a6d9e] to-[#5294d0] rounded-full" style={{ animation: 'progressPulse 2s ease-in-out' }} />
