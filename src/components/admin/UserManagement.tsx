@@ -136,7 +136,7 @@ export function UserManagement({
               <div className="grid grid-cols-12 gap-3 px-3 py-3 items-center">
                 <div className="col-span-2">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-sm font-medium text-[#e0e4ea]">
+                    <h3 className="text-sm font-medium text-[#e8eaed]">
                       {user.first_name && user.last_name
                         ? `${user.first_name} ${user.last_name}`
                         : 'Anonymous'}

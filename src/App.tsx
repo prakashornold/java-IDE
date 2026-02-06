@@ -171,7 +171,7 @@ function App() {
     const container = containerRef.current;
     const rect = container.getBoundingClientRect();
 
-    if (layoutMode === 'bottom') {
+    if (layoutMode === 'bottom' || isMobile) {
       const newHeight = ((rect.bottom - e.clientY) / rect.height) * 100;
       setOutputSize(Math.max(20, Math.min(70, newHeight)));
     } else {
@@ -224,18 +224,23 @@ function App() {
   if (isInitialLoading) {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-[#13141a]">
-        <div className="flex flex-col items-center gap-6 animate-fade-in">
+        <div className="flex flex-col items-center gap-8 animate-fade-in">
           <div className="relative">
-            <div className="absolute inset-0 bg-[#5294d0]/15 rounded-2xl blur-2xl animate-pulse" />
-            <div className="relative bg-gradient-to-br from-[#3a6d9e] to-[#2a5580] p-5 rounded-2xl shadow-2xl shadow-[#5294d0]/10">
-              <Terminal className="w-12 h-12 text-white" strokeWidth={2} />
+            <div className="absolute inset-0 bg-[#5294d0]/10 rounded-2xl blur-3xl scale-150 animate-pulse" />
+            <div className="relative bg-gradient-to-br from-[#4080b5] to-[#2a5580] p-5 rounded-2xl shadow-2xl shadow-[#5294d0]/15">
+              <Terminal className="w-12 h-12 text-white" strokeWidth={1.5} />
             </div>
           </div>
-          <div className="flex flex-col items-center gap-3">
-            <h1 className="text-2xl font-bold text-[#e0e4ea] tracking-tight">JavaCodingPractice.com</h1>
-            <div className="flex items-center gap-2.5">
-              <Loader2 className="w-4 h-4 animate-spin text-[#5294d0]" />
-              <p className="text-sm text-[#848996] font-medium">Loading IDE...</p>
+          <div className="flex flex-col items-center gap-4">
+            <h1 className="text-2xl font-bold text-[#e8eaed] tracking-tight">JavaCodingPractice.com</h1>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Loader2 className="w-4 h-4 animate-spin text-[#5294d0]" />
+              </div>
+              <p className="text-sm text-[#848996] font-medium">Initializing IDE...</p>
+            </div>
+            <div className="w-48 h-1 bg-[#1e1f26] rounded-full overflow-hidden mt-1">
+              <div className="h-full bg-gradient-to-r from-[#3a6d9e] to-[#5294d0] rounded-full" style={{ animation: 'progressPulse 2s ease-in-out' }} />
             </div>
           </div>
         </div>
@@ -267,7 +272,7 @@ function App() {
 
       <div className="flex-1 flex overflow-hidden">
         {isSidebarOpen && cachedProblems && (
-          <div style={{ width: '20%' }}>
+          <div className="border-r border-[#282934]" style={{ width: '20%' }}>
             <ProblemSidebar
               problems={cachedProblems}
               onSelectProblem={handleSelectProblem}
@@ -285,7 +290,7 @@ function App() {
           style={{ width: isSidebarOpen && !isMobile ? '80%' : '100%' }}
         >
           <div
-            className="relative overflow-hidden flex flex-col bg-[#1a1b22] border border-[#282934]"
+            className="relative overflow-hidden flex flex-col bg-[#1a1b22]"
             style={{
               [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${100 - outputSize}%`
             }}
@@ -320,7 +325,7 @@ function App() {
           )}
 
           <div
-            className={`bg-[#1a1b22] border border-[#282934] ${isMobile ? 'border-t' : ''}`}
+            className={`bg-[#1a1b22] ${isMobile ? 'border-t border-[#282934]' : ''}`}
             style={{
               [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${outputSize}%`
             }}

@@ -21,6 +21,7 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
   const executionLimit = useExecutionLimit();
   const { user, profile } = useAuth();
   const [code, setCode] = useState(INTERVIEW_MODE_CODE);
+  const [stdin, setStdin] = useState('');
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -46,7 +47,7 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
     setHasError(false);
 
     try {
-      const result = await compilerService.execute(code);
+      const result = await compilerService.execute(code, stdin);
 
       if (result.error) {
         setOutput(result.error);
@@ -94,12 +95,12 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
     >
       <header className="relative border-b border-[#282934] bg-[#1a1b22]">
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#5294d0]/20 to-transparent" />
-        <div className="px-4 sm:px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-[#3a6d9e] to-[#2a5580] rounded-lg flex-shrink-0 shadow-lg shadow-[#3a6d9e]/10">
-              <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" strokeWidth={2.5} />
+        <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-[#4080b5] to-[#2a5580] rounded-lg flex-shrink-0 shadow-lg shadow-[#3a6d9e]/15">
+              <Terminal className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-white" strokeWidth={2.5} />
             </div>
-            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-[#e0e4ea] tracking-tight flex items-center gap-2">
+            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-[#e8eaed] tracking-tight flex items-center gap-2">
               <span>JavaCodingPractice.com - Interview Mode</span>
               {user && (
                 <>
@@ -134,7 +135,7 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
         className="flex-1 flex overflow-hidden"
       >
         <div
-          className="relative overflow-hidden flex flex-col bg-[#1a1b22] border border-[#282934]"
+          className="relative overflow-hidden flex flex-col bg-[#1a1b22]"
           style={{ width: `${100 - outputSize}%` }}
         >
           <div className="flex-1 overflow-hidden">
@@ -145,7 +146,6 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
               currentProblem={null}
               isRunning={isRunning}
               onShowSolution={() => {}}
-              showFullSolution={false}
             />
           </div>
         </div>
@@ -157,7 +157,7 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
         />
 
         <div
-          className="bg-[#1a1b22] border border-[#282934]"
+          className="bg-[#1a1b22]"
           style={{ width: `${outputSize}%` }}
         >
           <OutputPanel
@@ -167,6 +167,8 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
             layoutMode={layoutMode}
             onToggleLayout={() => {}}
             isMobile={false}
+            stdin={stdin}
+            onStdinChange={setStdin}
           />
         </div>
       </div>

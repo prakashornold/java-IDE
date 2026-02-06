@@ -128,7 +128,7 @@ function formatLine(line: string): string {
   formatted = formatted.replace(/,\s*/g, ', ');
 
   // Space around binary operators (but be careful with special cases)
-  formatted = formatted.replace(/\s*([+\-*/%=<>!&|^]+)\s*/g, (match, operator) => {
+  formatted = formatted.replace(/\s*([+\-*/%=<>!&|^]+)\s*/g, (_match, operator) => {
     // Don't add spaces for unary operators or special cases
     if (operator === '++' || operator === '--') return operator;
     if (operator === '!') return operator;

@@ -1,5 +1,5 @@
 import Editor from '@monaco-editor/react';
-import { Loader2, Play, Eye, PanelLeftClose, PanelLeft } from 'lucide-react';
+import { Loader2, Play, Eye, EyeOff, PanelLeftClose, PanelLeft, Lock, FileCode } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useRef } from 'react';
@@ -176,6 +176,12 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     }
   };
 
+  const tabs: { key: TabType; label: string }[] = [
+    { key: 'problem', label: 'Problem' },
+    { key: 'hints', label: 'Hints' },
+    { key: 'code', label: 'Code' },
+  ];
+
   return (
     <div className="h-full w-full overflow-hidden flex flex-col">
       <div className="flex items-center justify-between border-b border-[#282934] bg-[#1e1f26]">
@@ -184,7 +190,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
             {onToggleSidebar && (
               <button
                 onClick={onToggleSidebar}
-                className="flex items-center gap-1.5 text-sm font-medium text-[#848996] hover:text-[#c8ccd4] hover:bg-[#25262f] px-3 py-2 transition-all border-r border-[#282934]"
+                className="flex items-center gap-1.5 text-sm font-medium text-[#848996] hover:text-[#c8ccd4] hover:bg-[#25262f] px-3 py-2.5 transition-all border-r border-[#282934]"
                 title={isSidebarOpen ? 'Hide problems sidebar' : 'Show problems sidebar'}
               >
                 {isSidebarOpen ? (
@@ -196,36 +202,24 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
               </button>
             )}
 
-            <button
-              onClick={() => setActiveTab('problem')}
-              className={`px-4 py-2 text-xs font-medium transition-all ${activeTab === 'problem'
-                ? 'text-[#e0e4ea] border-b-2 border-[#5294d0] bg-[#1a1b22]'
-                : 'text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f]'
-                }`}
-            >
-              Problem
-            </button>
-            <button
-              onClick={() => setActiveTab('hints')}
-              className={`px-4 py-2 text-xs font-medium transition-all ${activeTab === 'hints'
-                ? 'text-[#e0e4ea] border-b-2 border-[#5294d0] bg-[#1a1b22]'
-                : 'text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f]'
-                }`}
-            >
-              Hints
-            </button>
-            <button
-              onClick={() => setActiveTab('code')}
-              className={`px-4 py-2 text-xs font-medium transition-all ${activeTab === 'code'
-                ? 'text-[#e0e4ea] border-b-2 border-[#5294d0] bg-[#1a1b22]'
-                : 'text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f]'
-                }`}
-            >
-              Code
-            </button>
+            {tabs.map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`relative px-4 py-2.5 text-xs font-medium transition-all ${activeTab === tab.key
+                  ? 'text-[#e8eaed]'
+                  : 'text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f]'
+                  }`}
+              >
+                {tab.label}
+                {activeTab === tab.key && (
+                  <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#5294d0] rounded-full" />
+                )}
+              </button>
+            ))}
           </div>
         ) : (
-          <div className="px-4 py-2 flex items-center justify-between">
+          <div className="px-4 py-2.5 flex items-center justify-between">
             <div className="flex items-center gap-2">
               {onToggleSidebar && (
                 <button
@@ -241,7 +235,10 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
                   <span className="hidden sm:inline">Problems</span>
                 </button>
               )}
-              <span className="text-sm font-semibold text-[#c8ccd4] tracking-tight">Code Editor</span>
+              <div className="flex items-center gap-1.5">
+                <FileCode className="w-3.5 h-3.5 text-[#585d6a]" />
+                <span className="text-sm font-semibold text-[#c8ccd4] tracking-tight">Code Editor</span>
+              </div>
             </div>
           </div>
         )}
@@ -265,10 +262,10 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
               {currentProblem && isShowingSolution && (
                 <button
                   onClick={handleToggleSolution}
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all bg-[#5294d0]/10 text-[#5294d0] border border-[#5294d0]/25"
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all bg-[#5294d0]/10 text-[#5294d0] border border-[#5294d0]/25 hover:bg-[#5294d0]/15"
                   title="Hide solution and return to skeleton code"
                 >
-                  <Eye className="w-3.5 h-3.5" />
+                  <EyeOff className="w-3.5 h-3.5" />
                   <span className="hidden sm:inline">Hide Solution</span>
                 </button>
               )}
@@ -276,7 +273,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
               <button
                 onClick={handleRunClick}
                 disabled={isRunning}
-                className="flex items-center gap-1.5 px-4 py-1.5 rounded-md text-xs font-semibold transition-all bg-gradient-to-r from-[#3a6d9e] to-[#2a5580] hover:from-[#4480b3] hover:to-[#336599] disabled:from-[#333440] disabled:to-[#333440] disabled:text-[#585d6a] disabled:cursor-not-allowed text-white shadow-sm"
+                className="flex items-center gap-1.5 px-4 py-1.5 rounded-md text-xs font-semibold transition-all bg-gradient-to-r from-[#3a6d9e] to-[#2a5580] hover:from-[#4480b3] hover:to-[#336599] disabled:from-[#333440] disabled:to-[#333440] disabled:text-[#585d6a] disabled:cursor-not-allowed text-white shadow-sm shadow-[#3a6d9e]/20"
                 title={
                   !user
                     ? 'Click to login and run code'
@@ -285,7 +282,11 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
                       : 'Run code (Ctrl+Enter)'
                 }
               >
-                <Play className="w-3.5 h-3.5" fill="currentColor" />
+                {isRunning ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Play className="w-3.5 h-3.5" fill="currentColor" />
+                )}
                 <span>{isRunning ? 'Running...' : 'Run'}</span>
               </button>
             </>
@@ -303,16 +304,16 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
                   {currentProblem.difficulty}
                 </span>
               </div>
-              <h1 className="text-2xl font-bold text-[#e0e4ea] mb-4 tracking-tight">{currentProblem.title}</h1>
+              <h1 className="text-2xl font-bold text-[#e8eaed] mb-4 tracking-tight">{currentProblem.title}</h1>
             </div>
 
             {hasContent(currentProblem.description) && (
               <div>
-                <h2 className="text-lg font-semibold text-[#e0e4ea] mb-3 flex items-center gap-2">
-                  <span className={`w-1 h-5 rounded ${getSectionAccent('description')}`}></span>
+                <h2 className="text-sm font-semibold text-[#e8eaed] mb-2.5 flex items-center gap-2 uppercase tracking-wider">
+                  <span className={`w-1 h-4 rounded-sm ${getSectionAccent('description')}`}></span>
                   Description
                 </h2>
-                <div className="bg-[#1e1f26] rounded-lg p-4 border border-[#282934]">
+                <div className="bg-[#1e1f26] rounded-lg p-5 border border-[#282934]">
                   <div className="markdown-content">
                     {renderMarkdown(currentProblem.description || '')}
                   </div>
@@ -323,24 +324,24 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
             <div className="space-y-6">
               {hasContent(currentProblem.input) && (
                 <div>
-                  <h2 className="text-lg font-semibold text-[#e0e4ea] mb-3 flex items-center gap-2">
-                    <span className={`w-1 h-5 rounded ${getSectionAccent('input')}`}></span>
+                  <h2 className="text-sm font-semibold text-[#e8eaed] mb-2.5 flex items-center gap-2 uppercase tracking-wider">
+                    <span className={`w-1 h-4 rounded-sm ${getSectionAccent('input')}`}></span>
                     Sample Input
                   </h2>
-                  <div className="bg-[#1e1f26] rounded-lg p-4 border border-[#282934]">
-                    <pre className="text-[#c8ccd4] font-mono text-sm whitespace-pre-wrap break-words overflow-x-auto">{currentProblem.input}</pre>
+                  <div className="bg-[#1e1f26] rounded-lg p-5 border border-[#282934]">
+                    <pre className="text-[#c8ccd4] font-mono text-sm whitespace-pre-wrap break-words overflow-x-auto leading-relaxed">{currentProblem.input}</pre>
                   </div>
                 </div>
               )}
 
               {hasContent(currentProblem.output) && (
                 <div>
-                  <h2 className="text-lg font-semibold text-[#e0e4ea] mb-3 flex items-center gap-2">
-                    <span className={`w-1 h-5 rounded ${getSectionAccent('output')}`}></span>
+                  <h2 className="text-sm font-semibold text-[#e8eaed] mb-2.5 flex items-center gap-2 uppercase tracking-wider">
+                    <span className={`w-1 h-4 rounded-sm ${getSectionAccent('output')}`}></span>
                     Expected Output
                   </h2>
-                  <div className="bg-[#1e1f26] rounded-lg p-4 border border-[#282934]">
-                    <pre className="text-[#c8ccd4] font-mono text-sm whitespace-pre-wrap break-words overflow-x-auto">{currentProblem.output}</pre>
+                  <div className="bg-[#1e1f26] rounded-lg p-5 border border-[#282934]">
+                    <pre className="text-[#c8ccd4] font-mono text-sm whitespace-pre-wrap break-words overflow-x-auto leading-relaxed">{currentProblem.output}</pre>
                   </div>
                 </div>
               )}
@@ -353,14 +354,23 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
         <div className="flex-1 overflow-auto bg-[#1a1b22] p-6">
           {!user ? (
             <div className="h-full flex items-center justify-center">
-              <div className="text-center px-4 py-6">
-                <p className="text-lg font-semibold text-[#e0e4ea] mb-2">Please login</p>
-                <p className="text-sm text-[#585d6a]">Sign in to view hints</p>
+              <div className="text-center px-6 py-8 max-w-sm">
+                <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-[#25262f] border border-[#282934] flex items-center justify-center">
+                  <Lock className="w-5 h-5 text-[#585d6a]" />
+                </div>
+                <p className="text-lg font-semibold text-[#e8eaed] mb-2">Sign In Required</p>
+                <p className="text-sm text-[#585d6a] mb-5">Log in to your account to access hints for this problem</p>
+                <button
+                  onClick={onShowAuthModal}
+                  className="text-xs font-semibold text-white px-6 py-2 rounded-lg bg-gradient-to-r from-[#3a6d9e] to-[#2a5580] hover:from-[#4480b3] hover:to-[#336599] transition-all shadow-sm shadow-[#3a6d9e]/20"
+                >
+                  Sign In
+                </button>
               </div>
             </div>
           ) : (
             <div className="max-w-4xl mx-auto space-y-4">
-              <h2 className="text-xl font-bold text-[#e0e4ea] mb-4 tracking-tight">Hints</h2>
+              <h2 className="text-xl font-bold text-[#e8eaed] mb-4 tracking-tight">Hints</h2>
 
               {hasContent(currentProblem.hints) ? (
                 <div className="bg-[#1e1f26] rounded-lg p-5 border border-[#282934]">

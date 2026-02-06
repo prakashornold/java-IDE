@@ -181,7 +181,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
       <div className="flex items-center justify-center h-screen bg-[#13141a]">
         <div className="text-center">
           <AlertCircle className="w-16 h-16 mx-auto mb-4 text-[#585d6a]" />
-          <h2 className="text-2xl font-bold mb-2 text-[#e0e4ea]">Access Denied</h2>
+          <h2 className="text-2xl font-bold mb-2 text-[#e8eaed]">Access Denied</h2>
           <p className="mb-4 text-[#848996]">You do not have admin privileges.</p>
           <p className="text-sm mb-4 text-[#585d6a]">
             Email: {profile?.email || 'Not logged in'}<br />
@@ -202,12 +202,14 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
 
   return (
     <div className="h-screen flex flex-col bg-[#13141a]">
-      <div className="border-b border-[#282934] px-6 py-4 bg-[#1a1b22]">
+      <div className="border-b border-[#282934] px-6 py-3 bg-[#1a1b22]">
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-[#cc7832]" />
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-[#cc7832]/10 border border-[#cc7832]/20 flex items-center justify-center">
+              <Shield className="w-4 h-4 text-[#cc7832]" />
+            </div>
             <div>
-              <h1 className="text-lg font-bold text-[#e0e4ea] tracking-tight">
+              <h1 className="text-lg font-bold text-[#e8eaed] tracking-tight">
                 Admin Panel
               </h1>
               <p className="text-xs text-[#585d6a]">

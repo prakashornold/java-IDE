@@ -21,7 +21,7 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
     <div className="h-full overflow-auto bg-[#13141a]">
       <div className="max-w-[1600px] mx-auto p-3">
         <div className="mb-3 pb-2 border-b border-[#282934]">
-          <h2 className="text-lg font-bold text-[#e0e4ea] tracking-tight">
+          <h2 className="text-lg font-bold text-[#e8eaed] tracking-tight">
             Add New Problem
           </h2>
         </div>

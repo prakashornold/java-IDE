@@ -155,7 +155,7 @@ export function ProblemList({
                   <div className="col-span-4">
                     <div className="flex items-center gap-2">
                       <BookOpen className="w-3 h-3 text-[#585d6a]" />
-                      <h3 className="text-sm font-medium truncate text-[#e0e4ea]">
+                      <h3 className="text-sm font-medium truncate text-[#e8eaed]">
                         {problem.title}
                       </h3>
                     </div>
