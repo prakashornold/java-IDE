@@ -59,8 +59,8 @@ export function OutputPanel({ output, isRunning, hasError, layoutMode, onToggleL
       </div>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Input Section - 50% height */}
-        <div className="flex flex-col border-b border-[#323232]" style={{ height: '50%', minHeight: '120px' }}>
+        {/* Input Section - 15% height */}
+        <div className="flex flex-col border-b border-[#323232]" style={{ height: '15%', minHeight: '60px' }}>
           <div className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-[#252526] border-b border-[#323232]">
             <Keyboard className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-[#808080]" />
             <span className="text-[10px] sm:text-xs font-medium text-[#A9B7C6]">Input (stdin)</span>
