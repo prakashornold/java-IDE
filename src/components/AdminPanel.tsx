@@ -178,19 +178,19 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
 
   if (!isAdmin) {
     return (
-      <div className="flex items-center justify-center h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div className="flex items-center justify-center h-screen bg-[#13141a]">
         <div className="text-center">
-          <AlertCircle className="w-16 h-16 mx-auto mb-4" style={{ color: 'var(--text-secondary)' }} />
-          <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Access Denied</h2>
-          <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>You do not have admin privileges.</p>
-          <p className="text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>
+          <AlertCircle className="w-16 h-16 mx-auto mb-4 text-[#585d6a]" />
+          <h2 className="text-2xl font-bold mb-2 text-[#e0e4ea]">Access Denied</h2>
+          <p className="mb-4 text-[#848996]">You do not have admin privileges.</p>
+          <p className="text-sm mb-4 text-[#585d6a]">
             Email: {profile?.email || 'Not logged in'}<br />
             Admin Status: {isAdmin ? 'Yes' : 'No'}
           </p>
           {onNavigateHome && (
             <button
               onClick={onNavigateHome}
-              className="px-6 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white rounded-lg font-semibold"
+              className="px-6 py-2 bg-gradient-to-r from-[#3a6d9e] to-[#2a5580] text-white rounded-lg font-semibold transition-all hover:from-[#4480b3] hover:to-[#336599]"
             >
               Go Home
             </button>
@@ -201,16 +201,16 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   }
 
   return (
-    <div className="h-screen flex flex-col" style={{ backgroundColor: 'var(--bg-primary)' }}>
-      <div className="border-b px-6 py-4" style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}>
+    <div className="h-screen flex flex-col bg-[#13141a]">
+      <div className="border-b border-[#282934] px-6 py-4 bg-[#1a1b22]">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-emerald-400" />
+            <Shield className="w-5 h-5 text-[#cc7832]" />
             <div>
-              <h1 className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+              <h1 className="text-lg font-bold text-[#e0e4ea] tracking-tight">
                 Admin Panel
               </h1>
-              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+              <p className="text-xs text-[#585d6a]">
                 {profile?.email}
               </p>
             </div>
@@ -218,7 +218,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
           {onNavigateHome && (
             <button
               onClick={onNavigateHome}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-md font-medium transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#848996] hover:text-[#c8ccd4] hover:bg-[#25262f] rounded-lg font-medium transition-all"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               Home
@@ -229,9 +229,9 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
         <div className="flex gap-2">
           <button
             onClick={() => setActiveTab('users')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${activeTab === 'users'
-              ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
-              : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${activeTab === 'users'
+              ? 'bg-[#5294d0]/15 text-[#5294d0] border border-[#5294d0]/25'
+              : 'text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f]'
               }`}
           >
             <Users className="w-3.5 h-3.5" />
@@ -242,9 +242,9 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
               setActiveTab('add-problem');
               resetProblemForm();
             }}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${activeTab === 'add-problem'
-              ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
-              : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${activeTab === 'add-problem'
+              ? 'bg-[#5294d0]/15 text-[#5294d0] border border-[#5294d0]/25'
+              : 'text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f]'
               }`}
           >
             <Plus className="w-3.5 h-3.5" />
@@ -252,9 +252,9 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
           </button>
           <button
             onClick={() => setActiveTab('manage-problems')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${activeTab === 'manage-problems'
-              ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
-              : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${activeTab === 'manage-problems'
+              ? 'bg-[#5294d0]/15 text-[#5294d0] border border-[#5294d0]/25'
+              : 'text-[#585d6a] hover:text-[#c8ccd4] hover:bg-[#25262f]'
               }`}
           >
             <List className="w-3.5 h-3.5" />

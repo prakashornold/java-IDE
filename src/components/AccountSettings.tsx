@@ -34,12 +34,12 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#0d1117]">
-      <header className="border-b border-[#323232] bg-[#1e1e1e]">
+    <div className="min-h-screen flex flex-col bg-[#13141a]">
+      <header className="border-b border-[#282934] bg-[#1a1b22]">
         <div className="px-4 sm:px-6 py-3">
           <button
             onClick={onNavigateHome}
-            className="flex items-center gap-2 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+            className="flex items-center gap-2 text-xs font-medium text-[#848996] hover:text-[#c8ccd4] hover:bg-[#25262f] px-3 py-2 rounded-lg transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Home
@@ -48,10 +48,10 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
       </header>
 
       <div className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-8">
-        <div className="bg-[#1e1e1e] rounded-xl border border-[#323232] shadow-2xl">
+        <div className="bg-[#1a1b22] rounded-xl border border-[#282934] shadow-2xl shadow-black/20">
           <div className="p-6 sm:p-8">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 mb-4 overflow-hidden">
+              <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-[#3a6d9e] to-[#2a5580] mb-4 overflow-hidden shadow-lg shadow-[#3a6d9e]/15">
                 {userAvatar ? (
                   <img
                     src={userAvatar}
@@ -62,54 +62,54 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
                   <User className="w-12 h-12 text-white" />
                 )}
               </div>
-              <h1 className="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-3">
+              <h1 className="text-3xl font-bold text-[#e0e4ea] mb-2 flex items-center justify-center gap-3 tracking-tight">
                 Account Settings
                 {isAdmin && (
-                  <span className="px-3 py-1 text-xs rounded bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold">
+                  <span className="px-2.5 py-0.5 text-[10px] rounded-md bg-[#cc7832]/15 text-[#cc7832] font-bold border border-[#cc7832]/25">
                     ADMIN
                   </span>
                 )}
               </h1>
-              <p className="text-gray-400">
+              <p className="text-[#848996]">
                 Manage your profile information
               </p>
             </div>
 
             <div className="space-y-6">
-              <div className="bg-[#161b22] rounded-lg p-6 border border-[#323232]">
-                <h2 className="text-lg font-semibold text-white mb-4">Profile Information</h2>
+              <div className="bg-[#1e1f26] rounded-lg p-6 border border-[#282934]">
+                <h2 className="text-lg font-semibold text-[#e0e4ea] mb-4 tracking-tight">Profile Information</h2>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
-                      <User className="w-5 h-5 text-cyan-400" />
+                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#5294d0]/10 border border-[#5294d0]/20">
+                      <User className="w-5 h-5 text-[#5294d0]" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs text-gray-400 mb-1">Full Name</p>
-                      <p className="text-base font-medium text-white truncate">
+                      <p className="text-xs text-[#585d6a] mb-1 font-medium">Full Name</p>
+                      <p className="text-base font-medium text-[#e0e4ea] truncate">
                         {userName}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
-                      <Mail className="w-5 h-5 text-cyan-400" />
+                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#5294d0]/10 border border-[#5294d0]/20">
+                      <Mail className="w-5 h-5 text-[#5294d0]" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs text-gray-400 mb-1">Email Address</p>
-                      <p className="text-base font-medium text-white truncate">
+                      <p className="text-xs text-[#585d6a] mb-1 font-medium">Email Address</p>
+                      <p className="text-base font-medium text-[#e0e4ea] truncate">
                         {user?.email || 'Not provided'}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
-                      <Calendar className="w-5 h-5 text-cyan-400" />
+                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#5294d0]/10 border border-[#5294d0]/20">
+                      <Calendar className="w-5 h-5 text-[#5294d0]" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs text-gray-400 mb-1">Member Since</p>
-                      <p className="text-base font-medium text-white">
+                      <p className="text-xs text-[#585d6a] mb-1 font-medium">Member Since</p>
+                      <p className="text-base font-medium text-[#e0e4ea]">
                         {formatDate(user?.created_at)}
                       </p>
                     </div>
@@ -117,12 +117,12 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
 
                   {isAdmin && (
                     <div className="flex items-start gap-4">
-                      <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-                        <Shield className="w-5 h-5 text-yellow-400" />
+                      <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#cc7832]/10 border border-[#cc7832]/20">
+                        <Shield className="w-5 h-5 text-[#cc7832]" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs text-gray-400 mb-1">Role</p>
-                        <p className="text-base font-medium text-yellow-400">
+                        <p className="text-xs text-[#585d6a] mb-1 font-medium">Role</p>
+                        <p className="text-base font-medium text-[#cc7832]">
                           Administrator
                         </p>
                       </div>
@@ -135,7 +135,7 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
                 <button
                   onClick={handleRefresh}
                   disabled={refreshing}
-                  className="flex items-center justify-center gap-2 bg-cyan-600 hover:bg-cyan-700 disabled:bg-cyan-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#3a6d9e] to-[#2a5580] hover:from-[#4480b3] hover:to-[#336599] disabled:from-[#333440] disabled:to-[#333440] disabled:text-[#585d6a] text-white font-semibold py-3 px-6 rounded-lg transition-all shadow-lg shadow-[#3a6d9e]/15"
                 >
                   <RefreshCw className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
                   {refreshing ? 'Refreshing...' : 'Refresh Profile'}

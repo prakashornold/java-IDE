@@ -42,43 +42,40 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
     callback?.();
   };
   return (
-    <header
-      className="relative border-b border-[#323232] bg-[#1e1e1e]"
-    >
+    <header className="relative bg-[#1a1b22] border-b border-[#282934]">
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#5294d0]/20 to-transparent" />
+
       <div className="px-4 sm:px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
-          <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-[#365880] rounded flex-shrink-0">
-            <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" strokeWidth={2.5} />
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-shrink">
+          <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-[#3a6d9e] to-[#2a5580] rounded-lg flex-shrink-0 shadow-lg shadow-[#3a6d9e]/10">
+            <Terminal className="w-4 h-4 sm:w-[18px] sm:h-[18px] text-white" strokeWidth={2.5} />
           </div>
           <div className="flex flex-col justify-center flex-1 min-w-0">
-            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-semibold text-[#A9B7C6] sm:truncate">
+            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-[#e0e4ea] tracking-tight sm:truncate">
               <span className="hidden sm:inline">JavaCodingPractice.com</span>
               <span className="sm:hidden whitespace-nowrap">JavaCodingPractice.com</span>
             </h1>
-            <p className="text-[9px] xs:text-[10px] sm:text-xs text-[#808080] tracking-tight truncate hidden xs:block">
+            <p className="text-[9px] xs:text-[10px] sm:text-xs text-[#5c6270] tracking-tight truncate hidden xs:block">
               Makes Easy to Practice AnyTime AnyWhere
             </p>
           </div>
 
-          {/* User Name with Hover Tooltip */}
           {user && (
             <div className="relative ml-2 hidden md:block" ref={userTooltipRef}>
               <button
                 onMouseEnter={() => setShowUserTooltip(true)}
                 onMouseLeave={() => setShowUserTooltip(false)}
-                className="text-xs text-cyan-400 hover:text-cyan-300 font-medium transition-colors cursor-default px-2 py-1 rounded hover:bg-[#2a2d2e]"
+                className="text-xs text-[#5294d0] hover:text-[#6db0ea] font-medium transition-colors cursor-default px-2.5 py-1.5 rounded-md hover:bg-[#5294d0]/[0.06]"
               >
                 {userName}
               </button>
 
-              {/* Hover Tooltip */}
               {showUserTooltip && (
-                <div className="absolute top-full left-0 mt-2 w-72 bg-[#1e1e1e] border border-[#323232] rounded-lg shadow-2xl z-50 overflow-hidden">
-                  {/* Profile Header */}
-                  <div className="bg-gradient-to-br from-cyan-600 to-blue-700 p-3">
-                    <div className="flex items-center gap-2">
+                <div className="absolute top-full left-0 mt-2 w-72 bg-[#1e1f26] border border-[#282934] rounded-xl shadow-2xl shadow-black/40 z-50 overflow-hidden animate-scale-in">
+                  <div className="bg-gradient-to-br from-[#2a5580] to-[#1e3a5c] p-4">
+                    <div className="flex items-center gap-3">
                       <div className="relative flex-shrink-0">
-                        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/30 flex items-center justify-center overflow-hidden">
+                        <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/20 flex items-center justify-center overflow-hidden">
                           {userAvatar ? (
                             <img
                               src={userAvatar}
@@ -86,14 +83,14 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <User className="w-6 h-6 text-white" />
+                            <User className="w-6 h-6 text-white/80" />
                           )}
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="text-white font-semibold text-sm truncate">{userName}</h3>
                         {isAdmin && (
-                          <span className="inline-block mt-0.5 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-yellow-400 text-gray-900 rounded">
+                          <span className="inline-block mt-1 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-amber-400/90 text-gray-900 rounded">
                             Admin
                           </span>
                         )}
@@ -101,30 +98,29 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
                     </div>
                   </div>
 
-                  {/* Profile Details */}
-                  <div className="p-2.5 space-y-1.5">
-                    <div className="flex items-start gap-2">
-                      <Mail className="w-3.5 h-3.5 text-cyan-400 mt-0.5 flex-shrink-0" />
+                  <div className="p-3 space-y-2.5">
+                    <div className="flex items-start gap-2.5">
+                      <Mail className="w-3.5 h-3.5 text-[#5294d0] mt-0.5 flex-shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[9px] text-gray-500 uppercase tracking-wide">Email</p>
-                        <p className="text-[11px] text-gray-300 truncate">{user?.email || 'Not provided'}</p>
+                        <p className="text-[9px] text-[#585d6a] uppercase tracking-wider font-medium">Email</p>
+                        <p className="text-[11px] text-[#c8ccd4] truncate mt-0.5">{user?.email || 'Not provided'}</p>
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-2">
-                      <Calendar className="w-3.5 h-3.5 text-cyan-400 mt-0.5 flex-shrink-0" />
+                    <div className="flex items-start gap-2.5">
+                      <Calendar className="w-3.5 h-3.5 text-[#5294d0] mt-0.5 flex-shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-[9px] text-gray-500 uppercase tracking-wide">Member Since</p>
-                        <p className="text-[11px] text-gray-300">{formatDate(user?.created_at)}</p>
+                        <p className="text-[9px] text-[#585d6a] uppercase tracking-wider font-medium">Member Since</p>
+                        <p className="text-[11px] text-[#c8ccd4] mt-0.5">{formatDate(user?.created_at)}</p>
                       </div>
                     </div>
 
                     {isAdmin && (
-                      <div className="flex items-start gap-2">
-                        <Shield className="w-3.5 h-3.5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                      <div className="flex items-start gap-2.5">
+                        <Shield className="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0" />
                         <div className="flex-1 min-w-0">
-                          <p className="text-[9px] text-gray-500 uppercase tracking-wide">Role</p>
-                          <p className="text-[11px] text-yellow-400 font-medium">Administrator</p>
+                          <p className="text-[9px] text-[#585d6a] uppercase tracking-wider font-medium">Role</p>
+                          <p className="text-[11px] text-amber-400 font-medium mt-0.5">Administrator</p>
                         </div>
                       </div>
                     )}
@@ -136,23 +132,22 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="md:hidden flex items-center justify-center w-9 h-9 text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] rounded transition-all"
+            className="md:hidden flex items-center justify-center w-9 h-9 text-[#848996] hover:text-white hover:bg-[#2c2d38] rounded-lg transition-all"
             title="Menu"
           >
             {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-2">
+          <nav className="hidden md:flex items-center gap-1.5">
             {onNavigateToAdmin && isAdmin && (
               <button
                 onClick={onNavigateToAdmin}
-                className="text-sm font-medium text-[#CC7832] hover:text-[#FFA759] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+                className="flex items-center gap-1.5 text-xs font-semibold text-[#cc7832] hover:text-[#e8943e] hover:bg-[#cc7832]/[0.06] px-3 py-2 rounded-lg transition-all"
                 title="Admin"
               >
+                <Shield className="w-3.5 h-3.5" />
                 Admin
               </button>
             )}
@@ -160,16 +155,16 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
             {user ? (
               <button
                 onClick={handleSignOut}
-                className="flex items-center gap-1.5 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+                className="flex items-center gap-1.5 text-xs font-medium text-[#848996] hover:text-[#cf6679] hover:bg-[#cf6679]/[0.06] px-3 py-2 rounded-lg transition-all"
                 title="Logout"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Logout</span>
               </button>
             ) : (
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] px-4 py-1.5 rounded border border-[#555555] hover:bg-[#2a2d2e] transition-all"
+                className="text-xs font-semibold text-[#c8ccd4] hover:text-white px-4 py-2 rounded-lg border border-[#383946] hover:border-[#5294d0]/40 hover:bg-[#5294d0]/[0.06] transition-all"
                 title="Login"
               >
                 Login
@@ -179,28 +174,28 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {showMobileMenu && (
         <div
           ref={mobileMenuRef}
-          className="md:hidden absolute top-[57px] left-0 right-0 bg-[#1e1e1e] border-b border-[#323232] shadow-xl z-50 max-h-[calc(100vh-57px)] overflow-y-auto"
+          className="md:hidden absolute top-full left-0 right-0 bg-[#1a1b22] border-b border-[#282934] shadow-2xl shadow-black/40 z-50 max-h-[calc(100vh-57px)] overflow-y-auto animate-slide-down"
         >
-          <nav className="px-4 py-3 flex flex-col gap-2">
+          <nav className="px-4 py-3 flex flex-col gap-1">
             {onNavigateToAdmin && isAdmin && (
               <button
                 onClick={() => handleNavigate(onNavigateToAdmin)}
-                className="text-sm font-medium text-[#CC7832] hover:text-[#FFA759] hover:bg-[#2a2d2e] px-3 py-2.5 rounded transition-all w-full text-left"
+                className="flex items-center gap-2 text-sm font-semibold text-[#cc7832] hover:text-[#e8943e] hover:bg-[#cc7832]/[0.06] px-3 py-2.5 rounded-lg transition-all w-full text-left"
               >
+                <Shield className="w-4 h-4" />
                 Admin
               </button>
             )}
 
             {user ? (
               <>
-                <div className="border-t border-[#323232] my-1"></div>
+                <div className="border-t border-[#282934] my-1.5" />
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center gap-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-[#2a2d2e] px-3 py-2.5 rounded transition-all w-full text-left"
+                  className="flex items-center gap-2 text-sm font-medium text-[#848996] hover:text-[#cf6679] hover:bg-[#cf6679]/[0.06] px-3 py-2.5 rounded-lg transition-all w-full text-left"
                 >
                   <LogOut className="w-4 h-4" />
                   Logout
@@ -208,13 +203,13 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
               </>
             ) : (
               <>
-                <div className="border-t border-[#323232] my-1"></div>
+                <div className="border-t border-[#282934] my-1.5" />
                 <button
                   onClick={() => {
                     setShowAuthModal(true);
                     setShowMobileMenu(false);
                   }}
-                  className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] px-3 py-2.5 rounded border border-[#555555] hover:bg-[#2a2d2e] transition-all w-full text-center"
+                  className="text-sm font-semibold text-[#c8ccd4] hover:text-white px-3 py-2.5 rounded-lg border border-[#383946] hover:border-[#5294d0]/40 hover:bg-[#5294d0]/[0.06] transition-all w-full text-center"
                 >
                   Login
                 </button>

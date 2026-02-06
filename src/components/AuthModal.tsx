@@ -52,55 +52,55 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   const modalContent = (
     <div
-      className="fixed inset-0 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
       style={{ zIndex: 99999 }}
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md rounded-2xl shadow-2xl border"
-        style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border-color)' }}
+        className="relative w-full max-w-md rounded-2xl shadow-2xl shadow-black/50 border border-[#282934] bg-[#1a1b22] animate-scale-in overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-[#5294d0]/5 to-transparent pointer-events-none" />
+
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 transition-colors hover:text-cyan-400"
-          style={{ color: 'var(--text-secondary)' }}
+          className="absolute top-4 right-4 text-[#585d6a] hover:text-[#c8ccd4] transition-colors p-1 rounded-md hover:bg-[#2c2d38] z-10"
           aria-label="Close"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="p-8">
+        <div className="relative p-8">
           <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#365880]">
+            <div className="flex items-center justify-center gap-2.5 mb-5">
+              <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-[#3a6d9e] to-[#2a5580] shadow-lg shadow-[#3a6d9e]/15">
                 <Terminal className="w-5 h-5 text-white" strokeWidth={2.5} />
               </div>
-              <h1 className="text-xl font-bold text-[#A9B7C6]">
+              <h1 className="text-lg font-bold text-[#e0e4ea] tracking-tight">
                 JavaCodingPractice.com
               </h1>
             </div>
-            <h2 className="text-2xl font-bold mb-2 text-[#FFFFFF]">
+            <h2 className="text-2xl font-bold mb-2 text-white tracking-tight">
               Sign In to Continue
             </h2>
-            <p className="text-sm text-[#BBBBBB]">
+            <p className="text-sm text-[#848996]">
               {showDevLogin ? 'Choose a login option' : 'Sign in with Google to start coding'}
             </p>
           </div>
 
           {showDevLogin && (
             <>
-              <div className="mb-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+              <div className="mb-5 p-3 rounded-lg bg-amber-500/[0.06] border border-amber-500/20">
                 <p className="text-xs text-amber-400 text-center font-medium">
-                  🔧 DEV MODE - Localhost Only
+                  DEV MODE - Localhost Only
                 </p>
               </div>
 
-              <div className="space-y-3 mb-4">
+              <div className="space-y-2.5 mb-5">
                 <button
                   onClick={() => handleDevLogin('admin')}
                   disabled={isLoggingIn}
-                  className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3.5 px-4 rounded-lg transition-all duration-200 border border-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-[#3a6d9e] to-[#2a5580] hover:from-[#4480b3] hover:to-[#336599] text-white font-semibold py-3.5 px-4 rounded-xl transition-all duration-200 shadow-lg shadow-[#3a6d9e]/15 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Shield className="w-5 h-5" />
                   {isLoggingIn ? 'Logging in...' : 'Dev Login as Admin'}
@@ -109,19 +109,19 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 <button
                   onClick={() => handleDevLogin('user')}
                   disabled={isLoggingIn}
-                  className="w-full flex items-center justify-center gap-3 bg-[#2a2d2e] hover:bg-[#3a3d3e] text-white font-semibold py-3.5 px-4 rounded-lg transition-all duration-200 border border-[#555555] hover:border-[#666666] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-3 bg-[#25262f] hover:bg-[#2c2d38] text-white font-semibold py-3.5 px-4 rounded-xl transition-all duration-200 border border-[#383946] hover:border-[#484a58] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <User className="w-5 h-5" />
                   {isLoggingIn ? 'Logging in...' : 'Dev Login as User'}
                 </button>
               </div>
 
-              <div className="relative my-6">
+              <div className="relative my-7">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-[#555555]"></div>
+                  <div className="w-full border-t border-[#282934]" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="px-2 bg-[#2b2b2b] text-[#BBBBBB]">OR</span>
+                  <span className="px-3 bg-[#1a1b22] text-[#585d6a] font-medium">OR</span>
                 </div>
               </div>
             </>
@@ -129,7 +129,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
           <button
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 bg-[#2a2d2e] hover:bg-[#3a3d3e] text-[#FFFFFF] font-semibold py-3.5 px-4 rounded-lg transition-all duration-200 border border-[#555555] hover:border-[#666666]"
+            className="w-full flex items-center justify-center gap-3 bg-[#25262f] hover:bg-[#2c2d38] text-white font-semibold py-3.5 px-4 rounded-xl transition-all duration-200 border border-[#383946] hover:border-[#484a58]"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
@@ -152,8 +152,8 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             Sign in with Google
           </button>
 
-          <div className="mt-6 text-center">
-            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+          <div className="mt-7 text-center">
+            <p className="text-[11px] text-[#585d6a]">
               By signing in, you agree to our Terms of Service and Privacy Policy
             </p>
           </div>

@@ -15,7 +15,7 @@ import { useExecutionLimit } from './hooks/useExecutionLimit';
 import { errorHandlingService } from './services/ErrorHandlingService';
 import { problemLinkService } from './services/ProblemLinkService';
 import { metaTagService } from './services/MetaTagService';
-import { Loader2, Code2 } from 'lucide-react';
+import { Loader2, Terminal } from 'lucide-react';
 
 type LayoutMode = 'bottom' | 'side';
 
@@ -202,10 +202,8 @@ function App() {
     setOutput('');
     setHasError(false);
 
-    // Update URL with problem slug
     problemLinkService.updateUrlWithProblem(problem.title);
 
-    // Ensure sidebar is open when a problem is selected (except on mobile)
     if (!isMobile) {
       setIsSidebarOpen(true);
     }
@@ -225,19 +223,19 @@ function App() {
 
   if (isInitialLoading) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-[#2B2B2B]">
-        <div className="flex flex-col items-center gap-6">
+      <div className="h-screen w-screen flex items-center justify-center bg-[#13141a]">
+        <div className="flex flex-col items-center gap-6 animate-fade-in">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#6897BB] to-[#CC7832] rounded-full blur-xl opacity-50 animate-pulse"></div>
-            <div className="relative bg-[#1e1e1e] p-6 rounded-2xl border-2 border-[#6897BB]">
-              <Code2 className="w-16 h-16 text-[#6897BB]" />
+            <div className="absolute inset-0 bg-[#5294d0]/15 rounded-2xl blur-2xl animate-pulse" />
+            <div className="relative bg-gradient-to-br from-[#3a6d9e] to-[#2a5580] p-5 rounded-2xl shadow-2xl shadow-[#5294d0]/10">
+              <Terminal className="w-12 h-12 text-white" strokeWidth={2} />
             </div>
           </div>
           <div className="flex flex-col items-center gap-3">
-            <h1 className="text-2xl font-bold text-[#FFFFFF]">JavaCodingPractice.com</h1>
-            <div className="flex items-center gap-2">
-              <Loader2 className="w-5 h-5 animate-spin text-[#6897BB]" />
-              <p className="text-sm text-[#A9B7C6] font-medium">Loading IDE...</p>
+            <h1 className="text-2xl font-bold text-[#e0e4ea] tracking-tight">JavaCodingPractice.com</h1>
+            <div className="flex items-center gap-2.5">
+              <Loader2 className="w-4 h-4 animate-spin text-[#5294d0]" />
+              <p className="text-sm text-[#848996] font-medium">Loading IDE...</p>
             </div>
           </div>
         </div>
@@ -259,10 +257,7 @@ function App() {
 
   return (
     <div
-      className="h-screen flex flex-col overflow-hidden"
-      style={{
-        background: '#2B2B2B'
-      }}
+      className="h-screen flex flex-col overflow-hidden bg-[#1a1b22]"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
@@ -290,7 +285,7 @@ function App() {
           style={{ width: isSidebarOpen && !isMobile ? '80%' : '100%' }}
         >
           <div
-            className="relative overflow-hidden flex flex-col bg-[#1e1e1e] border border-[#323232]"
+            className="relative overflow-hidden flex flex-col bg-[#1a1b22] border border-[#282934]"
             style={{
               [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${100 - outputSize}%`
             }}
@@ -312,13 +307,12 @@ function App() {
 
           {!isMobile && (
             <div
-              className={`relative ${layoutMode === 'bottom'
-                ? 'w-full cursor-ns-resize hover:bg-[#515151]'
-                : 'h-full cursor-ew-resize hover:bg-[#515151]'
-                } ${isResizing ? 'bg-[#515151]' : ''}`}
+              className={`resize-handle ${layoutMode === 'bottom'
+                ? 'w-full cursor-ns-resize'
+                : 'h-full cursor-ew-resize'
+                } ${isResizing ? 'active' : ''}`}
               style={{
                 [layoutMode === 'bottom' ? 'height' : 'width']: '4px',
-                backgroundColor: isResizing ? undefined : '#323232'
               }}
               onMouseDown={handleMouseDown}
             >
@@ -326,7 +320,7 @@ function App() {
           )}
 
           <div
-            className={`bg-[#1e1e1e] border border-[#323232] ${isMobile ? 'border-t' : ''}`}
+            className={`bg-[#1a1b22] border border-[#282934] ${isMobile ? 'border-t' : ''}`}
             style={{
               [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${outputSize}%`
             }}

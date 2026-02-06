@@ -88,23 +88,23 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
 
   return (
     <div
-      className="h-screen flex flex-col overflow-hidden"
-      style={{ background: '#2B2B2B' }}
+      className="h-screen flex flex-col overflow-hidden bg-[#1a1b22]"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
-      <header className="border-b border-[#323232] bg-[#1e1e1e]">
+      <header className="relative border-b border-[#282934] bg-[#1a1b22]">
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#5294d0]/20 to-transparent" />
         <div className="px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-[#365880] rounded">
+            <div className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-[#3a6d9e] to-[#2a5580] rounded-lg flex-shrink-0 shadow-lg shadow-[#3a6d9e]/10">
               <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" strokeWidth={2.5} />
             </div>
-            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-semibold text-[#A9B7C6] flex items-center gap-2">
+            <h1 className="text-xs xs:text-sm sm:text-base md:text-lg font-bold text-[#e0e4ea] tracking-tight flex items-center gap-2">
               <span>JavaCodingPractice.com - Interview Mode</span>
               {user && (
                 <>
-                  <span className="hidden sm:inline">-</span>
-                  <span className="flex items-center gap-1.5 text-[#BBBBBB]">
+                  <span className="hidden sm:inline text-[#383946]">-</span>
+                  <span className="flex items-center gap-1.5 text-[#5294d0] font-medium">
                     <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span className="hidden sm:inline">{userName}</span>
                     <span className="sm:hidden">{userName.split(' ')[0]}</span>
@@ -118,7 +118,7 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
             {onNavigateHome && (
               <button
                 onClick={onNavigateHome}
-                className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+                className="flex items-center gap-1.5 text-xs font-medium text-[#848996] hover:text-[#c8ccd4] hover:bg-[#25262f] px-3 py-2 rounded-lg transition-all"
                 title="Home"
               >
                 <Home className="w-4 h-4" />
@@ -134,7 +134,7 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
         className="flex-1 flex overflow-hidden"
       >
         <div
-          className="relative overflow-hidden flex flex-col bg-[#1e1e1e] border border-[#323232]"
+          className="relative overflow-hidden flex flex-col bg-[#1a1b22] border border-[#282934]"
           style={{ width: `${100 - outputSize}%` }}
         >
           <div className="flex-1 overflow-hidden">
@@ -151,16 +151,13 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
         </div>
 
         <div
-          className="relative h-full cursor-ew-resize hover:bg-[#515151]"
-          style={{
-            width: '4px',
-            backgroundColor: isResizing ? '#515151' : '#323232'
-          }}
+          className={`resize-handle h-full cursor-ew-resize ${isResizing ? 'active' : ''}`}
+          style={{ width: '4px' }}
           onMouseDown={handleMouseDown}
         />
 
         <div
-          className="bg-[#1e1e1e] border border-[#323232]"
+          className="bg-[#1a1b22] border border-[#282934]"
           style={{ width: `${outputSize}%` }}
         >
           <OutputPanel

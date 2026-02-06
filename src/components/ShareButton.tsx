@@ -7,24 +7,14 @@ interface ShareButtonProps {
     className?: string;
 }
 
-/**
- * Share Button Component
- * Provides one-click sharing of problem links with copy feedback
- * Follows Single Responsibility Principle - only handles share functionality
- */
 export function ShareButton({ problemTitle, className = '' }: ShareButtonProps) {
     const [isCopied, setIsCopied] = useState(false);
 
-    /**
-     * Handles share button click
-     * Copies problem URL to clipboard and shows feedback
-     */
     const handleShare = async () => {
         const success = await problemLinkService.copyProblemUrlToClipboard(problemTitle);
 
         if (success) {
             setIsCopied(true);
-            // Reset feedback after 2 seconds
             setTimeout(() => setIsCopied(false), 2000);
         }
     };
@@ -32,9 +22,9 @@ export function ShareButton({ problemTitle, className = '' }: ShareButtonProps) 
     return (
         <button
             onClick={handleShare}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded transition-all ${isCopied
-                    ? 'bg-green-600 text-white border border-green-500'
-                    : 'bg-[#2a2d2e] hover:bg-[#3a3d3e] text-[#BBBBBB] border border-[#6B6B6B]'
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all ${isCopied
+                    ? 'bg-[#6aab73]/15 text-[#6aab73] border border-[#6aab73]/30'
+                    : 'bg-[#25262f] hover:bg-[#2c2d38] text-[#848996] hover:text-[#c8ccd4] border border-[#383946]'
                 } ${className}`}
             title={isCopied ? 'Link copied to clipboard!' : 'Share this problem'}
         >

@@ -22,7 +22,6 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
     }
   };
 
-  // Group problems by category, then by difficulty
   const problemsByCategory = problems.reduce((acc, problem) => {
     const category = problem.category || 'Streams';
     if (!acc[category]) {
@@ -57,11 +56,21 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'basic': return '#6AAB73';
-      case 'intermediate': return '#6897BB';
-      case 'advanced': return '#CC7832';
-      case 'expert': return '#BC3F3C';
-      default: return '#A9B7C6';
+      case 'basic': return '#6aab73';
+      case 'intermediate': return '#5294d0';
+      case 'advanced': return '#cc7832';
+      case 'expert': return '#cf6679';
+      default: return '#c8ccd4';
+    }
+  };
+
+  const getDifficultyBg = (difficulty: string) => {
+    switch (difficulty) {
+      case 'basic': return 'rgba(106, 171, 115, 0.06)';
+      case 'intermediate': return 'rgba(82, 148, 208, 0.06)';
+      case 'advanced': return 'rgba(204, 120, 50, 0.06)';
+      case 'expert': return 'rgba(207, 102, 121, 0.06)';
+      default: return 'transparent';
     }
   };
 
@@ -73,10 +82,11 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
         className="fixed inset-0 bg-black/50 z-40 md:hidden"
         onClick={onClose}
       />
-      <div className="w-full bg-[#1e1e1e] border-r border-[#323232] flex flex-col h-full md:relative fixed left-0 top-0 z-50 md:z-auto md:w-full" style={{ width: isMobile ? '16rem' : '100%' }}>
-        <div className="flex items-center px-3 py-2.5 border-b border-[#323232] bg-[#1e1e1e]">
-          <List className="w-4 h-4 text-[#808080]" />
-          <span className="text-sm font-semibold text-[#A9B7C6] ml-2">Problems</span>
+      <div className="w-full bg-[#1a1b22] border-r border-[#282934] flex flex-col h-full md:relative fixed left-0 top-0 z-50 md:z-auto md:w-full" style={{ width: isMobile ? '16rem' : '100%' }}>
+        <div className="flex items-center gap-2 px-3.5 py-3 border-b border-[#282934] bg-[#1e1f26]">
+          <List className="w-4 h-4 text-[#585d6a]" />
+          <span className="text-xs font-semibold text-[#c8ccd4] tracking-wide uppercase">Problems</span>
+          <span className="ml-auto text-[10px] text-[#585d6a] font-medium bg-[#25262f] px-1.5 py-0.5 rounded">{problems.length}</span>
         </div>
 
         <div className="flex-1 overflow-y-auto">
@@ -87,26 +97,24 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
               const totalProblems = Object.values(difficulties).reduce((sum, probs) => sum + probs.length, 0);
 
               return (
-                <div key={category} className="border-b border-[#323232]">
-                  {/* Category Header */}
+                <div key={category} className="border-b border-[#282934]/60">
                   <button
                     onClick={() => toggleCategory(category)}
-                    className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[#2a2d2e] transition-all bg-[#262626]"
+                    className="w-full flex items-center gap-2 px-3.5 py-2.5 hover:bg-[#25262f] transition-colors bg-[#1e1f26]"
                   >
                     {isCategoryExpanded ? (
-                      <ChevronDown className="w-3.5 h-3.5 text-[#808080]" />
+                      <ChevronDown className="w-3.5 h-3.5 text-[#585d6a] transition-transform" />
                     ) : (
-                      <ChevronRight className="w-3.5 h-3.5 text-[#808080]" />
+                      <ChevronRight className="w-3.5 h-3.5 text-[#585d6a] transition-transform" />
                     )}
-                    <span className="text-xs font-bold text-[#CCCCCC]">
+                    <span className="text-xs font-bold text-[#d0d4dc] tracking-tight">
                       {category}
                     </span>
-                    <span className="text-xs text-[#808080]">({totalProblems})</span>
+                    <span className="text-[10px] text-[#585d6a] ml-auto font-medium">{totalProblems}</span>
                   </button>
 
-                  {/* Difficulty Levels within Category */}
                   {isCategoryExpanded && (
-                    <div className="bg-[#1e1e1e]">
+                    <div>
                       {Object.entries(difficulties)
                         .sort((a, b) => {
                           const order = { basic: 0, intermediate: 1, advanced: 2, expert: 3 };
@@ -118,47 +126,50 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
 
                           return (
                             <div key={difficultyKey}>
-                              {/* Difficulty Header */}
                               <button
                                 onClick={() => toggleDifficulty(difficultyKey)}
-                                className="w-full flex items-center gap-2 px-6 py-1.5 hover:bg-[#2a2d2e] transition-all"
+                                className="w-full flex items-center gap-2 pl-7 pr-3.5 py-2 hover:bg-[#25262f] transition-colors"
+                                style={{ background: isDifficultyExpanded ? getDifficultyBg(difficulty) : undefined }}
                               >
                                 {isDifficultyExpanded ? (
-                                  <ChevronDown className="w-3 h-3 text-[#808080]" />
+                                  <ChevronDown className="w-3 h-3 text-[#585d6a]" />
                                 ) : (
-                                  <ChevronRight className="w-3 h-3 text-[#808080]" />
+                                  <ChevronRight className="w-3 h-3 text-[#585d6a]" />
                                 )}
                                 <span
-                                  className="text-xs font-semibold"
+                                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                                  style={{ backgroundColor: getDifficultyColor(difficulty) }}
+                                />
+                                <span
+                                  className="text-xs font-semibold capitalize"
                                   style={{ color: getDifficultyColor(difficulty) }}
                                 >
                                   {difficulty}
                                 </span>
-                                <span className="text-xs text-[#808080]">({difficultyProblems.length})</span>
+                                <span className="text-[10px] text-[#585d6a] ml-auto font-medium">{difficultyProblems.length}</span>
                               </button>
 
-                              {/* Problems List */}
                               {isDifficultyExpanded && (
-                                <div className="bg-[#252526]">
+                                <div>
                                   {difficultyProblems
                                     .sort((a, b) => a.number - b.number)
                                     .map((problem) => (
                                       <button
                                         key={problem.id}
                                         onClick={() => handleSelectProblem(problem)}
-                                        className={`w-full text-left px-9 py-2 hover:bg-[#2a2d2e] transition-all border-l-2 ${currentProblemId === problem.id
-                                          ? 'border-[#007ACC] bg-[#094771]'
-                                          : 'border-transparent'
+                                        className={`w-full text-left pl-12 pr-3.5 py-2 transition-all border-l-2 group ${currentProblemId === problem.id
+                                          ? 'border-[#5294d0] bg-[#5294d0]/10'
+                                          : 'border-transparent hover:bg-[#25262f] hover:border-[#383946]'
                                           }`}
                                       >
                                         <div className="flex items-start gap-2">
-                                          <span className="text-xs text-[#808080] flex-shrink-0 mt-0.5">
-                                            #{problem.number}
+                                          <span className="text-[10px] text-[#585d6a] flex-shrink-0 mt-0.5 font-mono">
+                                            {problem.number}
                                           </span>
                                           <span
-                                            className={`text-xs flex-1 ${currentProblemId === problem.id
-                                              ? 'text-[#FFFFFF] font-medium'
-                                              : 'text-[#A9B7C6]'
+                                            className={`text-xs flex-1 leading-relaxed ${currentProblemId === problem.id
+                                              ? 'text-[#e0e4ea] font-medium'
+                                              : 'text-[#9da3b0] group-hover:text-[#c8ccd4]'
                                               }`}
                                           >
                                             {problem.title}
