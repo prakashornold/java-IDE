@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Ban, UserCheck, Trash2, ChevronLeft, ChevronRight, Mail, Calendar, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { Ban, UserCheck, Trash2, ChevronLeft, ChevronRight, Mail, Calendar, User, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
 import { UserData } from '../../services/AdminService';
 
 interface UserManagementProps {
@@ -17,7 +17,7 @@ interface UserManagementProps {
   onPageChange: (page: number) => void;
 }
 
-type SortField = 'email' | 'joined' | 'role';
+type SortField = 'name' | 'email' | 'joined' | 'role';
 
 export function UserManagement({
   users,
@@ -81,20 +81,26 @@ export function UserManagement({
       <div className="border-b border-[#282934] mb-3">
         <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-[#7d8490]">
           <button
+            onClick={() => handleSort('name')}
+            className="col-span-3 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
+          >
+            Name <SortIcon field="name" />
+          </button>
+          <button
             onClick={() => handleSort('email')}
-            className="col-span-4 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
+            className="col-span-3 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
           >
             Email <SortIcon field="email" />
           </button>
           <button
             onClick={() => handleSort('joined')}
-            className="col-span-3 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
+            className="col-span-2 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
           >
             Joined <SortIcon field="joined" />
           </button>
           <button
             onClick={() => handleSort('role')}
-            className="col-span-2 flex items-center justify-center gap-1 hover:text-[#5294d0] transition-colors"
+            className="col-span-1 flex items-center justify-center gap-1 hover:text-[#5294d0] transition-colors"
           >
             Role <SortIcon field="role" />
           </button>
@@ -104,13 +110,33 @@ export function UserManagement({
 
       <div className="space-y-2">
         {users.map((user) => {
+          const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || 'No name';
           return (
             <div
               key={user.id}
               className="border border-[#282934] rounded-lg hover:border-[#5294d0]/25 transition-all bg-[#1a1b22]"
             >
               <div className="grid grid-cols-12 gap-3 px-3 py-3 items-center">
-                <div className="col-span-4">
+                <div className="col-span-3">
+                  <div className="flex items-center gap-2">
+                    {user.avatar_url ? (
+                      <img
+                        src={user.avatar_url}
+                        alt={fullName}
+                        className="w-8 h-8 rounded-full object-cover border border-[#383946]"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-[#5294d0]/10 border border-[#5294d0]/25 flex items-center justify-center">
+                        <User className="w-4 h-4 text-[#5294d0]" />
+                      </div>
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium truncate text-[#f1f3f5]">{fullName}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-span-3">
                   <div className="flex items-center gap-2 flex-wrap">
                     <Mail className="w-3 h-3 text-[#7d8490]" />
                     <p className="text-sm truncate text-[#f1f3f5]">{user.email}</p>
@@ -122,7 +148,7 @@ export function UserManagement({
                   </div>
                 </div>
 
-                <div className="col-span-3">
+                <div className="col-span-2">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3 text-[#7d8490]" />
                     <span className="text-xs text-[#9ba1ad]">
@@ -131,7 +157,7 @@ export function UserManagement({
                   </div>
                 </div>
 
-                <div className="col-span-2 flex justify-center">
+                <div className="col-span-1 flex justify-center">
                   {user.is_admin && (
                     <span className="px-1.5 py-0.5 rounded-md text-[11px] font-bold bg-[#cc7832]/12 text-[#cc7832] border border-[#cc7832]/25">
                       ADMIN
