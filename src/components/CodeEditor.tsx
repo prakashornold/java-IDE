@@ -172,7 +172,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
                 ) : (
                   <PanelLeft className="w-4 h-4" />
                 )}
-                <span className="hidden sm:inline">Problems</span>
               </button>
             )}
 
@@ -206,7 +205,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
                   ) : (
                     <PanelLeft className="w-4 h-4" />
                   )}
-                  <span className="hidden sm:inline">Problems</span>
                 </button>
               )}
               <div className="flex items-center gap-1.5">
