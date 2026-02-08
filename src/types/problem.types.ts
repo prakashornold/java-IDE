@@ -9,9 +9,6 @@ export interface JavaProblem {
   description?: string;
   starter_code?: string;
   solution_code?: string;
-  input?: string;
-  solution?: string;
-  output?: string;
   hints?: string;
   created_at: string;
   updated_at: string;

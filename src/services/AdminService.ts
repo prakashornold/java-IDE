@@ -25,8 +25,6 @@ export interface AddProblemData {
   category: string;
   difficulty: string;
   description?: string;
-  input?: string;
-  output?: string;
   starter_code: string;
   solution_code: string;
   hints?: string;
@@ -43,12 +41,9 @@ export interface ProblemData {
   category: string;
   difficulty: string;
   description?: string;
-  input?: string;
-  output?: string;
   starter_code?: string;
   solution_code?: string;
   hints?: string;
-  solution?: string;
   created_at: string;
   updated_at: string;
 }
@@ -169,11 +164,8 @@ export class AdminService {
         category: problemData.category,
         difficulty: problemData.difficulty,
         description: problemData.description || '',
-        input: problemData.input || '',
-        output: problemData.output || '',
         starter_code: problemData.starter_code,
         solution_code: problemData.solution_code,
-        solution: problemData.solution_code, // Legacy field for backward compatibility
         hints: problemData.hints || ''
       }]);
 
@@ -229,18 +221,9 @@ export class AdminService {
    * @param problemData Partial problem data to update
    */
   async updateProblem(id: string, problemData: Partial<AddProblemData>): Promise<void> {
-    const updateData: any = {
-      ...problemData
-    };
-
-    // Maintain backward compatibility with legacy 'solution' field
-    if (problemData.solution_code) {
-      updateData.solution = problemData.solution_code;
-    }
-
     const { error } = await supabase
       .from('java_problems')
-      .update(updateData)
+      .update(problemData)
       .eq('id', id);
 
     if (error) throw error;
