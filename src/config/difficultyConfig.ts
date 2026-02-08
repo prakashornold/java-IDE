@@ -7,22 +7,17 @@ interface DifficultyTheme {
 }
 
 const DIFFICULTY_THEMES: Record<DifficultyLevel | 'default', DifficultyTheme> = {
-  basic: {
+  easy: {
     color: '#6aab73',
     bgColor: 'rgba(106, 171, 115, 0.06)',
     badgeClass: 'bg-[#6aab73]/12 text-[#6aab73] border border-[#6aab73]/25',
   },
-  intermediate: {
-    color: '#5294d0',
-    bgColor: 'rgba(82, 148, 208, 0.06)',
-    badgeClass: 'bg-[#5294d0]/12 text-[#5294d0] border border-[#5294d0]/25',
-  },
-  advanced: {
+  medium: {
     color: '#cc7832',
     bgColor: 'rgba(204, 120, 50, 0.06)',
     badgeClass: 'bg-[#cc7832]/12 text-[#cc7832] border border-[#cc7832]/25',
   },
-  expert: {
+  hard: {
     color: '#cf6679',
     bgColor: 'rgba(207, 102, 121, 0.06)',
     badgeClass: 'bg-[#cf6679]/12 text-[#cf6679] border border-[#cf6679]/25',
@@ -50,10 +45,9 @@ export function getDifficultyBadgeClass(difficulty: string): string {
 }
 
 export const DIFFICULTY_ORDER: Record<DifficultyLevel, number> = {
-  basic: 0,
-  intermediate: 1,
-  advanced: 2,
-  expert: 3,
+  easy: 0,
+  medium: 1,
+  hard: 2,
 };
 
 export function compareDifficulty(a: string, b: string): number {

@@ -1,4 +1,4 @@
-export type DifficultyLevel = 'basic' | 'intermediate' | 'advanced' | 'expert';
+export type DifficultyLevel = 'easy' | 'medium' | 'hard';
 
 export interface JavaProblem {
   id: string;
