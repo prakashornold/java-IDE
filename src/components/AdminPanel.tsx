@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Users, Shield, Plus, AlertCircle, ArrowLeft, List } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { adminService, UserData, ProblemProgress, AddProblemData, ProblemData } from '../services/AdminService';
+import { adminService, UserData, AddProblemData, ProblemData } from '../services/AdminService';
 import { UserManagement } from './admin/UserManagement';
 import { ProblemForm } from './admin/ProblemForm';
 import { ProblemList } from './admin/ProblemList';
@@ -16,7 +16,6 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const [users, setUsers] = useState<UserData[]>([]);
   const [usersTotal, setUsersTotal] = useState(0);
   const [usersPage, setUsersPage] = useState(1);
-  const [userProgress, setUserProgress] = useState<Record<string, ProblemProgress>>({});
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'users' | 'add-problem' | 'manage-problems'>('users');
   const [problemForm, setProblemForm] = useState<AddProblemData>({
@@ -24,8 +23,6 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
     category: 'Streams',
     difficulty: 'basic',
     description: '',
-    input: '',
-    output: '',
     starter_code: '',
     solution_code: '',
     hints: ''
@@ -56,13 +53,9 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const loadData = async () => {
     try {
       setLoading(true);
-      const [{ users: usersData, total }, progressData] = await Promise.all([
-        adminService.getAllUsers(usersPage, 10, usersSortField || undefined, usersSortDirection || undefined),
-        adminService.getUserProgress()
-      ]);
+      const { users: usersData, total } = await adminService.getAllUsers(usersPage, 10, usersSortField || undefined, usersSortDirection || undefined);
       setUsers(usersData);
       setUsersTotal(total);
-      setUserProgress(progressData);
     } catch (error) {
       console.error('Error loading data:', error);
     } finally {
@@ -133,8 +126,6 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
       category: problem.category,
       difficulty: problem.difficulty,
       description: problem.description || '',
-      input: problem.input || '',
-      output: problem.output || '',
       starter_code: problem.starter_code || '',
       solution_code: problem.solution_code || '',
       hints: problem.hints || ''
@@ -167,8 +158,6 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
       category: 'Streams',
       difficulty: 'basic',
       description: '',
-      input: '',
-      output: '',
       starter_code: '',
       solution_code: '',
       hints: ''
@@ -272,7 +261,6 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
             total={usersTotal}
             currentPage={usersPage}
             pageSize={10}
-            userProgress={userProgress}
             loading={loading}
             sortField={usersSortField}
             sortDirection={usersSortDirection}

@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { Ban, UserCheck, Trash2, ChevronLeft, ChevronRight, Mail, Calendar, Target, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
-import { UserData, ProblemProgress } from '../../services/AdminService';
+import { Ban, UserCheck, Trash2, ChevronLeft, ChevronRight, Mail, Calendar, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { UserData } from '../../services/AdminService';
 
 interface UserManagementProps {
   users: UserData[];
   total: number;
   currentPage: number;
   pageSize: number;
-  userProgress: Record<string, ProblemProgress>;
   loading: boolean;
   sortField: string | null;
   sortDirection: 'asc' | 'desc' | null;
@@ -18,14 +17,13 @@ interface UserManagementProps {
   onPageChange: (page: number) => void;
 }
 
-type SortField = 'email' | 'joined' | 'solved' | 'attempts' | 'role';
+type SortField = 'email' | 'joined' | 'role';
 
 export function UserManagement({
   users,
   total,
   currentPage,
   pageSize,
-  userProgress,
   loading,
   sortField,
   sortDirection,
@@ -84,34 +82,19 @@ export function UserManagement({
         <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-[#7d8490]">
           <button
             onClick={() => handleSort('email')}
-            className="col-span-3 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
+            className="col-span-4 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
           >
             Email <SortIcon field="email" />
           </button>
           <button
             onClick={() => handleSort('joined')}
-            className="col-span-2 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
+            className="col-span-3 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
           >
             Joined <SortIcon field="joined" />
           </button>
-          <div className="col-span-3 flex items-center justify-center gap-2">
-            <button
-              onClick={() => handleSort('solved')}
-              className="flex items-center gap-1 hover:text-[#5294d0] transition-colors"
-            >
-              Solved <SortIcon field="solved" />
-            </button>
-            <span className="text-[#383946]">|</span>
-            <button
-              onClick={() => handleSort('attempts')}
-              className="flex items-center gap-1 hover:text-[#5294d0] transition-colors"
-            >
-              Attempts <SortIcon field="attempts" />
-            </button>
-          </div>
           <button
             onClick={() => handleSort('role')}
-            className="col-span-1 flex items-center justify-center gap-1 hover:text-[#5294d0] transition-colors"
+            className="col-span-2 flex items-center justify-center gap-1 hover:text-[#5294d0] transition-colors"
           >
             Role <SortIcon field="role" />
           </button>
@@ -121,14 +104,13 @@ export function UserManagement({
 
       <div className="space-y-2">
         {users.map((user) => {
-          const progress = userProgress[user.id] || { solved_count: 0, total_attempts: 0 };
           return (
             <div
               key={user.id}
               className="border border-[#282934] rounded-lg hover:border-[#5294d0]/25 transition-all bg-[#1a1b22]"
             >
               <div className="grid grid-cols-12 gap-3 px-3 py-3 items-center">
-                <div className="col-span-3">
+                <div className="col-span-4">
                   <div className="flex items-center gap-2 flex-wrap">
                     <Mail className="w-3 h-3 text-[#7d8490]" />
                     <p className="text-sm truncate text-[#f1f3f5]">{user.email}</p>
@@ -140,7 +122,7 @@ export function UserManagement({
                   </div>
                 </div>
 
-                <div className="col-span-2">
+                <div className="col-span-3">
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3 text-[#7d8490]" />
                     <span className="text-xs text-[#9ba1ad]">
@@ -149,22 +131,7 @@ export function UserManagement({
                   </div>
                 </div>
 
-                <div className="col-span-3">
-                  <div className="flex items-center justify-center gap-3 text-xs">
-                    <div className="flex items-center gap-1">
-                      <Target className="w-3 h-3 text-[#6aab73]" />
-                      <span className="text-[#9ba1ad]">
-                        <span className="font-medium text-[#6aab73]">{progress.solved_count}</span> solved
-                      </span>
-                    </div>
-                    <span className="text-[#383946]">|</span>
-                    <span className="text-[#9ba1ad]">
-                      <span className="font-medium text-[#d5d9e0]">{progress.total_attempts}</span> attempts
-                    </span>
-                  </div>
-                </div>
-
-                <div className="col-span-1 flex justify-center">
+                <div className="col-span-2 flex justify-center">
                   {user.is_admin && (
                     <span className="px-1.5 py-0.5 rounded-md text-[11px] font-bold bg-[#cc7832]/12 text-[#cc7832] border border-[#cc7832]/25">
                       ADMIN

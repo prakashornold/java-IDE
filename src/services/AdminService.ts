@@ -8,12 +8,6 @@ export interface UserData {
   created_at: string;
 }
 
-export interface ProblemProgress {
-  user_id: string;
-  solved_count: number;
-  total_attempts: number;
-}
-
 /**
  * Data Transfer Object for adding new problems
  * Contains all fields required to create a problem
@@ -86,39 +80,6 @@ export class AdminService {
     if (countError) throw countError;
 
     return { users: data || [], total: count || 0 };
-  }
-
-  async getUserProgress(): Promise<Record<string, ProblemProgress>> {
-    try {
-      // Try to get user progress data
-      // Note: This requires a 'user_problem_progress' table with appropriate columns
-      const { data, error } = await supabase
-        .from('user_problem_progress')
-        .select('user_id');
-
-      if (error) {
-        console.warn('Could not fetch user progress:', error.message);
-        return {};
-      }
-
-      // Count attempts per user
-      const progressMap: Record<string, ProblemProgress> = {};
-      data?.forEach(record => {
-        if (!progressMap[record.user_id]) {
-          progressMap[record.user_id] = {
-            user_id: record.user_id,
-            solved_count: 0,
-            total_attempts: 0
-          };
-        }
-        progressMap[record.user_id].total_attempts++;
-      });
-
-      return progressMap;
-    } catch (error) {
-      console.warn('Error fetching user progress:', error);
-      return {}; // Return empty progress map, don't fail the entire user list
-    }
   }
 
   async toggleUserBlockStatus(userId: string, currentStatus: boolean): Promise<void> {
