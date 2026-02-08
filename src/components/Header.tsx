@@ -15,12 +15,7 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const userTooltipRef = useRef<HTMLDivElement>(null);
 
-  const userName = user?.user_metadata?.full_name ||
-    (profile?.first_name && profile?.last_name
-      ? `${profile.first_name} ${profile.last_name}`
-      : profile?.first_name || profile?.last_name || 'User');
-
-  const userAvatar = user?.user_metadata?.avatar_url || profile?.avatar_url;
+  const userName = user?.email?.split('@')[0] || 'User';
 
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) return 'N/A';
@@ -77,16 +72,8 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
                   <div className="relative bg-gradient-to-br from-[#2a5580] to-[#1e3a5c] p-4">
                     <div className="flex items-center gap-3">
                       <div className="relative flex-shrink-0">
-                        <div className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/20 flex items-center justify-center overflow-hidden">
-                          {userAvatar ? (
-                            <img
-                              src={userAvatar}
-                              alt={userName}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <User className="w-5 h-5 text-white/80" />
-                          )}
+                        <div className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-sm border-2 border-white/20 flex items-center justify-center">
+                          <User className="w-5 h-5 text-white/80" />
                         </div>
                         {isAdmin && (
                           <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-[#cc7832] flex items-center justify-center border-2 border-[#1e3a5c]">

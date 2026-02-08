@@ -3,8 +3,6 @@ import { supabase } from '../config/supabase';
 export interface UserData {
   id: string;
   email: string;
-  first_name: string | null;
-  last_name: string | null;
   is_admin: boolean;
   is_blocked: boolean;
   created_at: string;
@@ -66,7 +64,6 @@ export class AdminService {
     // Apply sorting if provided
     if (sortField && sortDirection) {
       const columnMap: Record<string, string> = {
-        'name': 'first_name',  // Sort by first_name for name
         'email': 'email',
         'joined': 'created_at',
         'role': 'is_admin'

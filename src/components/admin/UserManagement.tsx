@@ -18,7 +18,7 @@ interface UserManagementProps {
   onPageChange: (page: number) => void;
 }
 
-type SortField = 'name' | 'email' | 'joined' | 'solved' | 'attempts' | 'role';
+type SortField = 'email' | 'joined' | 'solved' | 'attempts' | 'role';
 
 export function UserManagement({
   users,
@@ -83,14 +83,8 @@ export function UserManagement({
       <div className="border-b border-[#282934] mb-3">
         <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-[#7d8490]">
           <button
-            onClick={() => handleSort('name')}
-            className="col-span-2 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
-          >
-            Name <SortIcon field="name" />
-          </button>
-          <button
             onClick={() => handleSort('email')}
-            className="col-span-2 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
+            className="col-span-3 flex items-center gap-1 hover:text-[#5294d0] transition-colors text-left"
           >
             Email <SortIcon field="email" />
           </button>
@@ -100,7 +94,7 @@ export function UserManagement({
           >
             Joined <SortIcon field="joined" />
           </button>
-          <div className="col-span-2 flex items-center justify-center gap-2">
+          <div className="col-span-3 flex items-center justify-center gap-2">
             <button
               onClick={() => handleSort('solved')}
               className="flex items-center gap-1 hover:text-[#5294d0] transition-colors"
@@ -134,25 +128,15 @@ export function UserManagement({
               className="border border-[#282934] rounded-lg hover:border-[#5294d0]/25 transition-all bg-[#1a1b22]"
             >
               <div className="grid grid-cols-12 gap-3 px-3 py-3 items-center">
-                <div className="col-span-2">
+                <div className="col-span-3">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="text-sm font-medium text-[#f1f3f5]">
-                      {user.first_name && user.last_name
-                        ? `${user.first_name} ${user.last_name}`
-                        : 'Anonymous'}
-                    </h3>
+                    <Mail className="w-3 h-3 text-[#7d8490]" />
+                    <p className="text-sm truncate text-[#f1f3f5]">{user.email}</p>
                     {user.is_blocked && (
                       <span className="px-1.5 py-0.5 rounded-md text-[11px] font-bold bg-[#cf6679]/12 text-[#cf6679] border border-[#cf6679]/25">
                         BLOCKED
                       </span>
                     )}
-                  </div>
-                </div>
-
-                <div className="col-span-2">
-                  <div className="flex items-center gap-1">
-                    <Mail className="w-3 h-3 text-[#7d8490]" />
-                    <p className="text-xs truncate text-[#9ba1ad]">{user.email}</p>
                   </div>
                 </div>
 
@@ -165,7 +149,7 @@ export function UserManagement({
                   </div>
                 </div>
 
-                <div className="col-span-2">
+                <div className="col-span-3">
                   <div className="flex items-center justify-center gap-3 text-xs">
                     <div className="flex items-center gap-1">
                       <Target className="w-3 h-3 text-[#6aab73]" />
