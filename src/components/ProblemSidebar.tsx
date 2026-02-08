@@ -66,7 +66,6 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
       <div className="w-full bg-[#1a1b22] flex flex-col h-full md:relative fixed left-0 top-0 z-50 md:z-auto md:w-full" style={{ width: isMobile ? '16rem' : '100%' }}>
         <div className="flex items-center gap-2 px-3.5 py-2.5 border-b border-[#282934] bg-[#1e1f26]">
           <List className="w-4 h-4 text-[#7d8490]" />
-          <span className="text-xs font-semibold text-[#d5d9e0] tracking-wide uppercase">Problems</span>
           <span className="ml-auto text-[11px] text-[#9ba1ad] font-semibold bg-[#25262f] px-2 py-0.5 rounded-md border border-[#282934]">{problems.length}</span>
         </div>
 
