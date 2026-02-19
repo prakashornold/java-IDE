@@ -94,8 +94,7 @@ function App() {
 
         if (problem) {
           setCurrentProblem(problem);
-          const practiceCode = problemService.extractPracticeCode(problem.solution_code || '');
-          setCode(practiceCode);
+          setCode(problem.starter_code || '');
         }
       }
     };
@@ -196,8 +195,7 @@ function App() {
    */
   const handleSelectProblem = (problem: JavaProblem) => {
     setCurrentProblem(problem);
-    const practiceCode = problemService.extractPracticeCode(problem.solution_code || '');
-    setCode(practiceCode);
+    setCode(problem.starter_code || '');
     setStdin('');
     setOutput('');
     setHasError(false);

@@ -5,7 +5,6 @@ import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useRef } from 'react';
 import { JavaProblem } from '../types/problem.types';
 import { hasContent } from '../utils/stringUtils';
-import { codeSkeletonGenerator } from '../services/CodeSkeletonGenerator';
 import { ShareButton } from './ShareButton';
 import { renderMarkdown } from '../utils/markdownUtils';
 import { getDifficultyBadgeClass } from '../config/difficultyConfig';
@@ -30,7 +29,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
   const [activeTab, setActiveTab] = useState<TabType>('problem');
   const [isShowingSolution, setIsShowingSolution] = useState(false);
-  const [skeletonCode, setSkeletonCode] = useState<string>('');
   const editorRef = useRef<any>(null);
 
   function getEditorOptions() {
@@ -87,15 +85,8 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
 
   useEffect(() => {
     if (currentProblem) {
-      const solutionCode = currentProblem.solution_code || currentProblem.starter_code || '';
-      const skeleton = codeSkeletonGenerator.generateSkeleton(solutionCode);
-      setSkeletonCode(skeleton);
       setIsShowingSolution(false);
-
-      if (!isShowingSolution) {
-        onChange(skeleton);
-      }
-
+      onChange(currentProblem.starter_code || '');
       setActiveTab('problem');
     }
   }, [currentProblem]);
@@ -114,7 +105,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
         onShowSolution();
       }
     } else {
-      onChange(skeletonCode);
+      onChange(currentProblem?.starter_code || '');
       setIsShowingSolution(false);
     }
   };
