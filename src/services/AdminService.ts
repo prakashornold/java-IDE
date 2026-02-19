@@ -87,6 +87,8 @@ export class AdminService {
         category: problemData.category,
         difficulty: problemData.difficulty,
         description: problemData.description || '',
+        input: problemData.input || '',
+        output: problemData.output || '',
         starter_code: problemData.starter_code,
         solution_code: problemData.solution_code,
         hints: problemData.hints || ''
