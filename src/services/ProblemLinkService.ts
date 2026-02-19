@@ -26,10 +26,6 @@ export class ProblemLinkService {
     window.history.pushState({ problemSlug: slug }, '', newUrl);
   }
 
-  clearProblemFromUrl(): void {
-    window.history.pushState({}, '', window.location.pathname);
-  }
-
   async copyProblemUrlToClipboard(title: string): Promise<boolean> {
     try {
       const url = this.generateProblemUrl(title);

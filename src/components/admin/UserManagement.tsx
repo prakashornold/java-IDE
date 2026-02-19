@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Ban, UserCheck, Trash2, ChevronLeft, ChevronRight, Mail, Calendar, User, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
-import { UserData } from '../../services/AdminService';
+import { UserProfile } from '../../services/AdminService';
 
 interface UserManagementProps {
-  users: UserData[];
+  users: UserProfile[];
   total: number;
   currentPage: number;
   pageSize: number;
@@ -152,7 +152,7 @@ export function UserManagement({
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3 text-[#7d8490]" />
                     <span className="text-xs text-[#9ba1ad]">
-                      {new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {new Date(user.created_at || '').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                   </div>
                 </div>

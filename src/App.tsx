@@ -94,7 +94,7 @@ function App() {
 
         if (problem) {
           setCurrentProblem(problem);
-          const practiceCode = problemService.extractPracticeCode(problem.solution || '');
+          const practiceCode = problemService.extractPracticeCode(problem.solution_code || '');
           setCode(practiceCode);
         }
       }
@@ -196,7 +196,7 @@ function App() {
    */
   const handleSelectProblem = (problem: JavaProblem) => {
     setCurrentProblem(problem);
-    const practiceCode = problemService.extractPracticeCode(problem.solution || '');
+    const practiceCode = problemService.extractPracticeCode(problem.solution_code || '');
     setCode(practiceCode);
     setStdin('');
     setOutput('');
@@ -214,8 +214,8 @@ function App() {
   };
 
   const handleShowSolution = () => {
-    if (!currentProblem || !currentProblem.solution) return;
-    setCode(currentProblem.solution);
+    if (!currentProblem || !currentProblem.solution_code) return;
+    setCode(currentProblem.solution_code);
     setStdin('');
     setOutput('');
     setHasError(false);

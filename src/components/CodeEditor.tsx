@@ -3,7 +3,8 @@ import { Loader2, Play, Eye, EyeOff, PanelLeftClose, PanelLeft, Lock, FileCode }
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useRef } from 'react';
-import { JavaProblem, hasContent } from '../types/problem.types';
+import { JavaProblem } from '../types/problem.types';
+import { hasContent } from '../utils/stringUtils';
 import { codeSkeletonGenerator } from '../services/CodeSkeletonGenerator';
 import { ShareButton } from './ShareButton';
 import { renderMarkdown } from '../utils/markdownUtils';
@@ -86,7 +87,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
 
   useEffect(() => {
     if (currentProblem) {
-      const solutionCode = currentProblem.solution_code || currentProblem.solution || currentProblem.starter_code || '';
+      const solutionCode = currentProblem.solution_code || currentProblem.starter_code || '';
       const skeleton = codeSkeletonGenerator.generateSkeleton(solutionCode);
       setSkeletonCode(skeleton);
       setIsShowingSolution(false);
@@ -106,7 +107,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     }
 
     if (!isShowingSolution) {
-      const fullSolution = currentProblem?.solution_code || currentProblem?.solution || '';
+      const fullSolution = currentProblem?.solution_code || '';
       onChange(fullSolution);
       setIsShowingSolution(true);
       if (onShowSolution) {

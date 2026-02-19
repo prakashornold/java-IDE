@@ -1,7 +1,5 @@
 export interface IErrorHandler {
   handleError(error: unknown): string;
-  isNetworkError(error: unknown): boolean;
-  isAuthError(error: unknown): boolean;
 }
 
 export class ErrorHandlingService implements IErrorHandler {
@@ -19,23 +17,6 @@ export class ErrorHandlingService implements IErrorHandler {
     }
 
     return 'An unexpected error occurred';
-  }
-
-  isNetworkError(error: unknown): boolean {
-    if (error instanceof Error) {
-      return error.message.toLowerCase().includes('network') ||
-             error.message.toLowerCase().includes('connection');
-    }
-    return false;
-  }
-
-  isAuthError(error: unknown): boolean {
-    if (error instanceof Error) {
-      return error.message.toLowerCase().includes('auth') ||
-             error.message.toLowerCase().includes('unauthorized') ||
-             error.message.toLowerCase().includes('forbidden');
-    }
-    return false;
   }
 }
 

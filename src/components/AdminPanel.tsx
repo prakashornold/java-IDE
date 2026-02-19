@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Users, Shield, Plus, AlertCircle, ArrowLeft, List } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { adminService, UserData, AddProblemData, ProblemData } from '../services/AdminService';
+import { adminService, UserProfile, AddProblemData, ProblemData } from '../services/AdminService';
 import { UserManagement } from './admin/UserManagement';
 import { ProblemForm } from './admin/ProblemForm';
 import { ProblemList } from './admin/ProblemList';
@@ -13,7 +13,7 @@ interface AdminPanelProps {
 
 export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const { isAdmin, profile } = useAuth();
-  const [users, setUsers] = useState<UserData[]>([]);
+  const [users, setUsers] = useState<UserProfile[]>([]);
   const [usersTotal, setUsersTotal] = useState(0);
   const [usersPage, setUsersPage] = useState(1);
   const [loading, setLoading] = useState(true);

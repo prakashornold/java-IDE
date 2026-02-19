@@ -17,7 +17,17 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
 
   const userName = profile?.first_name && profile?.last_name
     ? `${profile.first_name} ${profile.last_name}`
-    : profile?.first_name || user?.email?.split('@')[0] || 'User';
+    : profile?.first_name
+    || (user?.user_metadata?.first_name && user?.user_metadata?.last_name
+      ? `${user.user_metadata.first_name} ${user.user_metadata.last_name}`
+      : user?.user_metadata?.first_name)
+    || user?.user_metadata?.full_name
+    || (user?.user_metadata?.given_name && user?.user_metadata?.family_name
+      ? `${user.user_metadata.given_name} ${user.user_metadata.family_name}`
+      : user?.user_metadata?.given_name)
+    || user?.user_metadata?.name
+    || user?.email?.split('@')[0]
+    || 'User';
 
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) return 'N/A';

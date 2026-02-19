@@ -1,16 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '../config/supabase';
-
-interface UserProfile {
-  id: string;
-  email: string;
-  first_name?: string;
-  last_name?: string;
-  avatar_url?: string;
-  is_admin: boolean;
-  is_blocked: boolean;
-}
+import { UserProfile } from '../types/user.types';
 
 interface AuthContextType {
   user: User | null;
@@ -32,6 +23,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
+        // Auto dev login on localhost — mock admin, no credentials needed
+        const hostname = window.location.hostname;
+        const isLocal = hostname === 'localhost' || hostname === '127.0.0.1';
+
+        if (isLocal) {
+          const mockUser = {
+            id: 'dev-admin-local',
+            email: 'dev@localhost',
+            app_metadata: {},
+            aud: 'authenticated',
+            created_at: new Date().toISOString(),
+            user_metadata: { first_name: 'Dev', last_name: 'Admin' },
+          } as User;
+
+          const mockProfile: UserProfile = {
+            id: 'dev-admin-local',
+            email: 'dev@localhost',
+            first_name: 'Dev',
+            last_name: 'Admin',
+            is_admin: true,
+            is_blocked: false,
+          };
+
+          setUser(mockUser);
+          setProfile(mockProfile);
+          setLoading(false);
+          return;
+        }
+
         const { data: { session } } = await supabase.auth.getSession();
         setSession(session);
         setUser(session?.user ?? null);
@@ -47,6 +67,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     initializeAuth();
+
+    // On localhost we use a mock user — skip the auth state listener
+    const hostname = window.location.hostname;
+    const isLocal = hostname === 'localhost' || hostname === '127.0.0.1';
+    if (isLocal) return;
 
     const {
       data: { subscription },

@@ -81,7 +81,7 @@ export class JavaCompilerService implements ICompilerService {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
-          const errorData = error.response.data as any;
+          const errorData = error.response.data as { data?: { error?: string }; error?: string };
           return {
             error: errorData?.data?.error || errorData?.error || 'Compilation error occurred',
             status: 'error',

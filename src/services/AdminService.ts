@@ -1,47 +1,8 @@
 import { supabase } from '../config/supabase';
+import { UserProfile } from '../types/user.types';
+import { AddProblemData, ProblemData } from '../types/problem.types';
 
-export interface UserData {
-  id: string;
-  email: string;
-  first_name?: string;
-  last_name?: string;
-  avatar_url?: string;
-  is_admin: boolean;
-  is_blocked: boolean;
-  created_at: string;
-}
-
-/**
- * Data Transfer Object for adding new problems
- * Contains all fields required to create a problem
- */
-export interface AddProblemData {
-  title: string;
-  category: string;
-  difficulty: string;
-  description?: string;
-  starter_code: string;
-  solution_code: string;
-  hints?: string;
-}
-
-/**
- * Complete problem data from database
- * Matches java_problems table schema exactly
- */
-export interface ProblemData {
-  id: string;
-  number: number;
-  title: string;
-  category: string;
-  difficulty: string;
-  description?: string;
-  starter_code?: string;
-  solution_code?: string;
-  hints?: string;
-  created_at: string;
-  updated_at: string;
-}
+export type { UserProfile, AddProblemData, ProblemData };
 
 export class AdminService {
   async getAllUsers(
@@ -49,7 +10,7 @@ export class AdminService {
     pageSize: number = 10,
     sortField?: string,
     sortDirection?: 'asc' | 'desc'
-  ): Promise<{ users: UserData[], total: number }> {
+  ): Promise<{ users: UserProfile[], total: number }> {
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
 
@@ -114,7 +75,7 @@ export class AdminService {
       .select('number')
       .order('number', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
     const nextNumber = (lastProblem?.number || 0) + 1;
 

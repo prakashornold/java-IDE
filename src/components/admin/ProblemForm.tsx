@@ -66,10 +66,9 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
                 className="w-full px-2 py-1.5 text-sm rounded-md border border-[#282934] bg-[#1a1b22] text-[#d5d9e0] focus:border-[#5294d0] focus:outline-none transition-colors"
                 required
               >
-                <option value="basic">Basic</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-                <option value="expert">Expert</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
               </select>
             </div>
           </div>

@@ -1,18 +1,13 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { supabase } from '../config/supabase';
 import { IProblemRepository } from './IProblemRepository';
 import { JavaProblem, ProblemFilter } from '../types/problem.types';
 
 export class SupabaseProblemRepository implements IProblemRepository {
-  private client: SupabaseClient;
-  private tableName = 'java_problems';
-
-  constructor(url: string, anonKey: string) {
-    this.client = createClient(url, anonKey);
-  }
+  private readonly tableName = 'java_problems';
 
   async getAll(): Promise<JavaProblem[]> {
     try {
-      const { data, error } = await this.client
+      const { data, error } = await supabase
         .from(this.tableName)
         .select('*')
         .order('number', { ascending: true });
@@ -31,7 +26,7 @@ export class SupabaseProblemRepository implements IProblemRepository {
 
   async getById(id: string): Promise<JavaProblem | null> {
     try {
-      const { data, error } = await this.client
+      const { data, error } = await supabase
         .from(this.tableName)
         .select('*')
         .eq('id', id)
@@ -51,7 +46,7 @@ export class SupabaseProblemRepository implements IProblemRepository {
 
   async getByNumber(number: number): Promise<JavaProblem | null> {
     try {
-      const { data, error } = await this.client
+      const { data, error } = await supabase
         .from(this.tableName)
         .select('*')
         .eq('number', number)
@@ -71,7 +66,7 @@ export class SupabaseProblemRepository implements IProblemRepository {
 
   async getRandom(): Promise<JavaProblem | null> {
     try {
-      const { data, error } = await this.client
+      const { data, error } = await supabase
         .from(this.tableName)
         .select('*')
         .limit(100);
@@ -95,7 +90,7 @@ export class SupabaseProblemRepository implements IProblemRepository {
 
   async getByFilter(filter: ProblemFilter): Promise<JavaProblem[]> {
     try {
-      let query = this.client.from(this.tableName).select('*');
+      let query = supabase.from(this.tableName).select('*');
 
       if (filter.difficulty && filter.difficulty !== 'all') {
         query = query.eq('difficulty', filter.difficulty);
