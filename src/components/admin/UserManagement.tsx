@@ -110,7 +110,7 @@ export function UserManagement({
 
       <div className="space-y-2">
         {users.map((user) => {
-          const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ') || 'No name';
+          const displayName = user.first_name || user.email.split('@')[0];
           return (
             <div
               key={user.id}
@@ -122,7 +122,7 @@ export function UserManagement({
                     {user.avatar_url ? (
                       <img
                         src={user.avatar_url}
-                        alt={fullName}
+                        alt={displayName}
                         className="w-8 h-8 rounded-full object-cover border border-[#383946]"
                       />
                     ) : (
@@ -131,7 +131,7 @@ export function UserManagement({
                       </div>
                     )}
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium truncate text-[#f1f3f5]">{fullName}</p>
+                      <p className="text-sm font-medium truncate text-[#f1f3f5]">{displayName}</p>
                     </div>
                   </div>
                 </div>
