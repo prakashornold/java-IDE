@@ -95,6 +95,7 @@ function App() {
         if (problem) {
           setCurrentProblem(problem);
           setCode(problem.starter_code || '');
+          setStdin(problem.input || '');
         }
       }
     };
@@ -196,7 +197,7 @@ function App() {
   const handleSelectProblem = (problem: JavaProblem) => {
     setCurrentProblem(problem);
     setCode(problem.starter_code || '');
-    setStdin('');
+    setStdin(problem.input || '');
     setOutput('');
     setHasError(false);
 
