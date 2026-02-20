@@ -215,7 +215,7 @@ function App() {
   const handleShowSolution = () => {
     if (!currentProblem || !currentProblem.solution_code) return;
     setCode(currentProblem.solution_code);
-    setStdin('');
+    setStdin(currentProblem.input || '');
     setOutput('');
     setHasError(false);
   };
