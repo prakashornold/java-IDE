@@ -126,6 +126,8 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
       category: problem.category,
       difficulty: problem.difficulty,
       description: problem.description || '',
+      input: problem.input || '',
+      output: problem.output || '',
       starter_code: problem.starter_code || '',
       solution_code: problem.solution_code || '',
       hints: problem.hints || ''
@@ -158,6 +160,8 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
       category: 'Streams',
       difficulty: 'easy',
       description: '',
+      input: '',
+      output: '',
       starter_code: '',
       solution_code: '',
       hints: ''

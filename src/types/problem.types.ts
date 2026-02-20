@@ -44,6 +44,8 @@ export interface ProblemData {
   category: string;
   difficulty: string;
   description?: string;
+  input?: string;
+  output?: string;
   starter_code?: string;
   solution_code?: string;
   hints?: string;
