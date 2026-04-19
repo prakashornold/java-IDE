@@ -1,13 +1,14 @@
 import { useState, useRef } from 'react';
-import { Terminal, LogOut, Menu, X, User, Mail, Calendar, Shield } from 'lucide-react';
+import { Terminal, LogOut, Menu, X, User, Mail, Calendar, Shield, BookOpen } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
   onNavigateToAdmin?: () => void;
+  onNavigateToInterviewPrep?: () => void;
 }
 
-export function Header({ onNavigateToAdmin }: HeaderProps) {
+export function Header({ onNavigateToAdmin, onNavigateToInterviewPrep }: HeaderProps) {
   const { user, profile, isAdmin, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -145,6 +146,16 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
           </button>
 
           <nav className="hidden md:flex items-center gap-1">
+            {onNavigateToInterviewPrep && (
+              <button
+                onClick={onNavigateToInterviewPrep}
+                className="flex items-center gap-1.5 text-xs font-medium text-[#9ba1ad] hover:text-[#5294d0] hover:bg-[#5294d0]/[0.08] px-3 py-2 rounded-lg transition-all"
+                title="Interview Preparation"
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span className="hidden lg:inline">Interview Prep</span>
+              </button>
+            )}
             {onNavigateToAdmin && isAdmin && (
               <button
                 onClick={onNavigateToAdmin}
@@ -184,6 +195,15 @@ export function Header({ onNavigateToAdmin }: HeaderProps) {
           className="md:hidden absolute top-full left-0 right-0 bg-[#1e1f26] border-b border-[#282934] shadow-2xl shadow-black/40 z-50 max-h-[calc(100vh-57px)] overflow-y-auto animate-slide-down"
         >
           <nav className="px-4 py-3 flex flex-col gap-1">
+            {onNavigateToInterviewPrep && (
+              <button
+                onClick={() => handleNavigate(onNavigateToInterviewPrep)}
+                className="flex items-center gap-2 text-sm font-medium text-[#9ba1ad] hover:text-[#5294d0] hover:bg-[#5294d0]/[0.08] px-3 py-2.5 rounded-lg transition-all w-full text-left"
+              >
+                <BookOpen className="w-4 h-4" />
+                Interview Preparation
+              </button>
+            )}
             {onNavigateToAdmin && isAdmin && (
               <button
                 onClick={() => handleNavigate(onNavigateToAdmin)}

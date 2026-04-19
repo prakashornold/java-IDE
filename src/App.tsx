@@ -7,6 +7,7 @@ import { AdminPanel } from './components/AdminPanel';
 import { AuthModal } from './components/AuthModal';
 import { Footer } from './components/Footer';
 import { RedirectPage } from './components/RedirectPage';
+import { InterviewPrep } from './components/InterviewPrep';
 import { useServices } from './context/ServiceContext';
 import { JavaProblem } from './types/problem.types';
 import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
@@ -27,6 +28,7 @@ function App() {
     if (path === '/admin') return 'admin';
     if (path === '/udemint') return 'udemint';
     if (path === '/freeai') return 'freeai';
+    if (path === '/interview-preparation') return 'interview-prep';
     return 'home';
   };
 
@@ -259,6 +261,15 @@ function App() {
     return <RedirectPage redirectKey="freeai" />;
   }
 
+  if (navigation.currentPage === 'interview-prep') {
+    return (
+      <InterviewPrep
+        onNavigateHome={navigation.navigateToHome}
+        onNavigateToAdmin={navigation.navigateToAdmin}
+      />
+    );
+  }
+
   return (
     <div
       className="h-screen flex flex-col overflow-hidden bg-[#1a1b22]"
@@ -267,6 +278,7 @@ function App() {
     >
       <Header
         onNavigateToAdmin={navigation.navigateToAdmin}
+        onNavigateToInterviewPrep={navigation.navigateToInterviewPrep}
       />
 
       <div className="flex-1 flex overflow-hidden">

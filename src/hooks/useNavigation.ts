@@ -5,6 +5,7 @@ export interface UseNavigationResult {
   currentPage: PageType;
   navigateToHome: () => void;
   navigateToAdmin: () => void;
+  navigateToInterviewPrep: () => void;
 }
 
 export function useNavigation(initialPage: PageType = 'home'): UseNavigationResult {
@@ -15,6 +16,7 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
     if (path === '/admin') return 'admin';
     if (path === '/udemint') return 'udemint';
     if (path === '/freeai') return 'freeai';
+    if (path === '/interview-preparation') return 'interview-prep';
     return 'home';
   }, []);
 
@@ -30,16 +32,24 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
 
   const navigateTo = useCallback((page: PageType) => {
     setCurrentPage(page);
-    const path = page === 'home' ? '/' : `/${page}`;
-    window.history.pushState(null, '', path);
+    const pathMap: Record<PageType, string> = {
+      'home': '/',
+      'admin': '/admin',
+      'udemint': '/udemint',
+      'freeai': '/freeai',
+      'interview-prep': '/interview-preparation',
+    };
+    window.history.pushState(null, '', pathMap[page]);
   }, []);
 
   const navigateToHome = useCallback(() => navigateTo('home'), [navigateTo]);
   const navigateToAdmin = useCallback(() => navigateTo('admin'), [navigateTo]);
+  const navigateToInterviewPrep = useCallback(() => navigateTo('interview-prep'), [navigateTo]);
 
   return {
     currentPage,
     navigateToHome,
     navigateToAdmin,
+    navigateToInterviewPrep,
   };
 }

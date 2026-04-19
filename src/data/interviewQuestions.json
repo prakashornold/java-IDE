@@ -1,0 +1,300 @@
+{
+  "JAVA_OOP": {
+    "label": "Java & OOP",
+    "icon": "coffee",
+    "color": "#cc7832",
+    "topics": {
+      "Object_Oriented_Programming": {
+        "label": "Object-Oriented Programming",
+        "questions": [
+          "What are the four pillars of Object-Oriented Programming, and how are they implemented in Java?",
+          "What is polymorphism in Java, and what is the difference between compile-time and runtime polymorphism?",
+          "What is abstraction in Java, and how is it achieved?",
+          "What is encapsulation in Java, and why is it important?",
+          "What is the difference between abstraction and encapsulation in Java?",
+          "What are SOLID principles in object-oriented design, and can you explain each with examples?"
+        ]
+      },
+      "Core_Java_Basics": {
+        "label": "Core Java Basics",
+        "questions": [
+          "What does 'immutable' mean in Java, and why are Strings immutable?",
+          "Why are Strings immutable in Java beyond just security reasons?",
+          "How do you create an immutable class in Java?",
+          "What is the difference between == and equals() in Java?",
+          "What is the difference between primitive data types and wrapper classes in Java?",
+          "What are wrapper classes in Java, and why are they needed?",
+          "What are constructors in Java, and how do they work?",
+          "What are the different types of constructors in Java?",
+          "Can a constructor be private in Java, and in which scenarios would you use it?",
+          "What are access modifiers in Java, and what is the scope of each?",
+          "Why is the method signature public static void main(String[] args) used in Java?",
+          "Can you run a Java program without a main method, and how?",
+          "What are the main features of Java?",
+          "What are the key components required to run a Java program such as JDK, JRE, and JVM?",
+          "What is the Java String Pool, and how does it work internally?",
+          "What is the output of Double.MIN_VALUE > 0, and why?"
+        ]
+      },
+      "Collections_Deep_Dive": {
+        "label": "Collections Deep Dive",
+        "questions": [
+          "How does HashMap work internally in Java?",
+          "What is the difference between HashMap and ConcurrentHashMap?",
+          "What is the difference between HashMap, LinkedHashMap, and TreeMap?",
+          "How does HashMap handle collisions after Java 8?",
+          "What is the difference between fail-fast and fail-safe iterators?"
+        ]
+      },
+      "Multithreading_Concurrency": {
+        "label": "Multithreading & Concurrency",
+        "questions": [
+          "What are the different ways to create threads in Java?",
+          "What is ExecutorService, and why is it used?",
+          "What is the difference between Runnable and Callable?",
+          "What is the difference between synchronized and volatile?",
+          "What is a deadlock in Java, and how can you resolve it?",
+          "Does the volatile keyword ensure atomicity?",
+          "What is the difference between CompletableFuture and Future?"
+        ]
+      },
+      "JVM_Internals": {
+        "label": "JVM Internals",
+        "questions": [
+          "What is a ClassLoader in Java?",
+          "What is the JVM memory structure?",
+          "What is the Java Memory Model (JMM)?",
+          "What are the different garbage collection algorithms in Java?",
+          "What is the difference between minor, major, and full GC?",
+          "What are strong, soft, weak, and phantom references?"
+        ]
+      },
+      "Streams": {
+        "label": "Streams & Functional",
+        "questions": [
+          "What is the difference between map() and flatMap()?",
+          "What is a functional interface?",
+          "What is a Stream pipeline?",
+          "What is the difference between intermediate and terminal operations?",
+          "When should you use parallel streams?",
+          "Do streams always improve performance?"
+        ]
+      },
+      "Exception_Handling": {
+        "label": "Exception Handling",
+        "questions": [
+          "What is the difference between checked and unchecked exceptions?",
+          "What is the difference between final, finally, and finalize()?",
+          "What replaced finalize() after deprecation?",
+          "What is try-with-resources?",
+          "What is the difference between throw and throws?"
+        ]
+      },
+      "Practical_Coding": {
+        "label": "Practical Coding",
+        "questions": [
+          "How do you reverse a string in Java?",
+          "How do you check if a string is a palindrome?",
+          "How do you find the first non-repeated character?",
+          "How do you check if two strings are anagrams?"
+        ]
+      }
+    }
+  },
+  "SPRING_BOOT": {
+    "label": "Spring Boot",
+    "icon": "leaf",
+    "color": "#6aab73",
+    "topics": {
+      "Core_Spring": {
+        "label": "Core Spring",
+        "questions": [
+          "What is IoC and Dependency Injection?",
+          "What are different types of Dependency Injection?",
+          "What is autowiring?",
+          "What are stereotype annotations?",
+          "What are Spring Bean scopes?",
+          "What is ApplicationContext?"
+        ]
+      },
+      "Spring_Boot_Core": {
+        "label": "Spring Boot Core",
+        "questions": [
+          "What is Spring Boot and what problem does it solve?",
+          "What is auto-configuration?",
+          "What does @SpringBootApplication include?",
+          "What are Spring Boot Starter dependencies?",
+          "What happens internally when Spring Boot starts?"
+        ]
+      },
+      "Spring_MVC": {
+        "label": "Spring MVC",
+        "questions": [
+          "What is DispatcherServlet?",
+          "What is the difference between @Controller and @RestController?",
+          "What happens when an HTTP request hits Spring Boot?"
+        ]
+      },
+      "Spring_Security": {
+        "label": "Spring Security",
+        "questions": [
+          "What is Spring Security?",
+          "Difference between authentication and authorization?",
+          "What is JWT and how does it work?",
+          "How do you secure REST APIs?",
+          "What is CSRF?"
+        ]
+      },
+      "Actuator_Caching": {
+        "label": "Actuator & Caching",
+        "questions": [
+          "What is Spring Boot Actuator?",
+          "How do you enable caching?",
+          "How do you configure scheduled tasks?"
+        ]
+      }
+    }
+  },
+  "SPRING_DATA_JPA": {
+    "label": "Spring Data JPA",
+    "icon": "database",
+    "color": "#5294d0",
+    "topics": {
+      "Basics": {
+        "label": "JPA Basics",
+        "questions": [
+          "What is JPA?",
+          "Difference between JPA and Hibernate?",
+          "What is JpaRepository?",
+          "What are derived query methods?",
+          "Difference between JPQL and native SQL?",
+          "What is FetchType.LAZY vs EAGER?"
+        ]
+      },
+      "Advanced": {
+        "label": "JPA Advanced",
+        "questions": [
+          "What are entity states?",
+          "What is persistence context?",
+          "What is dirty checking?",
+          "Difference between flush() and commit()?",
+          "What is first-level vs second-level cache?",
+          "What is transaction propagation?"
+        ]
+      }
+    }
+  },
+  "HIBERNATE": {
+    "label": "Hibernate",
+    "icon": "layers",
+    "color": "#bbb529",
+    "topics": {
+      "Core": {
+        "label": "Hibernate Core",
+        "questions": [
+          "What is Hibernate?",
+          "What is ORM?",
+          "Difference between Hibernate and JDBC?",
+          "What is SessionFactory vs Session?"
+        ]
+      },
+      "Advanced": {
+        "label": "Hibernate Advanced",
+        "questions": [
+          "What is dirty checking?",
+          "Difference between get() and load()?",
+          "How do you solve N+1 problem?",
+          "When does Hibernate flush?"
+        ]
+      }
+    }
+  },
+  "SQL": {
+    "label": "SQL",
+    "icon": "table",
+    "color": "#9ba1ad",
+    "topics": {
+      "Fundamentals": {
+        "label": "SQL Fundamentals",
+        "questions": [
+          "What is SQL and its categories?",
+          "What is a primary key?",
+          "Execution order of SQL query?",
+          "Difference between UNION and UNION ALL?",
+          "Difference between INNER JOIN and OUTER JOIN?"
+        ]
+      },
+      "Advanced_Queries": {
+        "label": "Advanced Queries",
+        "questions": [
+          "Find second highest salary.",
+          "Find Nth highest salary.",
+          "Find duplicate rows.",
+          "Calculate month-over-month growth.",
+          "Find top three most expensive products per category."
+        ]
+      }
+    }
+  },
+  "BACKEND_MICROSERVICES": {
+    "label": "Backend & Microservices",
+    "icon": "server",
+    "color": "#cf6679",
+    "topics": {
+      "Backend_Fundamentals": {
+        "label": "Backend Fundamentals",
+        "questions": [
+          "What is backend development?",
+          "What is MVC architecture?",
+          "What are HTTP status codes?",
+          "What is session management?"
+        ]
+      },
+      "Microservices_Core": {
+        "label": "Microservices Core",
+        "questions": [
+          "What are microservices?",
+          "Monolith vs microservices?",
+          "What is service discovery?",
+          "What is API Gateway?",
+          "What is load balancing?"
+        ]
+      },
+      "Security": {
+        "label": "Security",
+        "questions": [
+          "How do you secure microservices?",
+          "What is OAuth2?",
+          "What is JWT?",
+          "How do you securely store passwords?"
+        ]
+      },
+      "Distributed_Systems": {
+        "label": "Distributed Systems",
+        "questions": [
+          "What is Saga pattern?",
+          "What is Circuit Breaker?",
+          "What is Bulkhead pattern?",
+          "What is idempotency?"
+        ]
+      },
+      "Kafka_Messaging": {
+        "label": "Kafka & Messaging",
+        "questions": [
+          "What is Kafka?",
+          "How does Kafka ensure durability?",
+          "What are leaders and followers?"
+        ]
+      },
+      "DevOps": {
+        "label": "DevOps",
+        "questions": [
+          "What is Docker?",
+          "How do you Dockerize Spring Boot?",
+          "What is CI/CD?",
+          "What is Blue-Green deployment?"
+        ]
+      }
+    }
+  }
+}
