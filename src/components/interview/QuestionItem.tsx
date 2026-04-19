@@ -12,7 +12,7 @@ export function QuestionItem({ question, index, accentColor }: QuestionItemProps
 
   return (
     <div
-      className="group border border-[#282934] rounded-xl overflow-hidden transition-all duration-200 hover:border-[#383946]"
+      className="group border border-[#282934] rounded-xl overflow-hidden transition-all duration-200 hover:border-[#383946] w-full min-w-0"
       style={{ background: isExpanded ? 'rgba(82,148,208,0.04)' : 'transparent' }}
     >
       <button
@@ -29,9 +29,9 @@ export function QuestionItem({ question, index, accentColor }: QuestionItemProps
           {index + 1}
         </span>
 
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 overflow-hidden">
           <p
-            className="text-sm leading-relaxed transition-colors duration-150"
+            className="text-sm leading-relaxed transition-colors duration-150 break-words"
             style={{ color: isExpanded ? '#f1f3f5' : '#d5d9e0' }}
           >
             {question}

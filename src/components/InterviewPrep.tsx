@@ -165,8 +165,8 @@ export function InterviewPrep({ onNavigateHome, onNavigateToAdmin }: InterviewPr
     <div className="h-screen flex flex-col overflow-hidden bg-[#1a1b22]">
       <Header onNavigateToAdmin={onNavigateToAdmin} subHeader={subHeader} />
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-5">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-5 min-w-0">
 
           {isSearching ? (
             <div className="space-y-2.5 animate-fade-in">
@@ -201,7 +201,7 @@ export function InterviewPrep({ onNavigateHome, onNavigateToAdmin }: InterviewPr
                 {visibleCategories.map(key => (
                   <div
                     key={key}
-                    className="bg-[#1e1f26] border border-[#282934] rounded-2xl p-5 sm:p-6 hover:border-[#383946] transition-all duration-200"
+                    className="bg-[#1e1f26] border border-[#282934] rounded-2xl p-4 sm:p-5 hover:border-[#383946] transition-all duration-200 w-full overflow-hidden min-w-0"
                   >
                     <CategoryPanel
                       categoryKey={key}
