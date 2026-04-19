@@ -6,9 +6,10 @@ import { useAuth } from '../context/AuthContext';
 interface HeaderProps {
   onNavigateToAdmin?: () => void;
   onNavigateToInterviewPrep?: () => void;
+  subHeader?: React.ReactNode;
 }
 
-export function Header({ onNavigateToAdmin, onNavigateToInterviewPrep }: HeaderProps) {
+export function Header({ onNavigateToAdmin, onNavigateToInterviewPrep, subHeader }: HeaderProps) {
   const { user, profile, isAdmin, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -49,8 +50,9 @@ export function Header({ onNavigateToAdmin, onNavigateToInterviewPrep }: HeaderP
     setShowMobileMenu(false);
     callback?.();
   };
+
   return (
-    <header className="relative bg-[#1a1b22] border-b border-[#282934]">
+    <header className="relative bg-[#1a1b22] border-b border-[#282934] flex-shrink-0">
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#5294d0]/25 to-transparent" />
 
       <div className="px-4 sm:px-6 py-2.5 flex items-center justify-between">
@@ -188,6 +190,12 @@ export function Header({ onNavigateToAdmin, onNavigateToInterviewPrep }: HeaderP
           </nav>
         </div>
       </div>
+
+      {subHeader && (
+        <div className="border-t border-[#282934] px-4 sm:px-6 py-2">
+          {subHeader}
+        </div>
+      )}
 
       {showMobileMenu && (
         <div
